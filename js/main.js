@@ -7,8 +7,8 @@ let game = new Phaser.Game(GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT, Phaser.CANVAS, '
 window.onload = startGame;
 
 function startGame() {
-    game.state.add('init', initState);
+    game.state.add('welcomescreen', welcomeState);
     game.state.add('play', playState);
 
-    game.state.start('init');
+    game.state.start('welcomescreen');
 }
