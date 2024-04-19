@@ -44,13 +44,17 @@ class Player {
 	}
 	Update(){
 
-
 		let axis = this.GetInputAxis();
 		let velocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
 		let targetVel = axis.Scale(this.maxVelocity);
 		let currentVel = Vector2.Lerp(velocity, targetVel, this.accelerationFactor);
 		this.sprite.body.velocity.x = currentVel.x;
 		this.sprite.body.velocity.y = currentVel.y;
+
+		let rotation = Mathf.TransformRange(-1*this.maxVelocity,1*this.maxVelocity, -15, 15, velocity.x);
+		this.sprite.angle = rotation;
+
+
 
 		let camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
 		let playerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
