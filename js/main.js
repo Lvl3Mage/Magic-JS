@@ -1,5 +1,3 @@
-const GAME_STAGE_WIDTH = 1920*4;
-const GAME_STAGE_HEIGHT = 1920*4;
 
 const config = {
 	width: window.innerWidth,

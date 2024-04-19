@@ -9,18 +9,25 @@ class Player {
 	}
 	Create(){
 		this.sprite = game.add.sprite(0, 0, 'main-character');
-		this.sprite.anchor.setTo(0.5, 0.5);
 		game.physics.p2.enable(this.sprite);
 		this.sprite.body.fixedRotation = true;
-		game.camera.roundPx = false;
 
+		this.sprite.anchor.setTo(0.5, 1);
+
+		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
+
+		//Parameters
 		this.maxVelocity = 300;
 		this.accelerationFactor = 0.1;
+		this.maxTilt = 15;
+		this.bopFreq = 15;
+		this.maxTiltBopAmp = 7;
+		this.bopAmp = 0.1;
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
@@ -51,9 +58,12 @@ class Player {
 		this.sprite.body.velocity.x = currentVel.x;
 		this.sprite.body.velocity.y = currentVel.y;
 
-		let rotation = Mathf.TransformRange(-1*this.maxVelocity,1*this.maxVelocity, -15, 15, velocity.x);
+		let curMaxTilt = this.maxTilt - Math.abs(Math.sin(game.time.totalElapsedSeconds()*this.bopFreq*0.5)*this.maxTiltBopAmp)
+		let rotation = Mathf.TransformRange(-1*this.maxVelocity,1*this.maxVelocity, -curMaxTilt, curMaxTilt, velocity.x);
 		this.sprite.angle = rotation;
+		let bop = Mathf.TransformRange(0, this.maxVelocity, 1, 0.9 + Math.abs(Math.sin(game.time.totalElapsedSeconds()*this.bopFreq*0.5)*this.bopAmp), velocity.Length());
 
+		this.sprite.anchor.setTo(0.5, bop);
 
 
 		let camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
