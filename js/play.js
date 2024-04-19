@@ -3,17 +3,20 @@ let playState = {
     create: createPlay,
     update: updatePlay
 };
+const eventSystem = new EventSystem();
+const player = new Player(eventSystem);
 function preloadPlay() {
-    game.load.image('main-character', 'assets/imgs/main-character.png');
+    eventSystem.CallEvent("preload", []);
 }
 
 function createPlay() {
-    player = game.add.sprite(0, 0, 'main-character');
-    console.log(new BaseComponent());
+
+    game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
+    eventSystem.CallEvent("create", []);
 }
 
 function updatePlay() {
-    
+    eventSystem.CallEvent("update", []);
 }
 
 

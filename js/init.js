@@ -13,6 +13,8 @@ function preloadInit () {
 function createInit() {
 
     btnStart = game.add.button(game.world.centerX, game.world.centerY, 'craft', startPlay);
+    btnStart.fixedToCamera = true;
+    
     btnStart.anchor.setTo(0.5, 0.5);
     btnStart.scale.setTo(2.0);
 }
