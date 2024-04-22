@@ -80,11 +80,17 @@ class Vector2{
 	Clone(){
 		return new Vector2(this.x, this.y);
 	}
-	ToPoint(){
+	ToPhaserPoint(){
 		return new Phaser.Point(this.x, this.y);
 	}
-	static ToPoint(vector){
+	static ToPhaserPoint(vector){
 		return new Phaser.Point(vector.x, vector.y);
+	}
+	ToPIXIPoint(){
+		return new PIXI.Point(this.x, this.y);
+	}
+	static ToPIXIPoint(vector){
+		return new PIXI.Point(vector.x, vector.y);
 	}
 	Rotate(angle) {
 		let sin = Math.sin(Mathf.Deg2Rad(angle));

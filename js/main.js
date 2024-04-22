@@ -1,5 +1,3 @@
-const GAME_STAGE_WIDTH = 1920*4;
-const GAME_STAGE_HEIGHT = 1920*4;
 
 const config = {
 	width: window.innerWidth,
@@ -19,6 +17,7 @@ window.onload = startGame;
 function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 	game.physics.startSystem(Phaser.Physics.P2JS);
+	game.physics.p2.defaultRestitution = 2;
 
 	game.state.add('init', initState);
 	game.state.add('play', playState);
