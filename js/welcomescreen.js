@@ -58,7 +58,7 @@ function onConfigButtonPressed() {
 }
 
 function onButtonHover(button) {
-    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 400, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
 }
 
 function onButtonOut(button) {
