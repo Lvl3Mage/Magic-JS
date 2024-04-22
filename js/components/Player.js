@@ -84,7 +84,7 @@ class Player {
 
 		let worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
 		let localCursor = CoordUtils.InverseTransformPoint(worldCursor, playerSpriteCenter, Mathf.Deg2Rad(this.sprite.angle));
-		console.log(localCursor);
+		// console.log(localCursor);
 		let handPos = CoordUtils.TransformPoint(localCursor.Normalized().Scale(this.handDistance), playerSpriteCenter, Mathf.Deg2Rad(this.sprite.angle));
 		this.handSprite.x = handPos.x;
 		this.handSprite.y = handPos.y;
@@ -93,7 +93,7 @@ class Player {
 		let handToMouse = worldCursor.Sub(handPos);
 		let handAngle = Mathf.Rad2Deg(Math.atan2(handToMouse.y, handToMouse.x));
 		this.handSprite.angle = handAngle;
-		console.log(localCursor.Normalized());
-		console.log(game.input.mousePointer.x.toString() + " " + game.input.mousePointer.y.toString());
+		// console.log(localCursor.Normalized());
+		// console.log(game.input.mousePointer.x.toString() + " " + game.input.mousePointer.y.toString());
 	}
 }

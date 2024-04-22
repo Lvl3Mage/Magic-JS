@@ -25,6 +25,8 @@ const player = new Player(eventSystem);
 function preloadPlay() {
 	game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 	game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
+	
+    eventSystem.CallEvent("preload", []);
 }
 
 function createPlay() {
