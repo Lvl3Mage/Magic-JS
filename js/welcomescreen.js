@@ -23,22 +23,22 @@ function display() {
     //game.add.image(0,0, 'background'); (NO BACKGROUND YET!)
 
     //Our game title
-    title = game.add.image(GAME_STAGE_WIDTH / 2, 100, 'title');
+    title = game.add.image(game.camera.width / 2, 100, 'title');
     title.anchor.setTo(0.5, 0);
     game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
     //Buttons corresponding to the start, about and configuration respectively
-    buttonStart = game.add.button(GAME_STAGE_WIDTH / 2, GAME_STAGE_HEIGHT / 2 - 100, 'start', onStartButtonPressed);
+    buttonStart = game.add.button(game.camera.width / 2, game.camera.height / 2 - 100, 'start', onStartButtonPressed);
     buttonStart.anchor.setTo(0.5, 0.5);
     buttonStart.onInputOver.add(onButtonHover, this); // Add hover event listener
     buttonStart.onInputOut.add(onButtonOut, this); // Add hover out event listener
 
-    buttonAbout = game.add.button(GAME_STAGE_WIDTH / 2, GAME_STAGE_HEIGHT / 2, 'about', onAboutButtonPressed);
+    buttonAbout = game.add.button(game.camera.width / 2, game.camera.height / 2, 'about', onAboutButtonPressed);
     buttonAbout.anchor.setTo(0.5, 0.5);
     buttonAbout.onInputOver.add(onButtonHover, this); // Add hover event listener
     buttonAbout.onInputOut.add(onButtonOut, this); // Add hover out event listener
 
-    buttonConfig = game.add.button(GAME_STAGE_WIDTH / 2, GAME_STAGE_HEIGHT / 2 + 100, 'config', onConfigButtonPressed);
+    buttonConfig = game.add.button(game.camera.width / 2, game.camera.height / 2 + 100, 'config', onConfigButtonPressed);
     buttonConfig.anchor.setTo(0.5, 0.5);
     buttonConfig.onInputOver.add(onButtonHover, this); // Add hover event listener
     buttonConfig.onInputOut.add(onButtonOut, this); // Add hover out event listener
@@ -46,7 +46,7 @@ function display() {
 
 
 function onStartButtonPressed() {
-    game.state.start('start');
+    game.state.start('play');
 }
 function onAboutButtonPressed() {
     game.state.start('about');

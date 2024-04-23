@@ -23,13 +23,13 @@ function doConfig() {
     };
     game.add.text(200, 40, textTitle, styleTitle);
 
-    let vSpace = (game.world.height - 80) / 3;
+    let vSpace = (game.camera.height - 80) / 3;
 
-    btnEasy = game.add.button(game.world.width / 2, vSpace, 'easyButton', onButtonPressed);
+    btnEasy = game.add.button(game.camera.width / 2, vSpace, 'easyButton', onButtonPressed);
     btnEasy.anchor.setTo(0.5, 0.5);
-    btnAvg = game.add.button(game.world.width / 2, vSpace * 2, 'avgButton', onButtonPressed);
+    btnAvg = game.add.button(game.camera.width / 2, vSpace * 2, 'avgButton', onButtonPressed);
     btnAvg.anchor.setTo(0.5, 0.5);
-    btnNgtm = game.add.button(game.world.width / 2, vSpace * 3, 'ngtmButton', onButtonPressed);
+    btnNgtm = game.add.button(game.camera.width / 2, vSpace * 3, 'ngtmButton', onButtonPressed);
     btnNgtm.anchor.setTo(0.5, 0.5);
 }
 
