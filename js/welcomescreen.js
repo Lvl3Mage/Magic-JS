@@ -5,8 +5,10 @@ let welcomeState = {
 };
 
 function loadassets() { //THESE ASSETS ARE CURRENTLY TEMPORARY AND WILL BE DRAWN LATER
-    // Load the background image
-    game.load.image('background', 'assets/imgs/stars.png');
+    // Load the background image and title
+    //game.load.image('background', 'assets/imgs/stars.png');
+    game.load.image('title', 'assets/imgs/Titles/TITLE.png');
+
     // Load the necessary buttons
     //Those being the start button, about and configutration
     game.load.image('start', 'assets/imgs/TEMPORARY IMAGES/playButton.png');
@@ -18,16 +20,12 @@ let buttonStart, buttonAbout, buttonConfig;
 
 function display() {
     game.input.enabled = true;
-    game.add.image(0,0, 'background');
-
+    //game.add.image(0,0, 'background'); (NO BACKGROUND YET!)
 
     //Our game title
-    let gameTitle = 'Epic Temporary Game Title!';
-    let styleTitle = { 
-        font: 'bold 60px Arial', 
-        fill: '#ffffff', 
-        lign: 'center' };
-    game.add.text(GAME_STAGE_WIDTH/4, GAME_STAGE_HEIGHT/6, gameTitle, styleTitle);
+    title = game.add.image(GAME_STAGE_WIDTH / 2, 100, 'title');
+    title.anchor.setTo(0.5, 0);
+    game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
     //Buttons corresponding to the start, about and configuration respectively
     buttonStart = game.add.button(GAME_STAGE_WIDTH / 2, GAME_STAGE_HEIGHT / 2 - 100, 'start', onStartButtonPressed);
