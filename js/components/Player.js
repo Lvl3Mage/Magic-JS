@@ -7,6 +7,7 @@ class Player {
 	Load(){
 		game.load.image('main-character', 'assets/imgs/main-character.png');
 		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
+		game.load.image('hat', 'assets/imgs/funnyhat.png');
 	}
 	Create(){
 		this.sprite = game.add.sprite(0, 0, 'main-character');
@@ -14,9 +15,17 @@ class Player {
 		this.sprite.body.fixedRotation = true;
 
 		this.sprite.anchor.setTo(0.5, 1);
+		// this.sprite.scale.setTo(0.7, 0.7);
 
 		this.handSprite = game.add.sprite(0, 0, 'hand');
 		this.handSprite.anchor.setTo(0.5, 0.5);
+		this.handSprite.scale.setTo(2, 2);
+
+
+		this.hatSprite = game.add.sprite(0, 0, 'hat');
+		this.hatSprite.anchor.setTo(0.5, 1);
+		this.sprite.addChild(this.hatSprite);
+		// this.hatSprite.scale.setTo(0.2, 0.2);
 
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -34,7 +43,9 @@ class Player {
 		this.bopAmp = 0.3;
 
 		//Hand Parameters
-		this.handDistance = 17;
+		this.handDistance = 36;
+
+		this.hatAngularSpeed = 0;
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
@@ -93,6 +104,11 @@ class Player {
 		let handToMouse = worldCursor.Sub(handPos);
 		let handAngle = Mathf.Rad2Deg(Math.atan2(handToMouse.y, handToMouse.x));
 		this.handSprite.angle = handAngle;
+
+		let hatPosition = Vector2.down.Scale(this.sprite.height*bop - this.hatSprite.height*0.3);
+		// this.hatSprite.angle = this.sprite.angle;
+		this.hatSprite.x = hatPosition.x;
+		this.hatSprite.y = hatPosition.y;
 		// console.log(localCursor.Normalized());
 		// console.log(game.input.mousePointer.x.toString() + " " + game.input.mousePointer.y.toString());
 	}
