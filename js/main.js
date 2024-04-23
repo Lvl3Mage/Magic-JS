@@ -9,6 +9,8 @@ window.onload = startGame;
 function startGame() {
     game.state.add('welcomescreen', welcomeState);
     game.state.add('play', playState);
+    game.state.add('about', aboutState);
+    game.state.add('config', configState);
 
     game.state.start('welcomescreen');
 }
