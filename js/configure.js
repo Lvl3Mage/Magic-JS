@@ -6,34 +6,38 @@ let configState = {
 let btnEasy, btnAvg, btnNgtm;
 
 function loadConfigAssets() {
-    game.load.image('easyButton', '');
-    game.load.image('avgButton', '');
-    game.load.image('ngtmButton', '');
+    game.load.image('backButton', 'assets/imgs/Titles/BACK.png');
+    game.load.image('configTitle', 'assets/imgs/Titles/CONFIG.png');
+
+    //Three buttons for three different difficulties to select
+    //game.load.image('easyButton', '');
+    //game.load.image('avgButton', '');
+    //game.load.image('ngtmButton', '');
 }
 
 function doConfig() {
-    game.add.image(0, 0, 'bg');
+    game.camera.flash(0x000000, 2000);
 
-    let textTitle = 'Choose play level:';
-    let styleTitle = {
-        font: 'Rammetto One',
-        fontSize: '20pt',
-        fontWeight: 'bold',
-        fill: '#b60404'
-    };
-    game.add.text(200, 40, textTitle, styleTitle);
+    // Display the title
+    title = game.add.image(game.camera.width / 2, 50, 'configTitle');
+    title.anchor.setTo(0.5, 0);
+    game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
-    let vSpace = (game.camera.height - 80) / 3;
+    const text = game.add.text(game.camera.width / 2, 250, 'Select your difficulty...', {font: '50px Merryweather', fill: '#ffffff', align: 'center'});
+    text.anchor.setTo(0.5, 0);
 
-    btnEasy = game.add.button(game.camera.width / 2, vSpace, 'easyButton', onButtonPressed);
-    btnEasy.anchor.setTo(0.5, 0.5);
-    btnAvg = game.add.button(game.camera.width / 2, vSpace * 2, 'avgButton', onButtonPressed);
-    btnAvg.anchor.setTo(0.5, 0.5);
-    btnNgtm = game.add.button(game.camera.width / 2, vSpace * 3, 'ngtmButton', onButtonPressed);
-    btnNgtm.anchor.setTo(0.5, 0.5);
+    back = game.add.image(game.camera.width / 2, game.camera.height - 200, 'backButton');
+    back.anchor.setTo(0.5, 0);
+    back.scale.setTo(0.3, 0.3);
+    back.inputEnabled = true;
+    back.events.onInputDown.add(onBackButtonPressed, this); // Add click event listener
+    back.events.onInputOver.add(onBackHover, this); // Add hover event listener
+    back.events.onInputOut.add(onBackOut, this); // Add hover out event listener
 }
 
-function onButtonPressed(button) {
-    // Start the welcome state
-    game.state.start('welcome');
+function onBackButtonPressed() {
+    game.camera.fade(0x000000, 1000);
+    game.camera.onFadeComplete.add(function() {
+        game.state.start('welcomescreen');
+    }, this);
 }
