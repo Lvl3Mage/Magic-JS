@@ -13,27 +13,16 @@ function showInstructions() {
 
     title = game.add.image(game.camera.width / 2, 50, 'aboutTitle');
     title.anchor.setTo(0.5, 0);
-    title.scale.setTo(0.8, 0.8);
+    title.scale.setTo(0.5, 0.5);
     game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
-    const text1 = game.add.text(game.camera.width / 2, 280, 'A game created by GROUP 1: Karl Marx', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text1.anchor.setTo(0.5, 0);
-    const text2 = game.add.text(game.camera.width / 2, 320, 'Saul Pacheco Trilles, Karl Kalantarov and Lucas Godoy Nebot', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text2.anchor.setTo(0.5, 0);
+    const groupname = game.add.text(game.camera.width / 2, 220, 'A game created by GROUP 1: Karl Marx', {font: '20px Merryweather', fill: '#ffffff', align: 'center'});
+    groupname.anchor.setTo(0.5, 0);
+    const ournames = game.add.text(game.camera.width / 2, 250, 'Saul Pacheco Trilles, Karl Kalantarov and Lucas Godoy Nebot', {font: '20px Merryweather', fill: '#ffffff', align: 'center'});
+    ournames.anchor.setTo(0.5, 0);
 
-    const text3 = game.add.text(game.camera.width / 2, 400, '~CONTROLS~', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text3.anchor.setTo(0.5, 0);
-    const text4 = game.add.text(game.camera.width / 2, 440, 'Movement - WASD', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text4.anchor.setTo(0.5, 0);
-    const text5 = game.add.text(game.camera.width / 2, 480, 'Aim - Mouse', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text5.anchor.setTo(0.5, 0);
-    const text6 = game.add.text(game.camera.width / 2, 512, 'Shoot - ', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text6.anchor.setTo(0.5, 0);
-
-    const text7 = game.add.text(game.camera.width / 2, 592, '~OBJECTIVE~', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text7.anchor.setTo(0.5, 0);
-    const text8 = game.add.text(game.camera.width / 2, 630, 'Eliminate as many enemies as possible to obtain enough points to progress! Rest in the camp if you need to, but don`t overstay!', {font: '24px Merryweather', fill: '#ffffff', align: 'center'});
-    text8.anchor.setTo(0.5, 0);
+    const placeholder = game.add.text(game.camera.width / 2, 400, 'INSTRUCTION SLIDES BUTTON WILL GO HERE', {font: '25px Merryweather', fill: '#ffffff', align: 'center'});
+    placeholder.anchor.setTo(0.5, 0);
 
     back = game.add.image(game.camera.width / 2, game.camera.height - 200, 'backButton');
     back.anchor.setTo(0.5, 0);

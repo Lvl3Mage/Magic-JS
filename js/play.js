@@ -81,3 +81,4 @@ function createHUD() {
 	livesBarOutline.fixedToCamera = true;
 	livesBarOutline.cameraOffset = new Phaser.Point(healthX,allY);
 }
+
