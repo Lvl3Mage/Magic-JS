@@ -30,3 +30,7 @@ function updatePlay() {
     eventSystem.CallEvent("update", []);
 
 }
+
+// Bool en update para que no llame a las funciones de move
+// Animacion un tween
+// onComplete para acabar el tween

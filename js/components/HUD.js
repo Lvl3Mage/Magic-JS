@@ -65,4 +65,15 @@ class HUD {
 
     // Hud tenga metodos para modificar todas sus cosas
     // setters
+    getScore(){
+        return this.score;
+    }
+
+    getlives(){
+        return this.lives;
+    }
+
+    getLevel(){
+        return this.level;
+    }
 }
