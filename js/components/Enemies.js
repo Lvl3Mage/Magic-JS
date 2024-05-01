@@ -26,4 +26,8 @@ class Enemy {
         const enemy = game.add.sprite(spawnX, spawnY, 'enemySprite');
         enemy.anchor.setTo(0.5, 0.5);
     }
+
+    Update() {
+        //The enemy behaviour will go here
+    }
 }
