@@ -1,8 +1,7 @@
-
 const config = {
 	width: window.innerWidth,
 	height: window.innerHeight,
-	renderer: Phaser.AUTO,
+	renderer: Phaser.WEBGL,
 	antialias: true,
 	multiTexture: true,
 	physicsConfig:{

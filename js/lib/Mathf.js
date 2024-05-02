@@ -18,9 +18,17 @@ class Mathf
 		return rad * (180/Math.PI);
 	}
 	static WrapAngle(angle){
-		if (angle > 180)        { angle -= 360; }
+		if (angle > 180)        {  angle -= 360; }
 		else if (angle <= -180) { angle += 360; }
 
 		return angle;
+	}
+	static DeltaAngle(current, target){
+		let num = Mathf.WrapAngle(target - current);
+		if (num > 180)
+		{
+			num -= 360;
+		}
+		return num;
 	}
 }
