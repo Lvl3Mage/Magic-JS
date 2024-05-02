@@ -29,10 +29,11 @@ const player = new Player(eventSystem);
 function preloadPlay() {
 	game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 	game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-
-	game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
 	
-    eventSystem.CallEvent("preload", []);
+	game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
+
+
+	eventSystem.CallEvent("preload", []);
 }
 
 function createPlay() {
@@ -94,7 +95,6 @@ function spawnEnemies() {
 	//Checking if the number of enemies has been surpassed
 	if(enemiesSpawned < maxEnemies){
 		const newEnemy = new Enemy(eventSystem);
-		newEnemy.Create();
 		enemiesSpawned++;
 
 		//Making time for the next enemy to spawn
