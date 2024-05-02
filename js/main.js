@@ -15,8 +15,8 @@ window.onload = startGame;
 
 function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
-	game.physics.startSystem(Phaser.Physics.P2JS);
-	game.physics.p2.defaultRestitution = 2;
+	configurePhysics();
+	game.camera.roundPx = false;
 	
     game.state.add('welcomescreen', welcomeState);
     game.state.add('play', playState);
@@ -24,4 +24,10 @@ function startGame() {
     game.state.add('config', configState);
 
     game.state.start('welcomescreen');
+}
+function configurePhysics(){
+	game.physics.startSystem(Phaser.Physics.P2JS);
+	game.physics.p2.defaultRestitution = 2;
+	game.physics.p2.setImpactEvents(true);
+	game.physics.p2.updateBoundsCollisionGroup();
 }

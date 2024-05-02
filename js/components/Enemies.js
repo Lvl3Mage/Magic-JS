@@ -5,7 +5,7 @@ const ENEMY_DISTANCE_ATTACK = 150;
 class Enemy {
     constructor(eventSystem) {
         //Subscribing to event systems here so that the enemy functions properly
-        eventSystem.Subscribe("update", this.Update.bind(this));
+        eventSystem.Subscribe("scene-update", this.Update.bind(this));
 
         this.isAggressive = false;
 

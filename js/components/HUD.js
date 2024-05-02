@@ -1,6 +1,6 @@
 class HUD {
     constructor(eventSystem) {
-		eventSystem.Subscribe("update", this.Update.bind(this));
+		eventSystem.Subscribe("scene-update", this.Update.bind(this));
 
         this.score = 0;
         this.scoreText;

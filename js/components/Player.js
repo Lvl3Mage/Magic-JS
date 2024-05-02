@@ -1,6 +1,6 @@
 class Player {
 	constructor(eventSystem) {
-		eventSystem.Subscribe("update", this.Update.bind(this));
+		eventSystem.Subscribe("scene-update", this.Update.bind(this));
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.upArrow = game.input.keyboard.addKey(Phaser.Keyboard.UP);

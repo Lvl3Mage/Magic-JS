@@ -10,51 +10,51 @@ const MAX_COLLECTABLE = 10;
 let collectable;
 let numOfcollectable;
 
+let eventSystem;
+let sceneData;
+
 let playState = {
-	preload: preloadPlay,
-	create: createPlay,
-	update: updatePlay
+	preload: function() {
+		//Healthbar
+		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
+		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
+		game.load.image('collectable', 'assets/imgs/star.png');
+
+		//Player 
+		game.load.image('main-character', 'assets/imgs/main-character.png');
+		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
+
+
+		game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
+	},
+	create: function() {
+
+		eventSystem = new EventSystem();
+		sceneData = {};
+
+		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
+		
+		
+
+		sceneData.player = new Player(eventSystem);
+		sceneData.HUD = new HUD(eventSystem);
+
+		sceneData.collisionGroups = {};
+		
+		createCollectables();
+		drawCollectables();
+
+		//Begin spawning enemies
+		game.time.events.add(spawnDelay, spawnEnemies, this);
+
+		eventSystem.CallEvent("post-scene-create", []);
+	},
+	update: function() {
+		eventSystem.CallEvent("scene-update", []);
+	},
 };
 
-const eventSystem = new EventSystem();
-const sceneData = {};
 
-
-
-function preloadPlay() {
-	//Healthbar
-	game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
-	game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-	game.load.image('collectable', 'assets/imgs/star.png');
-
-	//Player 
-	game.load.image('main-character', 'assets/imgs/main-character.png');
-	game.load.image('hand', 'assets/imgs/hand-placeholder.png');
-
-
-	game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
-
-	eventSystem.CallEvent("preload", []);
-}
-
-function createPlay() {
-	game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
-	game.camera.roundPx = false;
-	eventSystem.CallEvent("create", []);
-
-	sceneData.player = new Player(eventSystem);
-	sceneData.HUD = new HUD(eventSystem);
-
-	createCollectables();
-	drawCollectables();
-
-	//I'll start spawning enemies here
-	game.time.events.add(spawnDelay, spawnEnemies, this);
-}
-
-function updatePlay() {
-    eventSystem.CallEvent("update", []);
-}
 
 
 
