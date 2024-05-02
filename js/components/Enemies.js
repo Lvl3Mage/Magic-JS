@@ -62,6 +62,6 @@ class Enemy {
 
     attack() {
         //Check if the player is within the attack distance
-
+        
     }
 }
