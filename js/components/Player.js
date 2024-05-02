@@ -1,15 +1,6 @@
 class Player {
 	constructor(eventSystem) {
-		eventSystem.Subscribe("preload", this.Load.bind(this));
-		eventSystem.Subscribe("create", this.Create.bind(this));
 		eventSystem.Subscribe("update", this.Update.bind(this));
-	}
-	Load(){
-		game.load.image('main-character', 'assets/imgs/main-character.png');
-		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
-		// game.load.image('hat', 'assets/imgs/funnyhat.png');
-	}
-	Create(){
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -36,7 +27,7 @@ class Player {
 
 		this.hatAngularSpeed = 0;
 
-		this.debug = true;
+		this.debug = false;
 
 
 
@@ -55,14 +46,9 @@ class Player {
 		this.sprite.body.clearShapes();
 		this.sprite.body.addCapsule(this.sprite.height-this.sprite.width, this.sprite.width/2, 0, -this.sprite.height*0.5, Mathf.Deg2Rad(90));
 
-		// this.hatSprite = game.add.sprite(0, 0, 'hat');
-		// this.hatSprite.anchor.setTo(0.5, 1);
-		// this.sprite.addChild(this.hatSprite);
-		// this.hatSprite.scale.setTo(0.2, 0.2);
 
 
 		console.log(this.sprite.body)
-
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
@@ -134,20 +120,10 @@ class Player {
 
 		let deltaAngle = Mathf.DeltaAngle(currentHandAngle,handAngle);
 		this.handSprite.angle += deltaAngle*this.handAngularFactor;
-		// let hatPosition = Vector2.down.Scale(this.sprite.height*bop - this.hatSprite.height*0.3);
-		// this.hatSprite.angle = this.sprite.angle;
-		// this.hatSprite.x = hatPosition.x;
-		// this.hatSprite.y = hatPosition.y;
-		// console.log(localCursor.Normalized());
-		// console.log(game.input.mousePointer.x.toString() + " " + game.input.mousePointer.y.toString());
 	}
 
 
 	//Public Methods
-	/**
-	 * @returns {Vector2} The position of the player in the world.
-	 * 
-	 */
 	GetPosition(){
 		return new Vector2(this.sprite.x, this.sprite.y);
 	}
