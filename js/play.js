@@ -13,7 +13,7 @@ let livesScore; // esto solo irá de 0 a 1
 //! 3.b, 3.c
 
 let maxEnemies = 10;
-let spawnDelay = 3000;
+let spawnDelay = 1000;
 let enemiesSpawned = 0;
 
 

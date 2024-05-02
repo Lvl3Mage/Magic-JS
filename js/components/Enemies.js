@@ -9,8 +9,8 @@ class Enemy {
 
         this.isAggressive = false;
 
-        this.moveTimer = 0;
         this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
+        this.moveTimer = Math.random()*this.moveDelay;
         
         //Creating one enemy
         const spawnX = Math.random() * (game.world.width);
