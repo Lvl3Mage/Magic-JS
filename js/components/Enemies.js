@@ -7,8 +7,6 @@ class Enemy {
         //Subscribing to event systems here so that the enemy functions properly
         eventSystem.Subscribe("update", this.Update.bind(this));
 
-        this.isAggressive = false;
-
         this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
         this.moveTimer = Math.random()*this.moveDelay;
         
@@ -28,7 +26,7 @@ class Enemy {
 
     Update() {
         //The enemy behaviour will go here
-        if (this != this.isAggressive) {
+        if (!this.isAggressive()) {
             this.moveAround();
         }
         else {
@@ -60,8 +58,33 @@ class Enemy {
         return dir;
     }
 
-    attack() {
-        //Check if the player is within the attack distance
-        
+    isAggressive(){
+        //Retrieve the position of the player and enemy to compare
+        let playerPos = sceneData.player.GetPosition();
+        let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+
+        //Calculate the distance between the player and the enemy
+        let delta = enemyPos.Sub(playerPos);
+        let distance = delta.Length();
+
+        if (distance < ENEMY_DISTANCE_ATTACK){
+            return true;
+        }
+        return false;
+
+    }
+
+    attack(){
+        let playerPos = sceneData.player.GetPosition();
+        let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+        let delta = enemyPos.Sub(playerPos);
+        delta = delta.Normalized();
+
+        let targetVelocity = delta.Scale(-ENEMY_VELOCITY * 2);
+        let curVelocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
+        curVelocity = Vector2.Lerp(curVelocity, targetVelocity, 0.1);
+
+        this.sprite.body.velocity.x = curVelocity.x;
+        this.sprite.body.velocity.y = curVelocity.y;
     }
 }
