@@ -2,18 +2,18 @@ class HUD {
     constructor(eventSystem) {
 		eventSystem.Subscribe("update", this.Update.bind(this));
 
-        this.score;
+        this.score = 0;
         this.scoreText;
-        this.level;
+
+        this.level = 1;
         this.levelText;
-        this.lives;
+
+        this.lives = 3;
         this.livesBar;
         this.livesBarOutline;
-        this.livesScore; // esto solo irá de 0 a 1
-        this.score = 0;
-        this.level = 1;
-        this.lives = 3;
-        this.livesScore = 1;
+        this.livesScore = 1; // esto solo irá de 0 a 1
+        this.livesScale = 2;
+
 
         this.createHUD();
 	}
@@ -28,7 +28,7 @@ class HUD {
         let levelX = game.camera.width / 2; //Ya veremos como escala
         let healthX= 10;
         let allY = 10; //game.world.height
-        let styleHUD = {fontSize: '18px', fill: '#FFFFFF'};
+        let styleHUD = {font: '25px Merryweather', fill: '#FFFFFF'};
 
         this.scoreText = game.add.text(scoreX,allY,'Score: '+ this.score, styleHUD);
         this.scoreText.anchor.setTo(1, 0);
@@ -46,7 +46,7 @@ class HUD {
         this.livesBar.cameraOffset = new Phaser.Point(healthX,allY);
         let barMask = game.add.graphics(0,0);
         barMask.beginFill(0xfff);
-        barMask.drawRect(healthX, allY, this.livesBar.width * this.livesScore, this.livesBar.height);
+        barMask.drawRect(healthX, allY, this.livesBar.width * this.livesScale * this.livesScore, this.livesBar.height * this.livesScale);
         barMask.endFill();
         barMask.fixedToCamera = true;
         this.livesBar.mask = barMask;
@@ -54,6 +54,9 @@ class HUD {
         this.livesBarOutline = game.add.sprite(healthX, allY, 'healthbar_outline');
         this.livesBarOutline.fixedToCamera = true;
         this.livesBarOutline.cameraOffset = new Phaser.Point(healthX,allY);
+
+        this.livesBar.scale.setTo(this.livesScale, this.livesScale);
+        this.livesBarOutline.scale.setTo(this.livesScale, this.livesScale);
     }
 
     // faltan funciones para actualizar el HUD

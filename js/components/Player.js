@@ -3,9 +3,13 @@ class Player {
 		eventSystem.Subscribe("update", this.Update.bind(this));
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+		this.upArrow = game.input.keyboard.addKey(Phaser.Keyboard.UP);
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+		this.downArrow = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+		this.leftArrow = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+		this.rightArrow = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
 
 		//Player Parameters
@@ -52,19 +56,19 @@ class Player {
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
-		if (this.upKey.isDown)
+		if (this.upKey.isDown || this.upArrow.isDown)
 		{
 			axis.y--;
 		}
-		else if (this.downKey.isDown)
+		else if (this.downKey.isDown || this.downArrow.isDown)
 		{
 			axis.y++;
 		}
-		if (this.leftKey.isDown)
+		if (this.leftKey.isDown || this.leftArrow.isDown)
 		{
 			axis.x--;
 		}
-		else if (this.rightKey.isDown)
+		else if (this.rightKey.isDown || this.rightArrow.isDown)
 		{
 			axis.x++;
 		}

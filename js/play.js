@@ -44,7 +44,7 @@ function createPlay() {
 
 	sceneData.player = new Player(eventSystem);
 	sceneData.HUD = new HUD(eventSystem);
-	
+
 	createCollectables();
 	drawCollectables();
 
@@ -69,6 +69,10 @@ function setupItem(element) {
 	element.anchor.setTo(0.5, 0.5);
 }
 
+function drawCollectables(){
+	collectable.forEach(setupCollectable, this);
+}
+
 function setupCollectable(collectable){
 	let numx = Math.floor(Math.random() * 500); // de 0 a 499
 	let numy = Math.floor(Math.random() * 500); // de 0 a 499
@@ -77,9 +81,6 @@ function setupCollectable(collectable){
     numOfcollectable += 1;
 }
 
-function drawCollectables(){
-	collectable.forEach(setupCollectable, this);
-}
 
 // Bool en update para que no llame a las funciones de move
 // Animacion un tween
