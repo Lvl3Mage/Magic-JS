@@ -21,6 +21,7 @@ let playState = {
 
 const eventSystem = new EventSystem();
 const player = new Player(eventSystem);
+player.GetPosition();
 
 function preloadPlay() {
 	game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
