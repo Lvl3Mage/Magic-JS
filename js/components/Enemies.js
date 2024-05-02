@@ -38,7 +38,6 @@ class Enemy {
 
     moveAround() {
         //I'll make the enemy follow a random path
-        //I need a timer so that the time intervals are also randomised
         const targetVelocity = this.direction.Scale(ENEMY_VELOCITY);
         let curVelocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
         curVelocity = Vector2.Lerp(curVelocity, targetVelocity, 0.1);
@@ -46,6 +45,7 @@ class Enemy {
         this.sprite.body.velocity.x = curVelocity.x;
         this.sprite.body.velocity.y = curVelocity.y;
 
+        //I need a timer so that the time intervals are also randomised
         this.moveTimer += game.time.elapsed; //This is in milliseconds
         if(this.moveTimer >= this.moveDelay){
             this.direction = this.randomDirection();
@@ -62,6 +62,6 @@ class Enemy {
 
     attack() {
         //Check if the player is within the attack distance
-        //TODO
+
     }
 }
