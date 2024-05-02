@@ -7,17 +7,9 @@ class Player {
 	Load(){
 		game.load.image('main-character', 'assets/imgs/main-character.png');
 		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
+		// game.load.image('hat', 'assets/imgs/funnyhat.png');
 	}
 	Create(){
-		this.sprite = game.add.sprite(0, 0, 'main-character');
-		game.physics.p2.enable(this.sprite);
-		this.sprite.body.fixedRotation = true;
-
-		this.sprite.anchor.setTo(0.5, 1);
-
-		this.handSprite = game.add.sprite(0, 0, 'hand');
-		this.handSprite.anchor.setTo(0.5, 0.5);
-
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -33,8 +25,44 @@ class Player {
 		this.maxTiltBopAmp = 15;
 		this.bopAmp = 0.3;
 
+		//
+		this.maxHealth = 100;
+		this.health = this.maxHealth;
+
 		//Hand Parameters
-		this.handDistance = 17;
+		this.handDistance = 36;
+		this.handLerpFactor = 0.2;
+		this.handAngularFactor = 0.2;
+
+		this.hatAngularSpeed = 0;
+
+		this.debug = true;
+
+
+
+		this.sprite = game.add.sprite(0, 0, 'main-character');
+		game.physics.p2.enable(this.sprite, this.debug);
+		this.sprite.body.fixedRotation = true;
+
+		this.sprite.anchor.setTo(0.5, 1);
+		// this.sprite.scale.setTo(0.7, 0.7);x
+
+		this.handSprite = game.add.sprite(0, 0, 'hand');
+		this.handSprite.anchor.setTo(0.5, 0.5);
+		this.handSprite.scale.setTo(2, 2);
+
+		this.sprite.addChild(this.handSprite);
+		this.sprite.body.clearShapes();
+		this.sprite.body.addCapsule(this.sprite.height-this.sprite.width, this.sprite.width/2, 0, -this.sprite.height*0.5, Mathf.Deg2Rad(90));
+
+		// this.hatSprite = game.add.sprite(0, 0, 'hat');
+		// this.hatSprite.anchor.setTo(0.5, 1);
+		// this.sprite.addChild(this.hatSprite);
+		// this.hatSprite.scale.setTo(0.2, 0.2);
+
+
+		console.log(this.sprite.body)
+
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
@@ -57,7 +85,6 @@ class Player {
 		return axis;
 	}
 	Update(){
-
 		let axis = this.GetInputAxis();
 		let velocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
 		let targetVel = axis.Scale(this.maxVelocity);
@@ -85,15 +112,43 @@ class Player {
 		let worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
 		let localCursor = CoordUtils.InverseTransformPoint(worldCursor, playerSpriteCenter, Mathf.Deg2Rad(this.sprite.angle));
 		// console.log(localCursor);
-		let handPos = CoordUtils.TransformPoint(localCursor.Normalized().Scale(this.handDistance), playerSpriteCenter, Mathf.Deg2Rad(this.sprite.angle));
-		this.handSprite.x = handPos.x;
-		this.handSprite.y = handPos.y;
+		let targetLocalHandPos = localCursor.Normalized().Scale(this.handDistance);
+		let handPos = CoordUtils.TransformPoint(targetLocalHandPos, playerSpriteCenter, Mathf.Deg2Rad(this.sprite.angle));
+		if(this.debug){
+			game.debug.geom(new Phaser.Line(playerSpriteCenter.x, playerSpriteCenter.y, worldCursor.x, worldCursor.y), '#0F0');
+			game.debug.geom(new Phaser.Line(playerSpriteCenter.x, playerSpriteCenter.y, handPos.x, handPos.y), '#F00');
+		}
+
+		let currentHandPos = new Vector2(this.handSprite.x, this.handSprite.y);
+		let targetHandPos = new Vector2(targetLocalHandPos.x, targetLocalHandPos.y - this.sprite.height*(0.5 + bop - 1));
+
+		currentHandPos = Vector2.Lerp(currentHandPos, targetHandPos, this.handLerpFactor);
+		this.handSprite.x = currentHandPos.x;
+		this.handSprite.y = currentHandPos.y;
 
 
 		let handToMouse = worldCursor.Sub(handPos);
+
+		let currentHandAngle = this.handSprite.angle;
 		let handAngle = Mathf.Rad2Deg(Math.atan2(handToMouse.y, handToMouse.x));
-		this.handSprite.angle = handAngle;
+
+		let deltaAngle = Mathf.DeltaAngle(currentHandAngle,handAngle);
+		this.handSprite.angle += deltaAngle*this.handAngularFactor;
+		// let hatPosition = Vector2.down.Scale(this.sprite.height*bop - this.hatSprite.height*0.3);
+		// this.hatSprite.angle = this.sprite.angle;
+		// this.hatSprite.x = hatPosition.x;
+		// this.hatSprite.y = hatPosition.y;
 		// console.log(localCursor.Normalized());
 		// console.log(game.input.mousePointer.x.toString() + " " + game.input.mousePointer.y.toString());
+	}
+
+
+	//Public Methods
+	/**
+	 * @returns {Vector2} The position of the player in the world.
+	 * 
+	 */
+	GetPosition(){
+		return new Vector2(this.sprite.x, this.sprite.y);
 	}
 }
