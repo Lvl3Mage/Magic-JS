@@ -3,8 +3,6 @@ class Player {
 		eventSystem.Subscribe("preload", this.Load.bind(this));
 		eventSystem.Subscribe("create", this.Create.bind(this));
 		eventSystem.Subscribe("update", this.Update.bind(this));
-
-		console.log(game)
 	}
 	Load(){
 		game.load.image('main-character', 'assets/imgs/main-character.png');

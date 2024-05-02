@@ -36,7 +36,6 @@ function createPlay() {
 
 function updatePlay() {
     eventSystem.CallEvent("update", []);
-
 }
 
 function spawnEnemies() {
