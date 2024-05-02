@@ -1,12 +1,7 @@
 class HUD {
     constructor(eventSystem) {
-		eventSystem.Subscribe("preload", this.Load.bind(this));
-		eventSystem.Subscribe("create", this.Create.bind(this));
 		eventSystem.Subscribe("update", this.Update.bind(this));
-	}
-    Load(){
-	}
-	Create(){
+
         this.score;
         this.scoreText;
         this.level;
@@ -19,7 +14,8 @@ class HUD {
         this.level = 1;
         this.lives = 3;
         this.livesScore = 1;
-	    this.createHUD();
+
+        this.createHUD();
 	}
 	Update(){
 	}
