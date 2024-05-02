@@ -33,7 +33,7 @@ class Player {
 		this.handVelocity = new Vector2(0,0);
 		this.handAngularFactor = 0.2;
 
-		this.debug = true;
+		this.debug = false;
 
 
 
@@ -60,7 +60,7 @@ class Player {
 
 		this.sprite.addChild(this.handSprite);
 
-
+		this.canFire = true;
 
 		console.log(this.sprite.body)
 	}
@@ -92,21 +92,33 @@ class Player {
 		
 		this.HandMovement();
 		this.HandRotation();
+		if(game.input.mousePointer.leftButton.isDown && this.canFire){
+			this.canFire = false;
+			let handRight = CoordUtils.TransformPoint(Vector2.right, Vector2.zero, Mathf.Deg2Rad(this.handSprite.angle));
+			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));
+			this.handSprite.angle -= 90;
+			let velocity = this.GetVelocity().Sub(handRight.Scale(500));
+			this.SetVelocity(velocity);
 
-		// if(game.input){
-			
-		// }
+			game.camera.shake(0.01,100);
+
+			game.time.events.add(300, () => this.canFire = true);
+		}
 		
 
 
 
 
 	}
+	GetTargetVelocity(){
+		const axis = this.GetInputAxis();
+		const targetVel = axis.Scale(this.maxVelocity);
+		return targetVel;
+
+	}
 	PlayerMovement(){
-		let axis = this.GetInputAxis();
 		let velocity = this.GetVelocity();
-		let targetVel = axis.Scale(this.maxVelocity);
-		let currentVel = Vector2.Lerp(velocity, targetVel, this.accelerationFactor);
+		let currentVel = Vector2.Lerp(velocity, this.GetTargetVelocity(), this.accelerationFactor);
 		this.sprite.body.velocity.x = currentVel.x;
 		this.sprite.body.velocity.y = currentVel.y;
 	}
@@ -189,6 +201,10 @@ class Player {
 	//Public Methods
 	GetVelocity(){
 		return new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
+	}
+	SetVelocity(velocity){
+		this.sprite.body.velocity.x = velocity.x;
+		this.sprite.body.velocity.y = velocity.y;
 	}
 	GetPosition(){
 		return this.GetBodyCenter();
