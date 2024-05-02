@@ -23,11 +23,10 @@ function startGame() {
     game.state.add('about', aboutState);
     game.state.add('config', configState);
 
-    game.state.start('welcomescreen');
+    game.state.start('play');
 }
 function configurePhysics(){
 	game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.defaultRestitution = 2;
 	game.physics.p2.setImpactEvents(true);
-	game.physics.p2.updateBoundsCollisionGroup();
 }

@@ -36,10 +36,17 @@ let playState = {
 		
 		
 
+		sceneData.collisionGroups = {
+			player: game.physics.p2.createCollisionGroup(),
+			enemies: game.physics.p2.createCollisionGroup(),
+			projectiles: game.physics.p2.createCollisionGroup(),
+			collectables: game.physics.p2.createCollisionGroup()
+		};
+		game.physics.p2.updateBoundsCollisionGroup();
+
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
 
-		sceneData.collisionGroups = {};
 		
 		createCollectables();
 		drawCollectables();

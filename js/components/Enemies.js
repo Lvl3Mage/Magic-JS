@@ -1,5 +1,5 @@
-const ENEMY_VELOCITY = 75;
-const ENEMY_DISTANCE_ATTACK = 150;
+const ENEMY_VELOCITY = 150;
+const ENEMY_DISTANCE_ATTACK = 300;
 
 
 class Enemy {
@@ -15,9 +15,19 @@ class Enemy {
         const spawnY = Math.random() * (game.world.height);
         
         this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
+        this.sprite.getParentComponent = () => this;
+
+
         this.sprite.scale.setTo(0.1,0.1);
 
         game.physics.p2.enable(this.sprite,true);
+        this.body = this.sprite.body;
+        this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
+        this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
+        this.body.getParentComponent = () => this;
+
+
+
         this.sprite.anchor.setTo(0.5, 0.5);
         this.sprite.body.fixedRotation = true;
 
@@ -80,11 +90,15 @@ class Enemy {
         let delta = enemyPos.Sub(playerPos);
         delta = delta.Normalized();
 
-        let targetVelocity = delta.Scale(-ENEMY_VELOCITY * 2);
+        let targetVelocity = delta.Scale(-ENEMY_VELOCITY * 1.7);
         let curVelocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
         curVelocity = Vector2.Lerp(curVelocity, targetVelocity, 0.1);
 
         this.sprite.body.velocity.x = curVelocity.x;
         this.sprite.body.velocity.y = curVelocity.y;
+    }
+    onPlayerCollision(selfBody, playerBody){
+        let player = playerBody.getParentComponent();
+        console.log(player);
     }
 }

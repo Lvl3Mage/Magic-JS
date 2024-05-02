@@ -59,7 +59,7 @@ class Vector2{
 		}
 		result.x /= vectorLength;
 		result.y /= vectorLength;
-		var newLength = Mathf.Clamp(min, vectorLength, max);
+		var newLength = Mathf.Clamp(vectorLength, min, max);
 		result.x *= newLength;
 		result.y *= newLength;
 		return result;
