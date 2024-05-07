@@ -29,7 +29,7 @@ function display() {
     title.scale.setTo(0.6, 0.6);
     game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
-    scroll = game.add.image(game.camera.width / 2, 180, 'scrollDecor');
+    scroll = game.add.image(game.camera.width / 2, game.camera.height / 2 - 170, 'scrollDecor');
     scroll.anchor.setTo(0.5, 0);
     scroll.scale.setTo(0.8, 0.8);
     game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
