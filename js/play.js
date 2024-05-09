@@ -7,7 +7,6 @@ let spawnDelay = 1000;
 let enemiesSpawned = 0;
 
 const MAX_COLLECTABLE = 10;
-let collectable;
 let numOfcollectable;
 
 let eventSystem;
@@ -18,9 +17,9 @@ let playState = {
 		//Healthbar
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-		game.load.image('collectable', 'assets/imgs/star.png');
+		game.load.image('collectableSprite', 'assets/imgs/star.png');
 
-		//Player 
+		//Player
 		game.load.image('main-character', 'assets/imgs/main-character.png');
 		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
 
@@ -33,8 +32,7 @@ let playState = {
 		sceneData = {};
 
 		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
-		
-		
+
 
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
@@ -46,10 +44,7 @@ let playState = {
 
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
-
-		
-		createCollectables();
-		drawCollectables();
+		sceneData.newCollectible = new Collectible(eventSystem, 100, 100, 'collectableSprite');
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);
@@ -60,38 +55,6 @@ let playState = {
 		eventSystem.CallEvent("scene-update", []);
 	},
 };
-
-
-
-
-
-function createCollectables(){
-	collectable = game.add.group();
-	collectable.enableBody = true;
-	collectable.createMultiple(MAX_COLLECTABLE, 'collectable');
-	collectable.forEach(setupItem, this);
-}
-
-function setupItem(element) {
-	element.anchor.setTo(0.5, 0.5);
-}
-
-function drawCollectables(){
-	collectable.forEach(setupCollectable, this);
-}
-
-function setupCollectable(collectable){
-	let numx = Math.floor(Math.random() * 500); // de 0 a 499
-	let numy = Math.floor(Math.random() * 500); // de 0 a 499
-	collectable.reset(numx, numy);
-	console.log(collectable);
-    numOfcollectable += 1;
-}
-
-
-// Bool en update para que no llame a las funciones de move
-// Animacion un tween
-// onComplete para acabar el tween
 
 
 function spawnEnemies() {
