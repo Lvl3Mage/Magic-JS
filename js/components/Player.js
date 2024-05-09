@@ -94,13 +94,15 @@ class Player {
 			this.canFire = false;
 			let handRight = CoordUtils.TransformPoint(Vector2.right, Vector2.zero, Mathf.Deg2Rad(this.handSprite.angle));
 			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));
-			this.handSprite.angle -= 90;
+			this.handSprite.angle -= 90*(Math.random()*2 - 1);
 			let velocity = this.GetVelocity().Sub(handRight.Scale(500));
 			this.SetVelocity(velocity);
 
 			game.camera.shake(0.01,100);
 
 			game.time.events.add(300, () => this.canFire = true);
+
+			new Projectile(eventSystem, "hand", this.GetHandPosition(), handRight.Scale(1000));
 		}
 		
 
@@ -168,8 +170,7 @@ class Player {
 
 	}
 	HandRotation(){
-		let localHandPos = new Vector2(this.handSprite.x, this.handSprite.y);
-		let worldHandPos = CoordUtils.TransformPoint(localHandPos, this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
+		let worldHandPos = this.GetHandPosition();
 
 		let worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
 		let handToMouse = worldCursor.Sub(worldHandPos);
@@ -183,6 +184,11 @@ class Player {
 			const fwd = CoordUtils.TransformPoint(Vector2.right.Scale(handToMouse.Length()), worldHandPos, Mathf.Deg2Rad(this.handSprite.angle + this.sprite.angle));
 			game.debug.geom(new Phaser.Line(worldHandPos.x, worldHandPos.y, fwd.x,fwd.y), '#F00');
 		}
+	}
+	GetHandPosition(){
+		const localHandPos = new Vector2(this.handSprite.x, this.handSprite.y);
+		const worldHandPos = CoordUtils.TransformPoint(localHandPos, this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
+		return worldHandPos;
 	}
 	GetRootPosition(){
 		return new Vector2(this.sprite.x, this.sprite.y);

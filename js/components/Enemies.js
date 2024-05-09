@@ -25,6 +25,8 @@ class Enemy {
         this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
         this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
         this.body.collides(sceneData.collisionGroups.safeZones);
+        this.body.collides(sceneData.collisionGroups.enemies);
+        this.body.collides(sceneData.collisionGroups.projectiles);
         this.body.getParentComponent = () => this;
 
 
@@ -100,6 +102,6 @@ class Enemy {
     }
     onPlayerCollision(selfBody, playerBody){
         let player = playerBody.getParentComponent();
-        console.log(player);
+        // console.log(player);
     }
 }
