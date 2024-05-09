@@ -61,8 +61,6 @@ class Player {
 		this.sprite.addChild(this.handSprite);
 
 		this.canFire = true;
-
-		console.log(this.sprite.body)
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);

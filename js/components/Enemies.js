@@ -24,6 +24,7 @@ class Enemy {
         this.body = this.sprite.body;
         this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
         this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
+        this.body.collides(sceneData.collisionGroups.safeZones);
         this.body.getParentComponent = () => this;
 
 

@@ -40,12 +40,14 @@ let playState = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
 			projectiles: game.physics.p2.createCollisionGroup(),
-			collectables: game.physics.p2.createCollisionGroup()
+			collectables: game.physics.p2.createCollisionGroup(),
+			safeZones: game.physics.p2.createCollisionGroup()
 		};
 		game.physics.p2.updateBoundsCollisionGroup();
 
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
+		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 
 		
 		createCollectables();
@@ -84,7 +86,7 @@ function setupCollectable(collectable){
 	let numx = Math.floor(Math.random() * 500); // de 0 a 499
 	let numy = Math.floor(Math.random() * 500); // de 0 a 499
 	collectable.reset(numx, numy);
-	console.log(collectable);
+	// console.log(collectable);
     numOfcollectable += 1;
 }
 
