@@ -22,6 +22,7 @@ function startGame() {
     game.state.add('play', playState);
     game.state.add('about', aboutState);
     game.state.add('config', configState);
+	game.state.add('instructions', instructionState);
 
     game.state.start('play');
 }

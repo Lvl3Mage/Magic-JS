@@ -9,7 +9,7 @@ function loadassets() {
     //game.load.image('', 'assets/imgs/stars.png');
     game.load.image('title', 'assets/imgs/Titles/TITLE.png');
     game.load.image('scrollDecor', 'assets/imgs/Titles/SCROLL.png');
-    game.load.image('bg', 'assets/imgs/Backgrounds/BACKGROUND.jpg');
+    game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
 }
 
 let buttonStart, buttonAbout, buttonConfig;
@@ -18,10 +18,10 @@ function display() {
     game.camera.flash(0x000000, 1000); //Game fades in
 
     game.input.enabled = true;
-
     background = game.add.image(game.camera.width/2 ,0, 'bg');
-    background.scale.setTo(1.5,1.5);
+    background.scale.setTo(0.4, 0.4);
     background.anchor.setTo(0.5, 0);
+    background.alpha = 0.4;
 
     //Our game title
     title = game.add.image(game.camera.width / 2, 40, 'title');
@@ -29,7 +29,7 @@ function display() {
     title.scale.setTo(0.6, 0.6);
     game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
 
-    scroll = game.add.image(game.camera.width / 2, 180, 'scrollDecor');
+    scroll = game.add.image(game.camera.width / 2, game.camera.height / 2 - 170, 'scrollDecor');
     scroll.anchor.setTo(0.5, 0);
     scroll.scale.setTo(0.8, 0.8);
     game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
