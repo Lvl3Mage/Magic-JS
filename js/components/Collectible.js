@@ -7,24 +7,21 @@ class Collectible {
         // this.sprite.scale.setTo(0.1,0.1);
         // this.sprite.reset(posX, posY);
 
-        game.physics.p2.enable(this.sprite,true);
+        game.physics.p2.enable(this.sprite, true);
         this.body = this.sprite.body;
-        this.body.setCollisionGroup(sceneData.collisionGroups.player);
-        this.body.collides(sceneData.collisionGroups.collectables, this.onPlayerCollision, this);
+        this.body.setCollisionGroup(sceneData.collisionGroups.collectables);
+        this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
         this.body.getParentComponent = () => this;
-
-        this.createCollectables();
     }
-
-    // tedra una funcion que se oasara como paraentro en el contructor
-    // una fun que se ejecuta cuando el collecteble es tocado por el jugador
-    // le pasamos un string que sea el sprite
 
     Update() {
     }
 
+    // fun que se ejecuta cuando el collecteble es tocado por el jugador
     onPlayerCollision(selfBody, playerBody){
         let player = playerBody.getParentComponent();
-        console.log(player);
+        this.sprite.destroy();
+        sceneData.HUD.setScore(5);
+        console.log(sceneData.HUD);
     }
 }

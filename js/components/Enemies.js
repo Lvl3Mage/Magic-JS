@@ -9,11 +9,11 @@ class Enemy {
 
         this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
         this.moveTimer = Math.random()*this.moveDelay;
-        
+
         //Creating one enemy
         const spawnX = Math.random() * (game.world.width);
         const spawnY = Math.random() * (game.world.height);
-        
+
         this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
         this.sprite.getParentComponent = () => this;
 
