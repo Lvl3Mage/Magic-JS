@@ -9,7 +9,7 @@ function loadassets() {
     //game.load.image('', 'assets/imgs/stars.png');
     game.load.image('title', 'assets/imgs/Titles/TITLE.png');
     game.load.image('scrollDecor', 'assets/imgs/Titles/SCROLL.png');
-    game.load.image('bg', 'assets/imgs/Backgrounds/BACKGROUND.jpg');
+    game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
 }
 
 let buttonStart, buttonAbout, buttonConfig;
@@ -18,10 +18,10 @@ function display() {
     game.camera.flash(0x000000, 1000); //Game fades in
 
     game.input.enabled = true;
-
     background = game.add.image(game.camera.width/2 ,0, 'bg');
-    background.scale.setTo(1.5,1.5);
+    background.scale.setTo(0.4, 0.4);
     background.anchor.setTo(0.5, 0);
+    background.alpha = 0.4;
 
     //Our game title
     title = game.add.image(game.camera.width / 2, 40, 'title');

@@ -1,4 +1,4 @@
-let instructionstate = {
+let instructionState = {
     preload: loadInstructionAssets,
     create: showInstructions
 };

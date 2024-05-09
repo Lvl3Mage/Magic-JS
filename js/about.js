@@ -43,8 +43,10 @@ function showAbout() {
 function onHandButtonPressed() {
     slides.loadTexture('slideButtonClosed');
     slides.scale.setTo(0.8, 0.8);
-    game.camera.fade(0x000000, 1000);
-    game.camera.onFadeComplete.add(function() {
+    game.camera.fade(0x000000, 1000, true, 1);
+    console.log('Among us');
+    game.camera.onFadeComplete.addOnce(function() {
+        console.log('Among us part two');
         game.state.start('instructions');
     }, this);
 }
