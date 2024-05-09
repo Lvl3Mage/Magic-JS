@@ -24,7 +24,7 @@ function startGame() {
     game.state.add('config', configState);
 	game.state.add('instructions', instructionState);
 
-    game.state.start('play');
+    game.state.start('welcomescreen');
 }
 function configurePhysics(){
 	game.physics.startSystem(Phaser.Physics.P2JS);
