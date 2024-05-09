@@ -1,6 +1,7 @@
-class Player {
+class Player extends Component {
 	constructor(eventSystem) {
-		eventSystem.Subscribe("scene-update", this.Update.bind(this));
+		super(eventSystem);
+		eventSystem.Subscribe("scene-update", this.Update, this);
 		//Input handling
 		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.upArrow = game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -20,6 +21,8 @@ class Player {
 		this.maxTiltBopAmp = 15;
 		this.bopAmp = 0.3;
 
+		this.colliderScale = new Vector2(0.5,0.7);
+
 		//
 		this.maxHealth = 100;
 		this.health = this.maxHealth;
@@ -33,6 +36,8 @@ class Player {
 		this.handVelocity = new Vector2(0,0);
 		this.handAngularFactor = 0.2;
 
+		this.handOrbitPivotOffset = new Vector2(0,-0.15);
+
 		this.debug = false;
 
 
@@ -44,7 +49,8 @@ class Player {
 		this.body.fixedRotation = true;
 		
 		this.body.clearShapes();
-		this.body.addCapsule(this.sprite.height-this.sprite.width, this.sprite.width/2, 0, -this.sprite.height*0.5, Mathf.Deg2Rad(90));
+		const apparentScale = new Vector2(this.sprite.width*this.colliderScale.x, this.sprite.height*this.colliderScale.y);
+		this.body.addCapsule(apparentScale.y-apparentScale.x, apparentScale.x/2, 0, -apparentScale.y*0.5, Mathf.Deg2Rad(90));
 
 
 		this.body.setCollisionGroup(sceneData.collisionGroups.player);
@@ -56,7 +62,7 @@ class Player {
 
 		this.handSprite = game.add.sprite(0, 0, 'hand');
 		this.handSprite.anchor.setTo(0.5, 0.5);
-		this.handSprite.scale.setTo(2, 2);
+		this.handSprite.scale.setTo(-0.15, 0.15);
 
 		this.sprite.addChild(this.handSprite);
 
@@ -92,7 +98,7 @@ class Player {
 		this.HandRotation();
 		if(game.input.mousePointer.leftButton.isDown && this.canFire){
 			this.canFire = false;
-			let handRight = CoordUtils.TransformPoint(Vector2.right, Vector2.zero, Mathf.Deg2Rad(this.handSprite.angle));
+			let handRight = this.GetHandForward();
 			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));
 			this.handSprite.angle -= 90*(Math.random()*2 - 1);
 			let velocity = this.GetVelocity().Sub(handRight.Scale(500));
@@ -102,7 +108,21 @@ class Player {
 
 			game.time.events.add(300, () => this.canFire = true);
 
-			new Projectile(eventSystem, "hand", this.GetHandPosition(), handRight.Scale(1000));
+			new Projectile(eventSystem, this.GetHandPosition(), handRight.Scale(1000),
+			{
+				spriteName: "hand",
+				spriteScale: new Vector2(0.1,0.1),
+				collisionConfigs: [
+					{
+						collisionGroup: sceneData.collisionGroups.enemies,
+						callback: function(self, other){
+							console.log(other.getParentComponent());
+							other.getParentComponent().Destroy();
+							this.Destroy();
+						}
+					},
+				]
+			});
 		}
 		
 
@@ -147,7 +167,7 @@ class Player {
 		const bop = this.GetPlayerBop();
 
 		let worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
-		let localCursor = CoordUtils.InverseTransformPoint(worldCursor, this.GetSpriteCenter(), Mathf.Deg2Rad(this.sprite.angle));
+		let localCursor = CoordUtils.InverseTransformPoint(worldCursor, this.GetSpriteCenter(this.handOrbitPivotOffset), Mathf.Deg2Rad(this.sprite.angle));
 
 		const cursorDistance = localCursor.Length();
 		const handOutwardsVector = localCursor.Normalized().Scale(Math.min(cursorDistance-this.handCursorDistance, this.maxHandDistance)); // local coordinate centered around sprite center
@@ -155,7 +175,7 @@ class Player {
 
 
 		//transforming outwards vector to world space
-		const worldTargetHandPos =  CoordUtils.TransformPoint(handOutwardsVector, this.GetSpriteCenter(), Mathf.Deg2Rad(this.sprite.angle));
+		const worldTargetHandPos =  CoordUtils.TransformPoint(handOutwardsVector, this.GetSpriteCenter(this.handOrbitPivotOffset), Mathf.Deg2Rad(this.sprite.angle));
 		const localHandPos = CoordUtils.InverseTransformPoint(worldTargetHandPos, this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
 
 		if(this.debug){
@@ -169,6 +189,9 @@ class Player {
 		this.handSprite.y = currentHandPos.y;
 
 	}
+	GetHandForward(){
+		return CoordUtils.TransformPoint(Vector2.right, Vector2.zero, Mathf.Deg2Rad(this.handSprite.angle + this.sprite.angle));
+	}
 	HandRotation(){
 		let worldHandPos = this.GetHandPosition();
 
@@ -180,6 +203,9 @@ class Player {
 
 		let deltaAngle = Mathf.DeltaAngle(currentHandAngle,handAngle);
 		this.handSprite.angle += deltaAngle*this.handAngularFactor;
+		let currentScale = this.handSprite.scale.y;
+		currentScale = Mathf.Lerp(currentScale, Mathf.WrapAngle(this.handSprite.angle-90) < 0 ? 0.15 : -0.15, 0.3);
+		this.handSprite.scale.setTo(this.handSprite.scale.x, currentScale);
 		if(this.debug){
 			const fwd = CoordUtils.TransformPoint(Vector2.right.Scale(handToMouse.Length()), worldHandPos, Mathf.Deg2Rad(this.handSprite.angle + this.sprite.angle));
 			game.debug.geom(new Phaser.Line(worldHandPos.x, worldHandPos.y, fwd.x,fwd.y), '#F00');
@@ -196,9 +222,12 @@ class Player {
 	GetBodyCenter(){
 		return new Vector2(this.sprite.centerX, this.sprite.centerY);
 	}
-	GetSpriteCenter(){
+	GetSpriteCenter(offset = null){
+		if(!offset){
+			offset = Vector2.zero;
+		}
 		const bop = this.GetPlayerBop();
-		return CoordUtils.TransformPoint(new Vector2(0, -this.sprite.height*(0.5 + bop - 1)), this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
+		return CoordUtils.TransformPoint(new Vector2(offset.x, -this.sprite.height*(0.5 + offset.y + bop - 1)), this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
 			
 	}
 

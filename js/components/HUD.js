@@ -1,6 +1,7 @@
-class HUD {
+class HUD extends Component {
     constructor(eventSystem) {
-		eventSystem.Subscribe("scene-update", this.Update.bind(this));
+        super(eventSystem);
+        eventSystem.Subscribe("scene-update", this.Update, this);
 
         this.score = 0;
         this.scoreText;

@@ -2,10 +2,11 @@ const ENEMY_VELOCITY = 150;
 const ENEMY_DISTANCE_ATTACK = 300;
 
 
-class Enemy {
+class Enemy extends Component {
     constructor(eventSystem) {
+        super(eventSystem);
         //Subscribing to event systems here so that the enemy functions properly
-        eventSystem.Subscribe("scene-update", this.Update.bind(this));
+        eventSystem.Subscribe("scene-update", this.Update, this);
 
         this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
         this.moveTimer = Math.random()*this.moveDelay;
@@ -18,9 +19,8 @@ class Enemy {
         this.sprite.getParentComponent = () => this;
 
 
-        this.sprite.scale.setTo(0.1,0.1);
 
-        game.physics.p2.enable(this.sprite,true);
+        game.physics.p2.enable(this.sprite,false);
         this.body = this.sprite.body;
         this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
         this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
@@ -103,5 +103,8 @@ class Enemy {
     onPlayerCollision(selfBody, playerBody){
         let player = playerBody.getParentComponent();
         // console.log(player);
+    }
+    BeforeDestroy(){
+        this.sprite.destroy();
     }
 }

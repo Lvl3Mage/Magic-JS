@@ -25,11 +25,11 @@ let playState = {
 		game.load.image('floor', 'assets/imgs/PLACEHOLDERS/tileable floor.png');
 
 		//Player 
-		game.load.image('main-character', 'assets/imgs/main-character.png');
-		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
+		game.load.image('main-character', 'assets/imgs/mage.png');
+		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 
 
-		game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
+		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
 	},
 	create: function() {
 

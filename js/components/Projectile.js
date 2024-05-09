@@ -1,29 +1,49 @@
-class Projectile {
-	constructor(eventSystem, spriteName, position, velocity) {
-		eventSystem.Subscribe("scene-update", this.Update.bind(this));
-		this.sprite = game.add.sprite(position.x, position.y, spriteName);
+class Projectile extends Component {
+	constructor(eventSystem, position, velocity, projectileConfig){
+		super(eventSystem);
+		eventSystem.Subscribe("scene-update", this.Update, this);
+		this.sprite = game.add.sprite(position.x, position.y, projectileConfig.spriteName);
+		if(projectileConfig.spriteScale){
+			this.sprite.scale.setTo(projectileConfig.spriteScale.x, projectileConfig.spriteScale.y);
+		}
 		game.physics.p2.enable(this.sprite, true);
+
+
 		this.body = this.sprite.body;
-		this.body.setCollisionGroup(sceneData.collisionGroups.projectiles);
-		this.body.collides(sceneData.collisionGroups.enemies, this.onEnemyCollision, this);
+		if(projectileConfig.collisionGroup){
+			this.body.setCollisionGroup(collisionGroup);
+		}
+		else{
+			this.body.setCollisionGroup(sceneData.collisionGroups.projectiles);
+		}
+
+		if(projectileConfig.collisionConfigs){
+			for(let collisionConfig of projectileConfig.collisionConfigs){
+				if(!collisionConfig.context){
+					collisionConfig.context = this;
+				}
+				this.body.collides(collisionConfig.collisionGroup, collisionConfig.callback.bind(collisionConfig.context), collisionConfig.context);
+			}
+		}
+
+
 		this.body.velocity.x = velocity.x;
 		this.body.velocity.y = velocity.y;
 		this.body.collideWorldBounds = false;
-		console.log(this.body);
-		console.log(game.physics.p2);
+
 		this.body.getParentComponent = () => this;
 	}
 	Update(){
-		console.log(this.sprite);
+		// console.log(this.sprite);
+		this.body.angle = Mathf.Rad2Deg(Math.atan2(this.body.velocity.y, this.body.velocity.x));
+		if(!this.sprite.inWorld){
+			this.Destroy();
+		}
 	}
 	onEnemyCollision(self, other){
-		console.log(other)
 		this.Destroy();
 	}
-	Destroy(){
-		console.log("Destroy")
-		eventSystem.Unsubscribe("scene-update", this.Update.bind(this));
+	BeforeDestroy(){
 		this.sprite.destroy();
-		// delete this;
 	}
 }

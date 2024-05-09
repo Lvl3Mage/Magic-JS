@@ -61,10 +61,10 @@ function onButtonPressed(button) {
 }
 
 function jiggle(button) {
-    game.add.tween(button.scale).to({ x: 1.2, y: 0.8 }, 200, Phaser.Easing.Linear.None, true, 0, 0, true) 
+    game.add.tween(button.scale).to({ x: 1.2, y: 0.8 }, 200, Phaser.Easing.Cubic.InOut, true, 0, 0, true) 
     .onComplete.add(function() {
         // Recoil effect
-        game.add.tween(button.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
+        game.add.tween(button.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Cubic.InOut, true);
     });
 }
 
