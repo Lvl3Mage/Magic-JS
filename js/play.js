@@ -56,7 +56,7 @@ let playState = {
 		game.physics.p2.updateBoundsCollisionGroup();
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
-		// sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
+		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);
