@@ -44,7 +44,6 @@ let playState = {
 
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
-		sceneData.newCollectible = new Collectible(eventSystem, 100, 100, 'collectableSprite');
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);

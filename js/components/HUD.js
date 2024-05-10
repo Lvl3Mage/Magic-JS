@@ -20,6 +20,8 @@ class HUD {
         this.allY = 10; //game.world.height
         this.styleHUD = {font: '25px Merryweather', fill: '#FFFFFF'};
 
+        this.scoreTotal; //score que aparecera en la pantalla final
+        this.collectibleTotal; //Total de collectibles recogidos
         this.createHUD();
 	}
 	Update(){
@@ -38,7 +40,7 @@ class HUD {
         if (this.scoreText)
             this.scoreText.destroy();
 
-        this.scoreText = game.add.text(this.scoreX, this.allY,'Score: '+ this.score, this.styleHUD);
+        this.scoreText = game.add.text(this.scoreX, this.allY,'Intelligence: '+ this.score, this.styleHUD);
         this.scoreText.anchor.setTo(1, 0);
         this.scoreText.fixedToCamera = true;
         this.scoreText.cameraOffset = new Phaser.Point(this.scoreX, this.allY);
@@ -80,6 +82,7 @@ class HUD {
 
     setScore(score){
         this.score += score;
+        this.scoreTotal += score;
         this.createScoreText();
     }
 

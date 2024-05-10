@@ -3,4 +3,7 @@ class Store {
         eventSystem.Subscribe("scene-update", this.Update.bind(this));
     }
 
+    Update() {
+    }
+
 }

@@ -17,12 +17,13 @@ function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 	configurePhysics();
 	game.camera.roundPx = false;
-	
+
     game.state.add('welcomescreen', welcomeState);
     game.state.add('play', playState);
     game.state.add('about', aboutState);
     game.state.add('config', configState);
 	game.state.add('instructions', instructionState);
+	game.state.add('endScreen', endState);
 
     game.state.start('play');
 }
