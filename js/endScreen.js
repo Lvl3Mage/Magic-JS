@@ -28,9 +28,10 @@ function display() {
     //Buttons
     let posX = game.camera.width / 2;
     let posY = game.camera.height / 2;
-    let modY = 0;
-    let btnHome = createBtn(posX, posY, modY, `Home screen`, onHomeBtnPressed);
-    let btnRestart = createBtn(posX, posY, modY+100, `Restart`, onStartBtnPressed);
+    let style = {font: '25px Merryweather', fill: '#FFFFFF'};
+    let btnHome = createBtn(posX - 100, posY+500, `Home screen`, onHomeBtnPressed);
+    let btnRestart = createBtn(posX + 100, posY+500, `Restart`, onStartBtnPressed);
+    // let scoreTotal = createText(posX, posY, `Total score: ` + sceneData.HUD.getScoreTotal(), style);
 }
 
 function win(){
@@ -52,14 +53,22 @@ function imagebg(image){
     background.alpha = 0.4;
 }
 
-function createBtn(posX, posY, modY, text, fun){
-    let btn = game.add.text(posX, posY + modY , text, { font: '50px Merryweather', fill: '#000000' });
+function createBtn(posX, posY, text, fun){
+    let btn = game.add.text(posX, posY, text, { font: '50px Merryweather', fill: '#000000' });
     btn.anchor.setTo(0.5, 0.5);
     btn.inputEnabled = true;
     btn.events.onInputDown.add(fun, this); // Add click event listener
     btn.events.onInputOver.add(onBtnHover, this); // Add hover event listener
     btn.events.onInputOut.add(onBtnOut, this); // Add hover out event listener
     return btn;
+}
+
+function createText(posX, posY, text, style){
+    let scoreText;
+    scoreText = game.add.text(posX, posY, text, style);
+    scoreText.anchor.setTo(0.5, 0.5);
+    scoreText.fixedToCamera = true;
+    scoreText.cameraOffset = new Phaser.Point(posX, posY);
 }
 
 function onStartBtnPressed() {

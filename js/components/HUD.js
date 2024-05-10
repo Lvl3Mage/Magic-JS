@@ -94,4 +94,8 @@ class HUD {
     setlives(lives){
         this.lives += lives;
     }
+
+    getScoreTotal(){
+        return this.scoreTotal;
+    }
 }
