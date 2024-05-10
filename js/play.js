@@ -20,7 +20,7 @@ let playState = {
 		//Healthbar
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-		game.load.image('collectable', 'assets/imgs/star.png');
+		game.load.image('xp', 'assets/imgs/PLACEHOLDERS/XPminecraft.png');
 		game.load.image('floor', 'assets/imgs/PLACEHOLDERS/tileable floor.png');
 
 		//Player
@@ -57,6 +57,7 @@ let playState = {
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
+		sceneData.collectables;
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);

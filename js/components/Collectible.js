@@ -3,6 +3,7 @@ class Collectible {
         eventSystem.Subscribe("scene-update", this.Update.bind(this));
 
         this.sprite = game.add.sprite(posX, posY, sprite);
+        this.sprite.scale.setTo(0.2, 0.2);
         this.sprite.getParentComponent = () => this;
         // this.sprite.scale.setTo(0.1,0.1);
         // this.sprite.reset(posX, posY);

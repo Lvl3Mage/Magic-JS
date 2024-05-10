@@ -105,6 +105,7 @@ class Enemy extends Component {
         // console.log(player);
     }
     BeforeDestroy(){
+        sceneData.collectables = new Collectible(new EventSystem(), this.sprite.body.x, this.sprite.body.y, `xp`);
         this.sprite.destroy();
     }
 }
