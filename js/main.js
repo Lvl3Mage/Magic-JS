@@ -16,7 +16,7 @@ window.onload = startGame;
 function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 	configurePhysics();
-	game.camera.roundPx = false;
+	game.camera.roundPx = true;
 
     game.state.add('welcomescreen', welcomeState);
     game.state.add('play', playState);

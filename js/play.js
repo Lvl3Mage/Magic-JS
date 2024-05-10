@@ -1,5 +1,8 @@
 const GAME_STAGE_WIDTH = 1920;
 const GAME_STAGE_HEIGHT = 1920;
+const TILE_SIZE = 1000;
+const ROWS = GAME_STAGE_WIDTH / TILE_SIZE;
+const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
 let maxEnemies = 10;
@@ -17,14 +20,15 @@ let playState = {
 		//Healthbar
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-		game.load.image('collectableSprite', 'assets/imgs/star.png');
+		game.load.image('collectable', 'assets/imgs/star.png');
+		game.load.image('floor', 'assets/imgs/PLACEHOLDERS/tileable floor.png');
 
 		//Player
-		game.load.image('main-character', 'assets/imgs/main-character.png');
-		game.load.image('hand', 'assets/imgs/hand-placeholder.png');
+		game.load.image('main-character', 'assets/imgs/mage.png');
+		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 
 
-		game.load.image('enemySprite', 'assets/imgs/PLACEHOLDERS/default_cube.png');
+		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
 	},
 	create: function() {
 
@@ -33,17 +37,26 @@ let playState = {
 
 		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 
+		for (let row = 0; row < ROWS; row++) {
+			for (let col = 0; col < COLUMNS; col++) {
+				let floorTile = game.add.sprite(col * TILE_SIZE, row * TILE_SIZE, 'floor');
+			}
+		}
 
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
 			projectiles: game.physics.p2.createCollisionGroup(),
-			collectables: game.physics.p2.createCollisionGroup()
+			collectables: game.physics.p2.createCollisionGroup(),
+			safeZones: game.physics.p2.createCollisionGroup(),
+			bounds: game.physics.p2.createCollisionGroup(),
 		};
+		game.physics.p2.setBounds(0,0,GAME_STAGE_WIDTH,GAME_STAGE_HEIGHT,true,true,true,true, sceneData.collisionGroups.bounds);
+		game.physics.p2.boundsCollisionGroup = sceneData.collisionGroups.bounds;
 		game.physics.p2.updateBoundsCollisionGroup();
-
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
+		// sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);
@@ -51,6 +64,7 @@ let playState = {
 		eventSystem.CallEvent("post-scene-create", []);
 	},
 	update: function() {
+		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
 	},
 };

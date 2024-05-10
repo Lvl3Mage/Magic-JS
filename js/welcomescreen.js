@@ -6,7 +6,6 @@ let welcomeState = {
 
 function loadassets() {
     // Load the background image and title
-    //game.load.image('', 'assets/imgs/stars.png');
     game.load.image('title', 'assets/imgs/Titles/TITLE.png');
     game.load.image('scrollDecor', 'assets/imgs/Titles/SCROLL.png');
     game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
@@ -19,9 +18,9 @@ function display() {
 
     game.input.enabled = true;
     background = game.add.image(game.camera.width/2 ,0, 'bg');
-    background.scale.setTo(0.4, 0.4);
+    background.scale.setTo(0.6, 0.6);
     background.anchor.setTo(0.5, 0);
-    background.alpha = 0.4;
+    background.alpha = 0.2;
 
     //Our game title
     title = game.add.image(game.camera.width / 2, 40, 'title');
@@ -58,7 +57,7 @@ function display() {
 }
 
 function onStartButtonPressed() {
-    game.camera.fade(0x000000, 2000); // Fade out to black
+    game.camera.fade(0x000000, 1000); // Fade out to black
     game.camera.onFadeComplete.add(function() {
         game.state.start('play');
     }, this);
