@@ -38,7 +38,7 @@ class Player extends Component {
 
 		this.handOrbitPivotOffset = new Vector2(0,-0.15);
 
-		this.debug = false;
+		this.debug = true;
 
 
 
@@ -47,7 +47,7 @@ class Player extends Component {
 		game.physics.p2.enable(this.sprite, this.debug);
 		this.body = this.sprite.body;
 		this.body.fixedRotation = true;
-		
+
 		this.body.clearShapes();
 		const apparentScale = new Vector2(this.sprite.width*this.colliderScale.x, this.sprite.height*this.colliderScale.y);
 		this.body.addCapsule(apparentScale.y-apparentScale.x, apparentScale.x/2, 0, -apparentScale.y*0.5, Mathf.Deg2Rad(90));
@@ -93,7 +93,7 @@ class Player extends Component {
 		this.PlayerJump();
 
 		this.TrackCamera();
-		
+
 		this.HandMovement();
 		this.HandRotation();
 		if(game.input.mousePointer.leftButton.isDown && this.canFire){
@@ -177,9 +177,6 @@ class Player extends Component {
 		//transforming outwards vector to world space
 		const worldTargetHandPos =  CoordUtils.TransformPoint(handOutwardsVector, this.GetSpriteCenter(this.handOrbitPivotOffset), Mathf.Deg2Rad(this.sprite.angle));
 		const localHandPos = CoordUtils.InverseTransformPoint(worldTargetHandPos, this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
-
-		if(this.debug){
-		}
 
 		let currentHandPos = new Vector2(this.handSprite.x, this.handSprite.y);
 		let targetHandVelocity = localHandPos.Sub(currentHandPos).Scale(this.handVelocityMultiplier).ClampLength(0,this.handMaxVelocity);

@@ -9,17 +9,17 @@ class HUD extends Component {
         this.level = 1;
         this.levelText;
 
-        this.lives = 3;
+        this.livesMax = 3;
         this.livesBar;
         this.livesBarOutline;
-        this.livesCurrent = this.lives;
+        this.livesCurrent = this.livesMax;
         this.livesScale = 2;
 
-        this.scoreX = game.camera.width - 10;
-        this.levelX = game.camera.width / 2; //Ya veremos como escala
-        this.healthX= 10;
+        this.rightScreen = game.camera.width - 10;
+        this.centerScreen = game.camera.width / 2;  // Ya veremos como escala
+        this.leftScreen = 10;
         this.allY = 10; //game.world.height
-        this.styleHUD = {font: '25px Merryweather', fill: '#FFFFFF'};
+        this.styleHUD = {font: '26px Merryweather', fill: '#FFFFFF'};
 
         this.scoreTotal; //score que aparecera en la pantalla final
         this.collectibleTotal; //Total de collectibles recogidos
@@ -37,24 +37,28 @@ class HUD extends Component {
         this.createLiveBar();
     }
 
+    createText(posSreenX, posSreenY, posX, posY, text){
+        let btn;
+        btn = game.add.text(posX, posY, text, this.styleHUD);
+        btn.anchor.setTo(posSreenX, posSreenY);
+        btn.fixedToCamera = true;
+        btn.cameraOffset = new Phaser.Point(posX, posY);
+        return btn;
+    }
+
     createScoreText(){
+        //Si estan creados destruimos los textos porque las variables no se sobreescriben
         if (this.scoreText)
             this.scoreText.destroy();
 
-        this.scoreText = game.add.text(this.scoreX, this.allY,'Intelligence: '+ this.score, this.styleHUD);
-        this.scoreText.anchor.setTo(1, 0);
-        this.scoreText.fixedToCamera = true;
-        this.scoreText.cameraOffset = new Phaser.Point(this.scoreX, this.allY);
+        this.scoreText = this.createText(1, 0, this.rightScreen, this.allY, 'Intelligence: ' + this.score);
     }
 
     createLevelText(){
         if (this.levelText)
             this.levelText.destroy();
 
-        this.levelText = game.add.text(this.levelX, this.allY,'Level: '+ this.level, this.styleHUD);
-        this.levelText.anchor.setTo(0.5, 0);
-        this.levelText.fixedToCamera = true;
-        this.levelText.cameraOffset = new Phaser.Point(this.levelX, this.allY);
+        this.levelText = this.createText(0.5, 0, this.centerScreen, this.allY, 'Level: ' + this.level);
     }
 
     createLiveBar(){
@@ -68,7 +72,7 @@ class HUD extends Component {
         let barMask = game.add.graphics(0,0);
         this.barMask = barMask;
         barMask.beginFill(0xfff);
-        barMask.drawRect(this.healthX, this.allY, this.livesBar.width * this.livesScale * (this.livesCurrent/this.lives), this.livesBar.height * this.livesScale);
+        barMask.drawRect(this.healthX, this.allY, this.livesBar.width * this.livesScale * (this.livesCurrent/this.livesMax), this.livesBar.height * this.livesScale);
         barMask.endFill();
         barMask.fixedToCamera = true;
         this.livesBar.mask = barMask;
@@ -83,7 +87,7 @@ class HUD extends Component {
 
     setScore(score){
         this.score += score;
-        this.scoreTotal += score;
+        this.scoreTotal += Math.abs(score);
         this.createScoreText();
     }
 
@@ -93,7 +97,11 @@ class HUD extends Component {
     }
 
     setlives(lives){
-        this.lives += lives;
+        this.livesCurrent += lives;
+    }
+
+    setlivesMax(lives){
+        this.livesMax += lives;
     }
 
     getScoreTotal(){

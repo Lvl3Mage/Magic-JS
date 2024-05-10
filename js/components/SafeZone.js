@@ -11,6 +11,7 @@ class SafeZone extends Component {
 		this.body.clearShapes();
 		this.body.addRectangle(dimensions.x, dimensions.y);
         this.body.setCollisionGroup(sceneData.collisionGroups.safeZones);
+		this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
         this.body.collides(sceneData.collisionGroups.enemies);
         this.body.kinematic = true;
         console.log(this.body);
@@ -19,6 +20,7 @@ class SafeZone extends Component {
 	Update(){
 	}
 	onPlayerCollision(){
+		sceneData.HUD.createText(0.5, 1, sceneData.HUD.centerScreen, sceneData.HUD.allY, `Tiempo: ` + 0);
 		console.log("Player entered safe zone");
 	}
 }

@@ -57,7 +57,8 @@ let playState = {
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
-		sceneData.collectables;
+		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
+		sceneData.store = new Store(eventSystem);
 
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);
