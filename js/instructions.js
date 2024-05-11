@@ -8,6 +8,9 @@ let instructionState = {
 
 function loadInstructionAssets() {
     game.load.image('InstructionsBg', 'assets/imgs/Backgrounds/TheDungeons.jpeg')
+    game.load.image('instructions1', 'assets/imgs/Backgrounds/instructions1.png')
+    game.load.image('instructions2', 'assets/imgs/Backgrounds/instructions2.png')
+    game.load.image('instructions3', 'assets/imgs/Backgrounds/instructions3.png')
 }
 
 function showInstructions() {
@@ -28,40 +31,53 @@ function showInstructions() {
 //************************************************************************************************
 
 function slide1() {
-    const Objective = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Your purpose...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
+    const Objective = game.add.text(game.camera.width / 2, game.camera.height / 2 - 400, 'Your purpose...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
     Objective.anchor.setTo(0.5, 0);
+    instructions1 = game.add.image(game.camera.width/2, game.camera.height / 2, 'instructions1');
+    instructions1.scale.setTo(2, 2);
+    instructions1.anchor.setTo(0.5, 0.5);
 
     const slideTimer = game.time.events.add(slideDuration, function(){
         Objective.destroy();
+        instructions1.destroy();
         slide2();
     }, this);
     
     game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.addOnce(function() {
         game.time.events.remove(slideTimer);
         Objective.destroy();
+        instructions1.destroy();
         slide2();
     });
 }
 
 function slide2() {
-    const Dangers = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Your foes...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
+    const Dangers = game.add.text(game.camera.width / 2, game.camera.height / 2 - 400, 'Your foes...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
     Dangers.anchor.setTo(0.5, 0);
+    instructions2 = game.add.image(game.camera.width/2, game.camera.height / 2, 'instructions2');
+    instructions2.scale.setTo(2, 2);
+    instructions2.anchor.setTo(0.5, 0.5);
 
     const slideTimer = game.time.events.add(slideDuration, function(){
         Dangers.destroy();
+        instructions2.destroy();
         slide3();
     }, this);
     
     game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.addOnce(function() {
         game.time.events.remove(slideTimer);
         Dangers.destroy();
+        instructions2.destroy();
         slide3();
     });
 }
 
 function slide3() {
-    const Help = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Your aid...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
+    const Help = game.add.text(game.camera.width / 2, game.camera.height / 2 - 400, 'Your path to victory...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
     Help.anchor.setTo(0.5, 0);
+    instructions3 = game.add.image(game.camera.width/2, game.camera.height / 2, 'instructions3');
+    instructions3.scale.setTo(2, 2);
+    instructions3.anchor.setTo(0.5, 0.5);
 
     game.time.events.add(slideDuration, function(){
         game.camera.fade(0x000000, 1000);
