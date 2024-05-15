@@ -6,7 +6,7 @@ class Projectile extends Component {
 		if(projectileConfig.spriteScale){
 			this.sprite.scale.setTo(projectileConfig.spriteScale.x, projectileConfig.spriteScale.y);
 		}
-		game.physics.p2.enable(this.sprite, true);
+		game.physics.p2.enable(this.sprite, false);
 
 
 		this.body = this.sprite.body;

@@ -27,6 +27,7 @@ class Enemy extends Component {
         this.body.collides(sceneData.collisionGroups.safeZones);
         this.body.collides(sceneData.collisionGroups.enemies);
         this.body.collides(sceneData.collisionGroups.projectiles);
+        this.body.collides(sceneData.collisionGroups.walls);
         this.body.getParentComponent = () => this;
 
 

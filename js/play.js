@@ -1,8 +1,8 @@
-const GAME_STAGE_WIDTH = 1920*2;
-const GAME_STAGE_HEIGHT = 1920*2;
-const TILE_SIZE = 1000;
-const ROWS = GAME_STAGE_WIDTH / TILE_SIZE;
-const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
+let GAME_STAGE_WIDTH;
+let GAME_STAGE_HEIGHT;
+// const TILE_SIZE = 1000;
+// const ROWS = GAME_STAGE_WIDTH / TILE_SIZE;
+// const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
 let maxEnemies = 10;
@@ -21,7 +21,8 @@ let playState = {
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
 		game.load.image('xp', 'assets/imgs/PLACEHOLDERS/XPminecraft.png');
-		game.load.image('floor', 'assets/imgs/PLACEHOLDERS/tileable floor.png');
+		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
+		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
 
 		//Player
 		game.load.image('main-character', 'assets/imgs/mage.png');
@@ -37,12 +38,6 @@ let playState = {
 		sceneData = {};
 
 		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
-		let tilemap = game.add.tilemap();
-		for (let row = 0; row < ROWS; row++) {
-			for (let col = 0; col < COLUMNS; col++) {
-				let floorTile = game.add.sprite(col * TILE_SIZE, row * TILE_SIZE, 'floor');
-			}
-		}
 
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
@@ -51,10 +46,31 @@ let playState = {
 			collectables: game.physics.p2.createCollisionGroup(),
 			safeZones: game.physics.p2.createCollisionGroup(),
 			bounds: game.physics.p2.createCollisionGroup(),
+			walls: game.physics.p2.createCollisionGroup(),
 		};
-		game.physics.p2.setBounds(0,0,GAME_STAGE_WIDTH,GAME_STAGE_HEIGHT,true,true,true,true, sceneData.collisionGroups.bounds);
-		game.physics.p2.boundsCollisionGroup = sceneData.collisionGroups.bounds;
-		game.physics.p2.updateBoundsCollisionGroup();
+		let tilemap = SetupTilemap(
+			'levelMap', 
+			[
+				{innerKey: 'WallsTileset', imageKey: 'Floor'}
+			], 
+			[
+				"Floor",
+				{
+					name: "Walls",
+					objectCollisions: true,
+					collisionGroup: sceneData.collisionGroups.walls,
+					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
+					// debug:true,
+				},
+			]
+		);
+		GAME_STAGE_WIDTH = tilemap.widthInPixels;
+		GAME_STAGE_HEIGHT = tilemap.heightInPixels;
+	
+
+		// game.physics.p2.setBounds(0,0,GAME_STAGE_WIDTH,GAME_STAGE_HEIGHT,true,true,true,true, sceneData.collisionGroups.bounds);
+		// game.physics.p2.boundsCollisionGroup = sceneData.collisionGroups.bounds;
+		// game.physics.p2.updateBoundsCollisionGroup();
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
@@ -72,7 +88,38 @@ let playState = {
 	},
 };
 
-
+function SetupTilemap(tilemapKey, tilesets, layersConfig){
+	let tilemap = game.add.tilemap(tilemapKey);
+	tilesets.forEach(tileset => {
+		tilemap.addTilesetImage(tileset.innerKey, tileset.imageKey);
+	});
+	let layers = {};
+	layersConfig.forEach(config => {
+		if(typeof config === 'string'){
+			config = {name: config};
+		}
+		layers[config.name] = tilemap.createLayer(config.name);
+		if(config.resizeWorld){
+			layers[config.name].resizeWorld();
+		}
+		if(config.debug){
+			layers[config.name].debug = true;
+		}
+		if(config.objectCollisions){
+			tilemap.setCollisionByExclusion([], true, layers[config.name]);
+			tilemap.collision[config.name] = tilemap.objects[config.name];
+			const bodies = game.physics.p2.convertCollisionObjects(tilemap, config.name, true);
+			bodies.forEach(function (body) {
+				body.setCollisionGroup(config.collisionGroup);
+				if(config.debug){
+					body.debug = true;
+				}
+				body.collides(config.collideWith);
+			});
+		}
+	});
+	return tilemap
+}
 function spawnEnemies() {
 	//Checking if the number of enemies has been surpassed
 	if(enemiesSpawned < maxEnemies){

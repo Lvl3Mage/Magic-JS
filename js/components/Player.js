@@ -42,7 +42,7 @@ class Player extends Component {
 
 
 
-		this.sprite = game.add.sprite(0, 0, 'main-character');
+		this.sprite = game.add.sprite(300, 300, 'main-character');
 		this.sprite.getParentComponent = () => this;
 		game.physics.p2.enable(this.sprite, this.debug);
 		this.body = this.sprite.body;
@@ -54,7 +54,7 @@ class Player extends Component {
 
 
 		this.body.setCollisionGroup(sceneData.collisionGroups.player);
-		this.body.collides([sceneData.collisionGroups.enemies, sceneData.collisionGroups.collectables]);
+		this.body.collides([sceneData.collisionGroups.enemies, sceneData.collisionGroups.collectables, sceneData.collisionGroups.walls]);
 		this.body.getParentComponent = () => this;
 
 		this.sprite.anchor.setTo(0.5, 1);
@@ -116,8 +116,13 @@ class Player extends Component {
 					{
 						collisionGroup: sceneData.collisionGroups.enemies,
 						callback: function(self, other){
-							console.log(other.getParentComponent());
 							other.getParentComponent().Destroy();
+							this.Destroy();
+						}
+					},
+					{
+						collisionGroup: sceneData.collisionGroups.walls,
+						callback: function(self, other){
 							this.Destroy();
 						}
 					},
