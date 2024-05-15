@@ -1,5 +1,5 @@
-let GAME_STAGE_WIDTH;
-let GAME_STAGE_HEIGHT;
+// let GAME_STAGE_WIDTH;
+// let GAME_STAGE_HEIGHT;
 // const TILE_SIZE = 1000;
 // const ROWS = GAME_STAGE_WIDTH / TILE_SIZE;
 // const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
@@ -37,7 +37,6 @@ let playState = {
 		eventSystem = new EventSystem();
 		sceneData = {};
 
-		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
@@ -59,13 +58,14 @@ let playState = {
 					name: "Walls",
 					objectCollisions: true,
 					collisionGroup: sceneData.collisionGroups.walls,
+					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
-					// debug:true,
+					debug:true,
 				},
 			]
 		);
-		GAME_STAGE_WIDTH = tilemap.widthInPixels;
-		GAME_STAGE_HEIGHT = tilemap.heightInPixels;
+		console.log(game.world.width, game.world.height);
+		game.world.setBounds(0, 0, game.world.width, game.world.height);
 	
 
 		// game.physics.p2.setBounds(0,0,GAME_STAGE_WIDTH,GAME_STAGE_HEIGHT,true,true,true,true, sceneData.collisionGroups.bounds);
