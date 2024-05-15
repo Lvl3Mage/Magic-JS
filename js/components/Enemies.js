@@ -48,6 +48,8 @@ class Enemy extends Component {
         else {
             this.attack();
         }
+
+        this.enemyJump();
     }
 
     moveAround() {
@@ -67,6 +69,16 @@ class Enemy extends Component {
             this.moveTimer = 0;
         }
     }
+
+    enemyJump(){
+        const x = game.time.totalElapsedSeconds() * 15 / 2;
+        let bop = Math.abs(Math.sin(x));
+        this.sprite.anchor.setTo(0.5, Mathf.TransformRange(0,1 , 0.5 , 1, bop));
+    }
+
+    GetVelocity(){
+		return new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
+	}
 
     randomDirection() {
         const randomAngle = Math.random() * Math.PI * 2; //Selects a random number between 0 and 1 and multiplies by 2PI to get an angle
@@ -110,7 +122,7 @@ class Enemy extends Component {
     }
 
     BeforeDestroy(){
-        sceneData.collectables = new Collectible(new EventSystem(), this.sprite.body.x, this.sprite.body.y, `xp`);
+        sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
         this.sprite.destroy();
         sceneData.enemiesSpawned --;
     }
