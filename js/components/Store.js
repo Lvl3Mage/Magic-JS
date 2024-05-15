@@ -5,29 +5,18 @@ class Store extends Component{
         this.upgradeCost = 0;
         this.speedUpgradeCost = 50;
         this.testKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
+        this.statePrice = [50, 100, 150];
     }
+    //velocidad
+    //daño
+    //velocidad ataque
+    //velocidad mov
+    //cantidad de balas
 
     Update() {
         if (this.testKey.isDown) {
             this.buyLivesMaxUpgrade();
             console.log(`Ha pulsado la tecla T.`);
-        }
-    }
-
-    changeState(state){
-        switch (state) {
-            case 1:
-                this.upgradeCost = this.speedUpgradeCost * state;
-                break;
-            case 2:
-                this.upgradeCost = this.speedUpgradeCost * state;
-                break;
-            case 3:
-                this.upgradeCost = this.speedUpgradeCost * state;
-                break;
-            default:
-                this.upgradeCost = this.speedUpgradeCost;
-                break;
         }
     }
 
