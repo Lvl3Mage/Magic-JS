@@ -38,7 +38,7 @@ class Player extends Component {
 
 		this.handOrbitPivotOffset = new Vector2(0,-0.15);
 
-		this.debug = true;
+		this.debug = false;
 
 
 
@@ -157,9 +157,12 @@ class Player extends Component {
 		this.sprite.anchor.setTo(0.5, bop);
 	}
 	TrackCamera(){
-		let camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
-		let playerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
-		let dif = Vector2.Lerp(camCenterPos, playerPos, 0.1).Sub(camCenterPos);
+
+		const worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
+		const camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
+		const playerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+		const targetPos = Vector2.Lerp(playerPos, worldCursor, 0.3);
+		const dif = Vector2.Lerp(camCenterPos, targetPos, 0.1).Sub(camCenterPos);
 		game.camera.x += dif.x;
 		game.camera.y += dif.y;
 	}

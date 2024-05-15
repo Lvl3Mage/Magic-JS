@@ -1,5 +1,5 @@
-const GAME_STAGE_WIDTH = 1920;
-const GAME_STAGE_HEIGHT = 1920;
+const GAME_STAGE_WIDTH = 1920*2;
+const GAME_STAGE_HEIGHT = 1920*2;
 const TILE_SIZE = 1000;
 const ROWS = GAME_STAGE_WIDTH / TILE_SIZE;
 const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
@@ -37,7 +37,7 @@ let playState = {
 		sceneData = {};
 
 		game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
-
+		let tilemap = game.add.tilemap();
 		for (let row = 0; row < ROWS; row++) {
 			for (let col = 0; col < COLUMNS; col++) {
 				let floorTile = game.add.sprite(col * TILE_SIZE, row * TILE_SIZE, 'floor');
