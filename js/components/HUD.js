@@ -13,7 +13,7 @@ class HUD extends Component {
         this.livesBar;
         this.livesBarOutline;
         this.livesCurrent = this.livesMax;
-        this.livesScale = 2;
+        this.livesScale = 1.5;
 
         this.rightScreen = game.camera.width - 10;
         this.centerScreen = game.camera.width / 2;  // Ya veremos como escala
