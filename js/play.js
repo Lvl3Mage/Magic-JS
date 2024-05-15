@@ -77,10 +77,13 @@ let playState = {
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		sceneData.store = new Store(eventSystem);
 
+		sceneData.enemiesSpawned = 0;
+
 		//Begin spawning enemies
 		game.time.events.add(spawnDelay, spawnEnemies, this);
 
 		eventSystem.CallEvent("post-scene-create", []);
+
 	},
 	update: function() {
 		// Update the realm's happenings
@@ -122,11 +125,9 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig){
 }
 function spawnEnemies() {
 	//Checking if the number of enemies has been surpassed
-	if(enemiesSpawned < maxEnemies){
+	if(sceneData.enemiesSpawned < maxEnemies){
 		const newEnemy = new Enemy(eventSystem);
-		enemiesSpawned++;
-
-		//Making time for the next enemy to spawn
-		game.time.events.add(spawnDelay, spawnEnemies, this);
 	}
+	//Making time for the next enemy to spawn
+	game.time.events.add(spawnDelay, spawnEnemies, this);
 }

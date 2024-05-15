@@ -36,6 +36,8 @@ class Enemy extends Component {
         this.sprite.body.fixedRotation = true;
 
         this.direction = this.randomDirection();
+
+        sceneData.enemiesSpawned ++;
     }
 
     Update() {
@@ -101,12 +103,15 @@ class Enemy extends Component {
         this.sprite.body.velocity.x = curVelocity.x;
         this.sprite.body.velocity.y = curVelocity.y;
     }
+
     onPlayerCollision(selfBody, playerBody){
         let player = playerBody.getParentComponent();
-        // console.log(player);
+        player.takeDamage(10);
     }
+
     BeforeDestroy(){
         sceneData.collectables = new Collectible(new EventSystem(), this.sprite.body.x, this.sprite.body.y, `xp`);
         this.sprite.destroy();
+        sceneData.enemiesSpawned --;
     }
 }
