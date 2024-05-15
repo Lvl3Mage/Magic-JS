@@ -60,7 +60,7 @@ let playState = {
 					collisionGroup: sceneData.collisionGroups.walls,
 					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
-					debug:true,
+					debug:false,
 				},
 			]
 		);

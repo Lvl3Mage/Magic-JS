@@ -3,7 +3,7 @@ class SafeZone extends Component {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		
-		this.sprite = game.add.sprite(position.x,position.y);
+		this.sprite = game.add.sprite(game.world.width / 2, game.world.height / 2);
         this.sprite.getParentComponent = () => this;
 
         game.physics.p2.enable(this.sprite,true);
