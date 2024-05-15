@@ -18,34 +18,46 @@ class SafeZone extends Component {
 		this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
         this.body.collides(sceneData.collisionGroups.enemies);
         this.body.kinematic = true;
-        console.log(this.body);
+       	this.playerOverlap = false;
+       	this.safeZoneTimerMax = 10;
+       	this.safeZoneTimer = this.safeZoneTimerMax;
 	}
 
 	Update(){
 		const playerBounds = sceneData.player.sprite.getBounds();
 		const safeZoneBounds = this.sprite.getBounds();
 
-		// if (Phaser.Rectangle.intersects(playerBounds, safeZoneBounds)){
-		// 	console.log("Player entered safe zone");
-		// } else {
-		// 	console.log("Player left safe zone");
-		// }
+		this.ProcessPlayerOverlap()
+	}
+	ProcessPlayerOverlap(){
+		if(this.playerOverlap){
+			const lastTimer = this.safeZoneTimer;
+			this.safeZoneTimer -= game.time.elapsed * 0.001;
+			let t = 1 - this.safeZoneTimer/this.safeZoneTimerMax;
+			let intensity = Mathf.Lerp(0.0001, 0.01, t);
+			game.camera.shake(intensity,50,true);
+			if(this.safeZoneTimer <= 0){
+				console.log("AWOOGA")
+			}
+		}
+		else{
+			this.safeZoneTimer += game.time.elapsed * 0.001;
+		}
+		this.safeZoneTimer = Mathf.Clamp(this.safeZoneTimer, 0, this.safeZoneTimerMax);
+		console.log(this.playerOverlap)
+		this.playerOverlap = false;
 	}
 
-	onOverlap(self, other){
+	onOverlap(body1, body2){
 		// console.log(other.data.shapes);
-		if(!other.data.shapes){return;}
-		if(other.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask){
-			console.log("Player entered safe zone");
+		if(!body1.data.shapes){return;}
+		if(body1.data.shapes.length == 0){return;}
+		if(!body2.data.shapes){return;}
+		if(body2.data.shapes.length == 0){return;}
+		console.log("other.data.shapes");
+		if(body1.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask ||
+			body2.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask){
+			this.playerOverlap = true
 		}
-
-
-		// if(other.data.shapes[0].collisionGroup === sceneData.collisionGroups.player){
-		// 	console.log("Player entered safe zone");
-		// }
-		// console.log(self, sceneData.collisionGroups);
-		// if(other.)
-		//sceneData.HUD.createText(0.5, 1, sceneData.HUD.centerScreen, sceneData.HUD.allY, `Tiempo: ` + 0);
-		//console.log("Player entered safe zone");
 	}
 }

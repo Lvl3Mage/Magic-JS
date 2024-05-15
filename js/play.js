@@ -20,7 +20,7 @@ let playState = {
 		//Healthbar
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
-		game.load.image('xp', 'assets/imgs/PLACEHOLDERS/XPminecraft.png');
+		game.load.image('xp', 'assets/imgs/INTpoints.png');
 		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
 		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
 
