@@ -21,6 +21,9 @@ class Player extends Component {
 		this.maxTiltBopAmp = 15;
 		this.bopAmp = 0.3;
 
+		this.immunityDuration = 1000;
+		this.immune = false;
+
 		this.colliderScale = new Vector2(0.5,0.7);
 
 		//
@@ -38,7 +41,7 @@ class Player extends Component {
 
 		this.handOrbitPivotOffset = new Vector2(0,-0.15);
 
-		this.debug = true;
+		this.debug = false;
 
 
 
@@ -238,5 +241,28 @@ class Player extends Component {
 	}
 	GetPosition(){
 		return this.GetBodyCenter();
+	}
+
+	takeDamage(amount){
+		if (!this.immune){
+			const redTintTween = game.add.tween(this.sprite).to({ tint: 0xf94449 }, 10, Phaser.Easing.Linear.None, true);
+        	redTintTween.onComplete.add(() => {
+            	game.time.events.add(100, () => {
+                	game.add.tween(this.sprite).to({ tint: 0xffffff }, 90, Phaser.Easing.Linear.None, true);});
+        });
+
+			this.health -= amount;
+			this.immune = true;
+			game.time.events.add(this.immunityDuration, () => {
+				this.immune = false;
+			});
+
+			console.log("OUCHING PLAYER, health: " + this.health);
+
+			if (this.health <= 0) {
+				this.health = 0;
+				console.log('You are DEAD')
+			}
+		}
 	}
 }
