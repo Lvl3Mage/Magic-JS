@@ -38,6 +38,12 @@ let playState = {
 		sceneData = {};
 
 
+		game.physics.p2.setPostBroadphaseCallback(function (body1, body2) {
+			eventSystem.CallEvent("on-physics-overlap", [body1, body2]);
+			return true;
+		});
+
+
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
@@ -60,7 +66,7 @@ let playState = {
 					collisionGroup: sceneData.collisionGroups.walls,
 					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
-					debug:true,
+					// debug:true,
 				},
 			]
 		);
@@ -68,9 +74,6 @@ let playState = {
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
 	
 
-		// game.physics.p2.setBounds(0,0,GAME_STAGE_WIDTH,GAME_STAGE_HEIGHT,true,true,true,true, sceneData.collisionGroups.bounds);
-		// game.physics.p2.boundsCollisionGroup = sceneData.collisionGroups.bounds;
-		// game.physics.p2.updateBoundsCollisionGroup();
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
