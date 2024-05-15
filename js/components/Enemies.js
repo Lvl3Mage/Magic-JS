@@ -10,11 +10,11 @@ class Enemy extends Component {
 
         this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
         this.moveTimer = Math.random()*this.moveDelay;
-        
+
         //Creating one enemy
         const spawnX = Math.random() * (game.world.width);
         const spawnY = Math.random() * (game.world.height);
-        
+
         this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
         this.sprite.getParentComponent = () => this;
 
@@ -105,6 +105,7 @@ class Enemy extends Component {
         // console.log(player);
     }
     BeforeDestroy(){
+        sceneData.collectables = new Collectible(new EventSystem(), this.sprite.body.x, this.sprite.body.y, `xp`);
         this.sprite.destroy();
     }
 }
