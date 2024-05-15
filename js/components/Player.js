@@ -110,8 +110,8 @@ class Player extends Component {
 
 			new Projectile(eventSystem, this.GetHandPosition(), handRight.Scale(1000),
 			{
-				spriteName: "hand",
-				spriteScale: new Vector2(0.1,0.1),
+				spriteName: "bullet",
+				spriteScale: new Vector2(0.6,0.6),
 				collisionConfigs: [
 					{
 						collisionGroup: sceneData.collisionGroups.enemies,

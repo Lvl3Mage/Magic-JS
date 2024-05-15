@@ -26,6 +26,7 @@ let playState = {
 		//Player
 		game.load.image('main-character', 'assets/imgs/mage.png');
 		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
+		game.load.image('bullet', 'assets/imgs/bullet.png')
 
 
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
