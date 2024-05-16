@@ -55,7 +55,6 @@ class Player extends Component {
 		const apparentScale = new Vector2(this.sprite.width*this.colliderScale.x, this.sprite.height*this.colliderScale.y);
 		this.body.addCapsule(apparentScale.y-apparentScale.x, apparentScale.x/2, 0, -apparentScale.y*0.5, Mathf.Deg2Rad(90));
 
-
 		this.body.setCollisionGroup(sceneData.collisionGroups.player);
 		this.body.collides([sceneData.collisionGroups.enemies, sceneData.collisionGroups.collectables, sceneData.collisionGroups.walls]);
 		this.body.getParentComponent = () => this;
@@ -68,6 +67,7 @@ class Player extends Component {
 		this.handSprite.scale.setTo(-0.15, 0.15);
 
 		this.sprite.addChild(this.handSprite);
+		sceneData.layers.player.addChild(this.sprite);
 
 		this.canFire = true;
 	}
@@ -132,10 +132,6 @@ class Player extends Component {
 				]
 			});
 		}
-		
-
-
-
 
 	}
 	GetTargetVelocity(){

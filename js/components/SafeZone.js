@@ -54,10 +54,10 @@ class SafeZone extends Component {
 		if(body1.data.shapes.length == 0){return;}
 		if(!body2.data.shapes){return;}
 		if(body2.data.shapes.length == 0){return;}
-		console.log("other.data.shapes");
-		if(body1.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask ||
-			body2.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask){
-			this.playerOverlap = true
+		let groups = [body1.data.shapes[0].collisionGroup, body2.data.shapes[0].collisionGroup];
+		if(groups.some(group => group === sceneData.collisionGroups.player.mask) && 
+			groups.some(group => group === sceneData.collisionGroups.safeZones.mask)){
+			this.playerOverlap = true;
 		}
 	}
 }

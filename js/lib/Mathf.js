@@ -31,4 +31,10 @@ class Mathf
 		}
 		return num;
 	}
+	static SmoothMax(a, b, k){
+		return Math.log(Math.exp(a * k) + Math.exp(b * k)) / k;
+	}
+	static SmoothMin(a, b, k){
+		return -Mathf.SmoothMax(-a, -b, k);
+	}
 }
