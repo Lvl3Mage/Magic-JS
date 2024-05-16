@@ -5,7 +5,7 @@
 // const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
-let maxEnemies = 10;
+let maxEnemies = 0;
 let spawnDelay = 1000;
 let enemiesSpawned = 0;
 
@@ -35,7 +35,7 @@ let playState = {
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
 	},
 	create: function() {
-
+		game.time.advancedTiming = true;
 		eventSystem = new EventSystem();
 		sceneData = {};
 

@@ -6,7 +6,7 @@ const config = {
 	multiTexture: true,
 	physicsConfig:{
 		p2: true,
-	}
+	},
 }
 let game = new Phaser.Game(config);
 
@@ -29,6 +29,7 @@ function startGame() {
 }
 function configurePhysics(){
 	game.physics.startSystem(Phaser.Physics.P2JS);
+	game.physics.p2.useElapsedTime = true;
 	game.physics.p2.defaultRestitution = 2;
 	game.physics.p2.setImpactEvents(true);
 }
