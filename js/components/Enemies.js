@@ -77,7 +77,7 @@ class Enemy extends Component {
 
 		sceneData.layers.enemies.addChild(this.sprite);
 		sceneData.layers.shadows.addChild(this.shadow);
-		
+
 
 		this.onDestroy = () => {};//destoy callback
 	}
@@ -182,14 +182,22 @@ class Enemy extends Component {
 	// Damage(amount){
 
 	// }
-	
+
 
 	onPlayerCollision(selfBody, playerBody){
 		let player = playerBody.getParentComponent();
 		player.takeDamage(this.damage);
 	}
 	SpawnCollectable(){
-		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
+		sceneData.collectables =
+		new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
+			{
+				spriteName: `xp`,
+				onPlayerCollision: function(){
+					this.sprite.destroy();
+        			sceneData.HUD.addScore(5);
+				}
+			});
 	}
 	BeforeDestroy(){
 		this.onDestroy();

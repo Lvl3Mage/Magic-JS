@@ -29,7 +29,7 @@ function display() {
     let style = {font: '25px Merryweather', fill: '#FFFFFF'};
     let btnHome = createBtn(posX - 100, posY+500, `Home screen`, onHomeBtnPressed);
     let btnRestart = createBtn(posX + 100, posY+500, `Restart`, onStartBtnPressed);
-    // let scoreTotal = createText(posX, posY, `Total score: ` + sceneData.HUD.getScoreTotal(), style);
+    let scoreTotal = createText(posX, posY, `Total score: ` + totalScore, style);
 }
 
 function win(){

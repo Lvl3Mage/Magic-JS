@@ -13,6 +13,9 @@ let numOfcollectable;
 
 let eventSystem;
 let sceneData;
+
+let debuging = true;
+
 let gameConfig;
 function FormConfig(configData, difficulty){
 	let defaultConfig = configData['default'];
@@ -142,9 +145,11 @@ let playState = {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
 		game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		if(debuging) cheatActions();
 		//game.time.advancedTiming = true;
 		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
 			gameWin = true;
+			totalScore = sceneData.HUD.scoreTotal;
 			game.state.start('endScreen');
 		}
 	},
@@ -194,7 +199,7 @@ function setUpStore(){
 	let statePrice = [50, 100, 150, 200, 300, 400, 600, `---`];
 	let posX = 150;
 	let posY = 150;
-	let debug = true;
+	let debug = debuging;
 	new Store(eventSystem, new Vector2(posX, posY),
 		{
 			spriteName: "upgradeVelocity",
@@ -204,7 +209,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Mejora velocidad de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.maxVelocity += 50;
 					state ++;
@@ -221,7 +226,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Mejora daño de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.maxVelocity += 50;
 					state ++;
@@ -238,7 +243,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Curacion de ${sceneData.player.health} a ${sceneData.player.health+20} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.Heal(20);
 					state ++;
@@ -246,6 +251,15 @@ function setUpStore(){
 				return state;
 			}
 		});
+}
+
+function cheatActions(){
+	if (debuging) {
+		let killKey = game.input.keyboard.addKey(Phaser.Keyboard.K);
+		if (killKey.isDown) {
+			sceneData.player.takeDamage(sceneData.player.maxHealth);
+		}
+	}
 }
 
 
