@@ -29,8 +29,13 @@ let playState = {
 		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 		game.load.image('bullet', 'assets/imgs/bullet.png')
 
-
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
+
+		//Store
+		game.load.image('StoreVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
+		game.load.image('StoreDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
+		game.load.image('StoreVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
+		game.load.image('StoreAmountProjectile', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 	},
 	create: function() {
 
@@ -54,10 +59,10 @@ let playState = {
 			walls: game.physics.p2.createCollisionGroup(),
 		};
 		let tilemap = SetupTilemap(
-			'levelMap', 
+			'levelMap',
 			[
 				{innerKey: 'WallsTileset', imageKey: 'Floor'}
-			], 
+			],
 			[
 				"Floor",
 				{
@@ -71,7 +76,7 @@ let playState = {
 		);
 		console.log(game.world.width, game.world.height);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
-	
+
 
 		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);

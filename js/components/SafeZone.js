@@ -3,7 +3,7 @@ class SafeZone extends Component {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
-		
+
 		this.sprite = game.add.sprite(game.world.width / 2, game.world.height / 2);
         this.sprite.getParentComponent = () => this;
 
@@ -18,9 +18,9 @@ class SafeZone extends Component {
 		this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
         this.body.collides(sceneData.collisionGroups.enemies);
         this.body.kinematic = true;
-       	this.playerOverlap = false;
-       	this.safeZoneTimerMax = 10;
-       	this.safeZoneTimer = this.safeZoneTimerMax;
+		this.playerOverlap = false;
+		this.safeZoneTimerMax = 10;
+		this.safeZoneTimer = this.safeZoneTimerMax;
 	}
 
 	Update(){
@@ -44,7 +44,7 @@ class SafeZone extends Component {
 			this.safeZoneTimer += game.time.elapsed * 0.001;
 		}
 		this.safeZoneTimer = Mathf.Clamp(this.safeZoneTimer, 0, this.safeZoneTimerMax);
-		console.log(this.playerOverlap)
+		// console.log(this.playerOverlap)
 		this.playerOverlap = false;
 	}
 
@@ -54,7 +54,7 @@ class SafeZone extends Component {
 		if(body1.data.shapes.length == 0){return;}
 		if(!body2.data.shapes){return;}
 		if(body2.data.shapes.length == 0){return;}
-		console.log("other.data.shapes");
+		// console.log("other.data.shapes");
 		if(body1.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask ||
 			body2.data.shapes[0].collisionGroup === sceneData.collisionGroups.player.mask){
 			this.playerOverlap = true

@@ -10,9 +10,11 @@ class HUD extends Component {
         this.levelText;
 
         this.livesMax = 3;
+        // this.livesMax = sceneData.player.maxHealth;
         this.livesBar;
         this.livesBarOutline;
         this.livesCurrent = this.livesMax;
+        // this.livesCurrent = sceneData.player.health;
         this.livesScale = 1.5;
 
         this.rightScreen = game.camera.width - 10;
