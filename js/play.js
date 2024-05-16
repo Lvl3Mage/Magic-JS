@@ -5,9 +5,8 @@
 // const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
-let maxEnemies = 10;
-let spawnDelay = 1000;
-let enemiesSpawned = 0;
+let maxEnemies = 100;
+let spawnDelay = 100;
 
 const MAX_COLLECTABLE = 10;
 let numOfcollectable;
@@ -17,6 +16,29 @@ let sceneData;
 
 let debuging = true;
 
+let gameConfig;
+function FormConfig(configData, difficulty){
+	let defaultConfig = configData['default'];
+	let difficultyConfig = configData.diffucultyOverrides[difficulty];
+	ApplyObjectOverride(defaultConfig, difficultyConfig);
+	return defaultConfig;
+}
+function ApplyObjectOverride(main, override){
+	for(let key in override){
+		if(typeof override[key] === 'object'){
+			if(!main[key]){
+				main[key] = {};
+			}
+			ApplyObjectOverride(main[key], override[key]);
+		}
+		else{
+			if(!main[key]){
+				console.warn('Key not found in main object, applying override anyways:', key);
+			}
+			main[key] = override[key];
+		}
+	}
+}
 let playState = {
 	preload: function() {
 		//Healthbar
@@ -26,6 +48,7 @@ let playState = {
 		game.load.image('xp', 'assets/imgs/INTpoints.png');
 		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
 		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.json('config', 'assets/levels/config.json');
 
 		//Player
 		game.load.image('shadow', 'assets/imgs/PLACEHOLDERS/shadow.png');
@@ -42,17 +65,19 @@ let playState = {
 		game.load.image('heal', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 	},
 	create: function() {
-		game.time.advancedTiming = true;
+		const gameConfigData = game.cache.getJSON('config');
+		gameConfig = FormConfig(gameConfigData, difficulty);
+
+
 		eventSystem = new EventSystem();
-		sceneData = {};
-
-
 		game.physics.p2.setPostBroadphaseCallback(function (body1, body2) {
 			eventSystem.CallEvent("on-physics-overlap", [body1, body2]);
 			return true;
 		});
 
 
+
+		sceneData = {};
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
@@ -91,7 +116,6 @@ let playState = {
 			],
 			sceneData.layers.background
 		);
-		console.log(game.world.width, game.world.height);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
 
 
@@ -101,10 +125,14 @@ let playState = {
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		setUpStore();
 
-		sceneData.enemiesSpawned = 0;
+		const spawnPoints = {
+			'greenSlime': [
+				{x: 100, y: 100},
+			],
+		};
 
-		//Begin spawning enemies
-		game.time.events.add(spawnDelay, spawnEnemies, this);
+		sceneData.enemyManager = new EnemyManager(eventSystem, spawnPoints);
+
 
 		eventSystem.CallEvent("post-scene-create", []);
 
@@ -115,8 +143,7 @@ let playState = {
 		if(debuging) cheatAcctions();
 		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
 		//game.time.advancedTiming = true;
-
-		if (sceneData.HUD.score >= 200000) {
+		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
 			gameWin = true;
 			totalScore = sceneData.HUD.scoreTotal;
 			game.state.start('endScreen');
@@ -160,7 +187,7 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 			defaultParent.addChild(mapLayers[config.name]);
 		}
 	});
-	return tilemap
+	return tilemap;
 }
 
 function setUpStore(){
@@ -178,7 +205,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Mejora velocidad de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.maxVelocity += 50;
 					state ++;
@@ -195,7 +222,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Mejora daño de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.maxVelocity += 50;
 					state ++;
@@ -212,7 +239,7 @@ function setUpStore(){
 			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.setScore(-statePrice[state]);
+					sceneData.HUD.addScore(-statePrice[state]);
 					console.log(`Curacion de ${sceneData.player.health} a ${sceneData.player.health+20} y me ha costado ${-statePrice[state]}.`);
 					sceneData.player.Heal(20);
 					state ++;

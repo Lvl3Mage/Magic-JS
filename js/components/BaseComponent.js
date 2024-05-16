@@ -11,7 +11,7 @@ class Component {
 }
 /*
 EXAMPLE COMPONENT
-class Component extends BaseComponent 
+class ComponentName extends Component {
 	constructor(eventSystem) {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);

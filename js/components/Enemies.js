@@ -2,11 +2,11 @@
 
 
 class Enemy extends Component {
-	constructor(eventSystem) {
+	constructor(eventSystem, enemyType, spawnPosition) {
 		super(eventSystem);
 		//Subscribing to event systems here so that the enemy functions properly
 		eventSystem.Subscribe("scene-update", this.Update, this);
-
+		this.enemyType = enemyType;
 
 		this.spriteScale = new Vector2(1, 1);
 		this.spriteAnchor = new Vector2(0.5, 0.5);
@@ -34,15 +34,11 @@ class Enemy extends Component {
 		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
 		this.moveTimer = Math.random()*this.moveDelay;
 
-		//Creating one enemy
-		const spawnX = Math.random() * (game.world.width);
-		const spawnY = Math.random() * (game.world.height);
-
-		this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
+		this.sprite = game.add.sprite(spawnPosition.x, spawnPosition.y, 'enemySprite');
 		this.sprite.anchor.setTo(0.5, 0);
 		this.sprite.getParentComponent = () => this;
 
-		this.shadow = game.add.sprite(spawnX, spawnY, 'shadow');
+		this.shadow = game.add.sprite(spawnPosition.x, spawnPosition.y, 'shadow');
 		this.shadow.anchor.setTo(this.shadowAnchor.x, this.shadowAnchor.y);
 		this.shadow.scale.setTo(this.shadowScale, this.shadowScale);
 
@@ -67,7 +63,9 @@ class Enemy extends Component {
 
 		sceneData.layers.enemies.addChild(this.sprite);
 		sceneData.layers.shadows.addChild(this.shadow);
-		sceneData.enemiesSpawned ++;
+		
+
+		this.onDestroy = () => {};//destoy callback
 	}
 
 	Update() {
@@ -167,16 +165,22 @@ class Enemy extends Component {
 		return false;
 
 	}
+	// Damage(amount){
+
+	// }
+
 
 	onPlayerCollision(selfBody, playerBody){
 		let player = playerBody.getParentComponent();
 		player.takeDamage(10);
 	}
-
+	SpawnCollectable(){
+		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
+	}
 	BeforeDestroy(){
-		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`); //pasarle una funciona cuando colisiones con el jugador y un sprite
+		this.onDestroy();
+		this.SpawnCollectable();
 		this.sprite.destroy();
 		this.shadow.destroy();
-		sceneData.enemiesSpawned --;
 	}
 }

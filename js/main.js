@@ -10,6 +10,7 @@ const config = {
 }
 let game = new Phaser.Game(config);
 let gameWin = false;
+let difficulty = 'easy';
 let totalScore = 0;
 
 // Entry point
@@ -18,6 +19,8 @@ window.onload = startGame;
 function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
 	configurePhysics();
+
+	game.time.advancedTiming = true;
 	game.camera.roundPx = true;
 
     game.state.add('welcomescreen', welcomeState);
@@ -27,7 +30,7 @@ function startGame() {
 	game.state.add('instructions', instructionState);
 	game.state.add('endScreen', endState);
 
-    // game.state.start('welcomescreen');
+	
     game.state.start('play');
 }
 function configurePhysics(){
