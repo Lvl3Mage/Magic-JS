@@ -1,8 +1,11 @@
 class Mathf
 {
 	static Clamp(value, min, max){
-			return Math.max( min, Math.min(value, max) )
-		}
+		return Math.max( min, Math.min(value, max) )
+	}
+	static Clamp01(value){
+		return Mathf.Clamp(value, 0, 1);
+	}
 	static Lerp(a, b, t) {
 		return (1 - t) * a + t * b;
 	}

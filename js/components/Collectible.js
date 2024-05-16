@@ -6,7 +6,7 @@ class Collectible {
         this.sprite.scale.setTo(0.3, 0.3);
         this.sprite.getParentComponent = () => this;
 
-        game.physics.p2.enable(this.sprite, true);
+        game.physics.p2.enable(this.sprite, false);
         this.body = this.sprite.body;
         this.body.setCollisionGroup(sceneData.collisionGroups.collectables);
         this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
@@ -17,7 +17,7 @@ class Collectible {
     Update() {
         const x = game.time.totalElapsedSeconds() + Mathf.TransformRange(0,1 , 0,Math.PI, this.bopPhaseOffset) ;
         let bop = Math.sin(x);
-        this.sprite.anchor.setTo(0.5, Mathf.TransformRange(-1,1 , 0,1, bop));
+        this.sprite.anchor.setTo(0.5, Mathf.TransformRange(-1,1 , 0.5,1, bop));
     }
 
     // fun que se ejecuta cuando el collecteble es tocado por el jugador

@@ -21,6 +21,13 @@ class Player extends Component {
 		this.maxTiltBopAmp = 15;
 		this.bopAmp = 0.3;
 
+		//shadow
+		this.shadowScale = 0.5;
+		this.shadowJumpScale = 0.7;
+		this.shadowAlpha = 0.1;
+		this.shadowJumpAlpha = 0.4;
+		this.shadowAnchor = new Vector2(0.5, 0.6);
+
 		this.immunityDuration = 1000;
 		this.immune = false;
 
@@ -69,6 +76,10 @@ class Player extends Component {
 		this.sprite.addChild(this.handSprite);
 		sceneData.layers.player.addChild(this.sprite);
 
+		this.shadow = game.add.sprite(300, 300, 'shadow');
+		this.shadow.anchor.setTo(this.shadowAnchor.x, this.shadowAnchor.y);
+		sceneData.layers.shadows.addChild(this.shadow);
+
 		this.canFire = true;
 	}
 	GetInputAxis(){
@@ -99,6 +110,7 @@ class Player extends Component {
 
 		this.HandMovement();
 		this.HandRotation();
+		this.UpdateShadow();
 		if(game.input.mousePointer.leftButton.isDown && this.canFire){
 			this.canFire = false;
 			let handRight = this.GetHandForward();
@@ -133,6 +145,14 @@ class Player extends Component {
 			});
 		}
 
+	}
+	UpdateShadow(){
+		this.shadow.x = this.sprite.x;
+		this.shadow.y = this.sprite.y;
+		let bop = this.GetPlayerBop();
+		let shadowScale = Mathf.TransformRange(0, 1, this.shadowScale, this.shadowJumpScale, bop);
+		this.shadow.scale.setTo(shadowScale,shadowScale);
+		this.shadow.alpha = Mathf.TransformRange(0, 1, this.shadowAlpha, this.shadowJumpAlpha, bop);
 	}
 	GetTargetVelocity(){
 		const axis = this.GetInputAxis();
