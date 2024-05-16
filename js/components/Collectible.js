@@ -1,15 +1,16 @@
 class Collectible {
-    constructor(eventSystem, posX, posY, sprite) {
+    constructor(eventSystem, posX, posY, collectibleConfig) {
         eventSystem.Subscribe("scene-update", this.Update,this);
 
-        this.sprite = game.add.sprite(posX, posY, sprite);
+        this.sprite = game.add.sprite(posX, posY, collectibleConfig.spriteName);
         this.sprite.scale.setTo(0.3, 0.3);
         this.sprite.getParentComponent = () => this;
+        this.config = collectibleConfig;
 
         game.physics.p2.enable(this.sprite, false);
         this.body = this.sprite.body;
         this.body.setCollisionGroup(sceneData.collisionGroups.collectables);
-        this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
+        this.body.collides(sceneData.collisionGroups.player, collectibleConfig.onPlayerCollision.bind(this), this);
         this.body.getParentComponent = () => this;
         this.bopPhaseOffset = Math.random();
 
@@ -38,12 +39,15 @@ class Collectible {
         this.body.velocity.y = currentVel.y;
 
     }
-
-    // fun que se ejecuta cuando el collecteble es tocado por el jugador
-    onPlayerCollision(selfBody, playerBody){
-        let player = playerBody.getParentComponent();
-        this.sprite.destroy();
-        sceneData.HUD.addScore(5);
-        console.log(sceneData.HUD);
-    }
 }
+
+/* Construccion
+new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
+			{
+				spriteName: `xp`,
+				onPlayerCollision: function(){
+					this.sprite.destroy();
+        			sceneData.HUD.addScore(5);
+				}
+			});
+*/
