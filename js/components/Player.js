@@ -28,7 +28,7 @@ class Player extends Component {
 		this.shadowJumpAlpha = 0.4;
 		this.shadowAnchor = new Vector2(0.5, 0.6);
 
-		this.immunityDuration = 1000;
+		this.immunityDuration = 500;
 		this.immune = false;
 
 		this.colliderScale = new Vector2(0.5,0.7);
@@ -49,6 +49,11 @@ class Player extends Component {
 		this.handOrbitPivotOffset = new Vector2(0,-0.15);
 
 		this.debug = false;
+
+
+
+		sceneData.HUD.setMaxHealth(this.maxHealth);
+		sceneData.HUD.setHealth(this.health, false);
 
 
 
@@ -186,7 +191,7 @@ class Player extends Component {
 		const camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
 		const playerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
 		const targetPos = Vector2.Lerp(playerPos, worldCursor, 0.3);
-		const dif = Vector2.Lerp(camCenterPos, targetPos, 0.1).Sub(camCenterPos);
+		const dif = Vector2.Lerp(camCenterPos, targetPos, 0.05).Sub(camCenterPos);
 		game.camera.x += dif.x;
 		game.camera.y += dif.y;
 	}
@@ -266,27 +271,41 @@ class Player extends Component {
 	GetPosition(){
 		return this.GetBodyCenter();
 	}
-
-	takeDamage(amount){
-		if (!this.immune){
-			const redTintTween = game.add.tween(this.sprite).to({ tint: 0xf94449 }, 10, Phaser.Easing.Linear.None, true);
-        	redTintTween.onComplete.add(() => {
-            	game.time.events.add(100, () => {
-                	game.add.tween(this.sprite).to({ tint: 0xffffff }, 90, Phaser.Easing.Linear.None, true);});
-        });
-
-			this.health -= amount;
-			this.immune = true;
-			game.time.events.add(this.immunityDuration, () => {
-				this.immune = false;
+	FlashTint(){
+		var colorBlend = {step: 0};
+		game.add.tween(colorBlend).to({step: 1}, 50, Phaser.Easing.Default, true)
+		.onUpdateCallback(() => {
+			this.sprite.tint = Phaser.Color.interpolateColor(0xffffff, 0xf94449, 1, colorBlend.step, 1);
+		})
+		.onComplete.add(() => {
+			game.add.tween(colorBlend).to({step: 0}, this.immunityDuration-50, Phaser.Easing.Default, true)
+			.onUpdateCallback(() => {
+				this.sprite.tint = Phaser.Color.interpolateColor(0xffffff, 0xf94449, 1, colorBlend.step, 1);
 			});
+		})
+	}
+	takeDamage(amount){
+		if(this.immune){
+			return;
+		}
+		if(this.health <= 0){
+			return;
+		}
+		this.FlashTint();
+		this.health -= amount;
+		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 
-			console.log("OUCHING PLAYER, health: " + this.health);
+		
+		sceneData.HUD.setHealth(this.health);
+		this.immune = true;
+		game.time.events.add(this.immunityDuration, () => {
+			this.immune = false;
+		});
 
-			if (this.health <= 0) {
-				this.health = 0;
-				console.log('You are DEAD')
-			}
+		console.log("OUCHING PLAYER, health: " + this.health);
+
+		if (this.health <= 0) {
+			console.log('You are DEAD')
 		}
 	}
 }

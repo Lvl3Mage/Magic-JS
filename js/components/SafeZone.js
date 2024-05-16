@@ -44,7 +44,6 @@ class SafeZone extends Component {
 			this.safeZoneTimer += game.time.elapsed * 0.001;
 		}
 		this.safeZoneTimer = Mathf.Clamp(this.safeZoneTimer, 0, this.safeZoneTimerMax);
-		console.log(this.playerOverlap)
 		this.playerOverlap = false;
 	}
 
