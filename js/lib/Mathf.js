@@ -40,4 +40,9 @@ class Mathf
 	static SmoothMin(a, b, k){
 		return -Mathf.SmoothMax(-a, -b, k);
 	}
+	static Activation01(x, slope){
+		const powX = Math.pow(x, slope);
+		const invPowX = Math.pow(1-x, slope);
+		return powX / (powX + invPowX);
+	}
 }

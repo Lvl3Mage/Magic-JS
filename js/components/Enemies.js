@@ -14,7 +14,7 @@ class Enemy extends Component {
 
 		//Jump Settings
 		this.jumpFrequency = 8;
-		this.jumpHeightFactor = 0.5;
+		this.jumpHeightFactor = 0.7;
 
 		this.jumpSqueeze = 0.2;
 		this.jumpSqueezeSharpness = 0.5;
