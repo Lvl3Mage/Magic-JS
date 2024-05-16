@@ -14,7 +14,7 @@ class Player extends Component {
 
 
 		//Player Parameters
-		this.maxVelocity = 300;
+		Object.defineProperty(this, 'maxVelocity', { get: () =>  gameConfig.playerStats.maxVelocity});
 		this.accelerationFactor = 0.1;
 		this.maxTilt = 25;
 		this.bopFreq = 15;
@@ -28,13 +28,14 @@ class Player extends Component {
 		this.shadowJumpAlpha = 0.4;
 		this.shadowAnchor = new Vector2(0.5, 0.6);
 
-		this.immunityDuration = 500;
+		Object.defineProperty(this, 'immunityDuration', { get: () =>  gameConfig.playerStats.immunityDuration});
 		this.immune = false;
 
 		this.colliderScale = new Vector2(0.5,0.7);
 
 		//
-		this.maxHealth = 100;
+		//
+		Object.defineProperty(this, 'maxHealth', { get: () =>  gameConfig.playerStats.maxHealth});
 		this.health = this.maxHealth;
 
 		//Hand Parameters

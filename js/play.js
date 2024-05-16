@@ -13,7 +13,29 @@ let numOfcollectable;
 
 let eventSystem;
 let sceneData;
-
+let gameConfig;
+function FormConfig(configData, difficulty){
+	let defaultConfig = configData['default'];
+	let difficultyConfig = configData.diffucultyOverrides[difficulty];
+	ApplyObjectOverride(defaultConfig, difficultyConfig);
+	return defaultConfig;
+}
+function ApplyObjectOverride(main, override){
+	for(let key in override){
+		if(typeof override[key] === 'object'){
+			if(!main[key]){
+				main[key] = {};
+			}
+			ApplyObjectOverride(main[key], override[key]);
+		}
+		else{
+			if(!main[key]){
+				console.warn('Key not found in main object, applying override anyways:', key);
+			}
+			main[key] = override[key];
+		}
+	}
+}
 let playState = {
 	preload: function() {
 		//Healthbar
@@ -23,6 +45,7 @@ let playState = {
 		game.load.image('xp', 'assets/imgs/INTpoints.png');
 		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
 		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.json('config', 'assets/levels/config.json');
 
 		//Player
 		game.load.image('shadow', 'assets/imgs/PLACEHOLDERS/shadow.png');
@@ -34,17 +57,19 @@ let playState = {
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
 	},
 	create: function() {
-		game.time.advancedTiming = true;
+		const gameConfigData = game.cache.getJSON('config');
+		gameConfig = FormConfig(gameConfigData, difficulty);
+
+
 		eventSystem = new EventSystem();
-		sceneData = {};
-
-
 		game.physics.p2.setPostBroadphaseCallback(function (body1, body2) {
 			eventSystem.CallEvent("on-physics-overlap", [body1, body2]);
 			return true;
 		});
 
 
+
+		sceneData = {};
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
@@ -82,7 +107,6 @@ let playState = {
 			],
 			sceneData.layers.background
 		);
-		console.log(game.world.width, game.world.height);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
 	
 
@@ -92,10 +116,14 @@ let playState = {
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		sceneData.store = new Store(eventSystem);
 
-		sceneData.enemiesSpawned = 0;
+		const spawnPoints = {
+			'greenSlime': [
+				{x: 100, y: 100},
+			],
+		};
 
-		//Begin spawning enemies
-		game.time.events.add(spawnDelay, spawnEnemies, this);
+		sceneData.enemyManager = new EnemyManager(eventSystem, spawnPoints);
+
 
 		eventSystem.CallEvent("post-scene-create", []);
 
@@ -106,7 +134,7 @@ let playState = {
 		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
 		//game.time.advancedTiming = true;
 
-		if (sceneData.HUD.score >= 20) {
+		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
 			gameWin = true;
 			game.state.start('endScreen');
 		}
@@ -150,12 +178,4 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 		}
 	});
 	return tilemap
-}
-function spawnEnemies() {
-	//Checking if the number of enemies has been surpassed
-	if(sceneData.enemiesSpawned < maxEnemies){
-		const newEnemy = new Enemy(eventSystem);
-	}
-	//Making time for the next enemy to spawn
-	game.time.events.add(spawnDelay, spawnEnemies, this);
 }

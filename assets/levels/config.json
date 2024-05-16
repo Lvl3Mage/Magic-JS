@@ -1,0 +1,55 @@
+{
+    "default": {
+        "winExp": 1000,
+        "enemies": {
+            "greenSlime": {
+                "maxAmount": 20,
+                "spawnDelay": 0.1,
+                "stats": {
+                    "maxHealth": 10,
+                    "damage": 5,
+                    "jumpFrequency": 8,
+                    "roamSpeed": 300,
+                    "attackSpeed": 1000
+                }
+            }
+        },
+        "playerStats": {
+            "maxHealth": 1000,
+            "maxVelocity": 300,
+            "immunityDuration": 500,
+            "attacks": {
+                "light": {
+                    "damage": 10,
+                    "speed": 500,
+                    "delay": 500,
+                    "range": 3000
+                }
+            }
+        },
+        "upgrades": {
+            "health": {
+                "stages": [
+                    {
+                        "changes": [
+                            {
+                                "property": "playerStats.maxHealth",
+                                "add": 20,
+                                "set": 20
+                            }
+                        ],
+                        "cost": 10
+                    }
+                ],
+                "repeatLast": true
+            }
+        }
+    },
+    "diffucultyOverrides": {
+        "easy": {
+            "playerStats": {
+                "maxVelocity": 800
+            }
+        }
+    }
+}
