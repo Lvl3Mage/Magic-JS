@@ -168,15 +168,13 @@ class Enemy extends Component {
 
 	}
 
-	
-
 	onPlayerCollision(selfBody, playerBody){
 		let player = playerBody.getParentComponent();
 		player.takeDamage(10);
 	}
 
 	BeforeDestroy(){
-		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
+		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`); //pasarle una funciona cuando colisiones con el jugador y un sprite
 		this.sprite.destroy();
 		this.shadow.destroy();
 		sceneData.enemiesSpawned --;

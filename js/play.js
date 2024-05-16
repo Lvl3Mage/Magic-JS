@@ -15,6 +15,8 @@ let numOfcollectable;
 let eventSystem;
 let sceneData;
 
+let debuging = true;
+
 let playState = {
 	preload: function() {
 		//Healthbar
@@ -110,11 +112,13 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
+		if(debuging) cheatAcctions();
 		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
 		//game.time.advancedTiming = true;
 
 		if (sceneData.HUD.score >= 200000) {
 			gameWin = true;
+			totalScore = sceneData.HUD.scoreTotal;
 			game.state.start('endScreen');
 		}
 	},
@@ -164,7 +168,7 @@ function setUpStore(){
 	let statePrice = [50, 100, 150, 200, 300, 400, 600, `---`];
 	let posX = 150;
 	let posY = 150;
-	let debug = true;
+	let debug = debuging;
 	new Store(eventSystem, new Vector2(posX, posY),
 		{
 			spriteName: "upgradeVelocity",
@@ -216,6 +220,15 @@ function setUpStore(){
 				return state;
 			}
 		});
+}
+
+function cheatAcctions(){
+	if (debuging) {
+		let killKey = game.input.keyboard.addKey(Phaser.Keyboard.K);
+		if (killKey.isDown) {
+			sceneData.player.takeDamage(sceneData.player.maxHealth);
+		}
+	}
 }
 
 

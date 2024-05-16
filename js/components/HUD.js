@@ -23,7 +23,7 @@ class HUD extends Component {
 
 		this.padding = new Vector2(10,10);
 		this.rightScreen = game.camera.width - 10;
-		this.centerScreen = game.camera.width / 2; 
+		this.centerScreen = game.camera.width / 2;
 		this.leftScreen = 10;
 		this.styleHUD = {font: '26px Merryweather', fill: '#FFFFFF'};
 
@@ -95,7 +95,7 @@ class HUD extends Component {
 		this.healthBarFill.mask = this.healthBarMask;
 		this.updateHealthbarMask();
 	}
-	
+
 	setScore(score){
 		this.score += score;
 		this.scoreTotal += Math.abs(score);
