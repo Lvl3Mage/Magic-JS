@@ -63,7 +63,7 @@ class Player extends Component {
 		this.body.addCapsule(apparentScale.y-apparentScale.x, apparentScale.x/2, 0, -apparentScale.y*0.5, Mathf.Deg2Rad(90));
 
 		this.body.setCollisionGroup(sceneData.collisionGroups.player);
-		this.body.collides([sceneData.collisionGroups.enemies, sceneData.collisionGroups.collectables, sceneData.collisionGroups.walls]);
+		this.body.collides([sceneData.collisionGroups.enemies, sceneData.collisionGroups.collectables, sceneData.collisionGroups.walls, sceneData.collisionGroups.store]);
 		this.body.getParentComponent = () => this;
 
 		this.sprite.anchor.setTo(0.5, 1);
@@ -238,7 +238,7 @@ class Player extends Component {
 	GetHandPosition(){
 		const localHandPos = new Vector2(this.handSprite.x, this.handSprite.y);
 		const worldHandPos = CoordUtils.TransformPoint(localHandPos, this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
-		return worldHandPos;
+		return worldHandPos; //vector2
 	}
 	GetRootPosition(){
 		return new Vector2(this.sprite.x, this.sprite.y);

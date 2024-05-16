@@ -55,7 +55,7 @@ class SafeZone extends Component {
 		if(!body2.data.shapes){return;}
 		if(body2.data.shapes.length == 0){return;}
 		let groups = [body1.data.shapes[0].collisionGroup, body2.data.shapes[0].collisionGroup];
-		if(groups.some(group => group === sceneData.collisionGroups.player.mask) && 
+		if(groups.some(group => group === sceneData.collisionGroups.player.mask) &&
 			groups.some(group => group === sceneData.collisionGroups.safeZones.mask)){
 			this.playerOverlap = true;
 		}

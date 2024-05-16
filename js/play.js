@@ -5,7 +5,7 @@
 // const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
-let maxEnemies = 10;
+let maxEnemies = 0;
 let spawnDelay = 1000;
 let enemiesSpawned = 0;
 
@@ -34,10 +34,10 @@ let playState = {
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
 
 		//Store
-		game.load.image('StoreVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
-		game.load.image('StoreDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
-		game.load.image('StoreVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
-		game.load.image('StoreAmountProjectile', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
+		game.load.image('upgradeVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
+		game.load.image('upgradeDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
+		game.load.image('upgradeVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
+		game.load.image('upgradeAmountProjectile', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 	},
 	create: function() {
 
@@ -59,6 +59,7 @@ let playState = {
 			safeZones: game.physics.p2.createCollisionGroup(),
 			bounds: game.physics.p2.createCollisionGroup(),
 			walls: game.physics.p2.createCollisionGroup(),
+			store: game.physics.p2.createCollisionGroup(),
 		};
 		sceneData.layers = {
 			background: game.add.group(),
@@ -95,7 +96,7 @@ let playState = {
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
-		sceneData.store = new Store(eventSystem);
+		setUpStore();
 
 		sceneData.enemiesSpawned = 0;
 
@@ -149,6 +150,31 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 	});
 	return tilemap
 }
+
+function setUpStore(){
+	let state = 0;
+	let statePrice = [50, 100, 150, 200, 250, 300, 500];
+	new Store(eventSystem, new Vector2(100, 100),
+		{
+			spriteName: "upgradeVelocity",
+			spriteScale: new Vector2(0.03,0.03),
+			debug: true,
+			action: function(){
+				if (sceneData.HUD.score >= statePrice[state]) {
+					state ++;
+					sceneData.HUD.setScore(-statePrice[state]);
+					console.log(`Mejora velocidad de ${maxVelocity} a ${maxVelocity+100}.`);
+					sceneData.player.maxVelocity += 100;
+				}
+			}
+		});
+}
+
+
+
+
+
+
 function spawnEnemies() {
 	//Checking if the number of enemies has been surpassed
 	if(sceneData.enemiesSpawned < maxEnemies){
