@@ -305,7 +305,9 @@ class Player extends Component {
 		console.log("OUCHING PLAYER, health: " + this.health);
 
 		if (this.health <= 0) {
-			console.log('You are DEAD')
+			
+			game.camera.fade(0x000000, 2000);
+			game.state.start('endScreen');
 		}
 	}
 }

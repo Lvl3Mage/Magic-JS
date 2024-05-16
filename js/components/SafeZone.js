@@ -21,6 +21,9 @@ class SafeZone extends Component {
        	this.playerOverlap = false;
        	this.safeZoneTimerMax = 10;
        	this.safeZoneTimer = this.safeZoneTimerMax;
+
+		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY, '', { font: '50px Merryweather', fill: '#000000' });
+		this.safeZoneText.anchor.setTo(0.5, 0.5);
 	}
 
 	Update(){
@@ -28,6 +31,7 @@ class SafeZone extends Component {
 		const safeZoneBounds = this.sprite.getBounds();
 
 		this.ProcessPlayerOverlap()
+		this.updateTimer();
 	}
 	ProcessPlayerOverlap(){
 		if(this.playerOverlap){
@@ -38,6 +42,7 @@ class SafeZone extends Component {
 			game.camera.shake(intensity,50,true);
 			if(this.safeZoneTimer <= 0){
 				console.log("AWOOGA")
+				game.state.start('endScreen');
 			}
 		}
 		else{
@@ -58,5 +63,9 @@ class SafeZone extends Component {
 			groups.some(group => group === sceneData.collisionGroups.safeZones.mask)){
 			this.playerOverlap = true;
 		}
+	}
+
+	updateTimer(){
+		this.safeZoneText.text = Math.round(this.safeZoneTimer)
 	}
 }

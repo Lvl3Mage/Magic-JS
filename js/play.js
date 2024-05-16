@@ -104,6 +104,13 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
+		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		//game.time.advancedTiming = true;
+
+		if (sceneData.HUD.score >= 20) {
+			gameWin = true;
+			game.state.start('endScreen');
+		}
 	},
 };
 
