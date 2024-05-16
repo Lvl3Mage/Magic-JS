@@ -9,6 +9,7 @@ const config = {
 	},
 }
 let game = new Phaser.Game(config);
+let gameWin = false;
 
 // Entry point
 window.onload = startGame;

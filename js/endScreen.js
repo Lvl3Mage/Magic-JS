@@ -7,7 +7,7 @@ let endState = {
 function loadAssets() {
     // Load the background image and title
     //game.load.image('', 'assets/imgs/stars.png');
-    game.load.image('winbg', 'assets/imgs/PLACEHOLDERS/winScreen.png');
+    game.load.image('winbg', 'assets/imgs/Titles/winscreen.png');
     game.load.image('endbg', 'assets/imgs/PLACEHOLDERS/endScreen.jpeg');
 }
 
@@ -17,12 +17,10 @@ function display() {
     game.camera.flash(0x000000, 1000); //Game fades in
     game.input.enabled = true;
 
-    let iswin = true;
-
-    if (iswin) {
-        win();
-    } else {
+    if (!gameWin) {
         gameOver();
+    } else {
+        win();
     }
 
     //Buttons
@@ -44,13 +42,11 @@ function gameOver(){
 
 function imagebg(image){
     background = game.add.image(0, 0, image);
-    // background.scale.setTo(0.4, 0.4);
     background.width = game.width;
     background.height = game.height;
     background.anchor.setTo(0.5, 0.5);
     background.x = game.width / 2;
     background.y = game.height / 2;
-    background.alpha = 0.4;
 }
 
 function createBtn(posX, posY, text, fun){
