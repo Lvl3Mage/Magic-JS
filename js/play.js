@@ -5,7 +5,7 @@
 // const COLUMNS = GAME_STAGE_HEIGHT / TILE_SIZE;
 let levelConfig;
 
-let maxEnemies = 0;
+let maxEnemies = 10;
 let spawnDelay = 1000;
 let enemiesSpawned = 0;
 

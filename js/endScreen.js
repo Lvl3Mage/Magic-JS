@@ -8,7 +8,7 @@ function loadAssets() {
     // Load the background image and title
     //game.load.image('', 'assets/imgs/stars.png');
     game.load.image('winbg', 'assets/imgs/Titles/winscreen.png');
-    game.load.image('endbg', 'assets/imgs/PLACEHOLDERS/endScreen.jpeg');
+    game.load.image('endbg', 'assets/imgs/Titles/losescreen.png');
 }
 
 let btnReturnStart;
@@ -18,17 +18,17 @@ function display() {
     game.input.enabled = true;
 
     if (!gameWin) {
-        gameOver();
-    } else {
-        win();
-    }
+         gameOver();
+     } else {
+         win();
+     }
 
     //Buttons
     let posX = game.camera.width / 2;
     let posY = game.camera.height / 2;
-    let style = {font: '25px Merryweather', fill: '#FFFFFF'};
-    let btnHome = createBtn(posX - 100, posY+500, `Home screen`, onHomeBtnPressed);
-    let btnRestart = createBtn(posX + 100, posY+500, `Restart`, onStartBtnPressed);
+    let style = {font: '25px Merriweather', fill: '#FFFFFF'};
+    let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came...`, onHomeBtnPressed, style);
+    let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
     // let scoreTotal = createText(posX, posY, `Total score: ` + sceneData.HUD.getScoreTotal(), style);
 }
 
@@ -49,11 +49,11 @@ function imagebg(image){
     background.y = game.height / 2;
 }
 
-function createBtn(posX, posY, text, fun){
-    let btn = game.add.text(posX, posY, text, { font: '50px Merryweather', fill: '#000000' });
+function createBtn(posX, posY, text, func){
+    let btn = game.add.text(posX, posY, text, {font: '30px Merriweather', fill: '#FFFFFF'});
     btn.anchor.setTo(0.5, 0.5);
     btn.inputEnabled = true;
-    btn.events.onInputDown.add(fun, this); // Add click event listener
+    btn.events.onInputDown.add(func, this); // Add click event listener
     btn.events.onInputOver.add(onBtnHover, this); // Add hover event listener
     btn.events.onInputOut.add(onBtnOut, this); // Add hover out event listener
     return btn;
