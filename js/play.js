@@ -40,7 +40,7 @@ let playState = {
 		game.load.image('upgradeAmountProjectile', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 	},
 	create: function() {
-
+		game.time.advancedTiming = true;
 		eventSystem = new EventSystem();
 		sceneData = {};
 
@@ -54,6 +54,7 @@ let playState = {
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
+			// enemyHitbox: game.physics.p2.createCollisionGroup(),
 			projectiles: game.physics.p2.createCollisionGroup(),
 			collectables: game.physics.p2.createCollisionGroup(),
 			safeZones: game.physics.p2.createCollisionGroup(),
@@ -92,8 +93,8 @@ let playState = {
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
 
 
-		sceneData.player = new Player(eventSystem);
 		sceneData.HUD = new HUD(eventSystem);
+		sceneData.player = new Player(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		setUpStore();
@@ -109,6 +110,13 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
+		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		//game.time.advancedTiming = true;
+
+		if (sceneData.HUD.score >= 20) {
+			gameWin = true;
+			game.state.start('endScreen');
+		}
 	},
 };
 

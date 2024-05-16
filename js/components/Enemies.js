@@ -14,7 +14,7 @@ class Enemy extends Component {
 
 		//Jump Settings
 		this.jumpFrequency = 8;
-		this.jumpHeightFactor = 0.5;
+		this.jumpHeightFactor = 0.7;
 
 		this.jumpSqueeze = 0.2;
 		this.jumpSqueezeSharpness = 0.5;
@@ -28,9 +28,9 @@ class Enemy extends Component {
 
 		//Behaviour settings
 		this.maxVelocity = 400;
-		this.attackVelocity = 800;
+		this.attackVelocity = 1000;
 		this.accelerationFactor = 0.1;
-		this.attackDistance = 300;
+		this.attackDistance = 600;
 		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
 		this.moveTimer = Math.random()*this.moveDelay;
 

@@ -1,115 +1,127 @@
 class HUD extends Component {
-    constructor(eventSystem) {
-        super(eventSystem);
-        eventSystem.Subscribe("scene-update", this.Update, this);
+	constructor(eventSystem) {
+		super(eventSystem);
+		eventSystem.Subscribe("scene-update", this.Update, this);
 
-        this.score = 0;
-        this.scoreText;
+		this.score = 0;
+		this.scoreText;
 
-        this.level = 1;
-        this.levelText;
+		this.level = 1;
+		this.levelText;
 
-        this.livesMax = 3;
-        // this.livesMax = sceneData.player.maxHealth;
-        this.livesBar;
-        this.livesBarOutline;
-        this.livesCurrent = this.livesMax;
-        // this.livesCurrent = sceneData.player.health;
-        this.livesScale = 1.5;
+		this.maxHealth = 1;
+		this.health = 0;
+		this.smoothHealth = this.health;
+		this.smoothFactor = 0.1;
 
-        this.rightScreen = game.camera.width - 10;
-        this.centerScreen = game.camera.width / 2;  // Ya veremos como escala
-        this.leftScreen = 10;
-        this.allY = 10; //game.world.height
-        this.styleHUD = {font: '26px Merryweather', fill: '#FFFFFF'};
+		this.maskPaddingLeft = 20;
+		this.maskPaddingRight = 30;
 
-        this.scoreTotal; //score que aparecera en la pantalla final
-        this.collectibleTotal; //Total de collectibles recogidos
-        this.createHUD();
+		this.livesBar;
+		this.livesBarOutline;
+		this.livesScale = 1.5;
+
+		this.padding = new Vector2(10,10);
+		this.rightScreen = game.camera.width - 10;
+		this.centerScreen = game.camera.width / 2; 
+		this.leftScreen = 10;
+		this.styleHUD = {font: '26px Merryweather', fill: '#FFFFFF'};
+
+		this.scoreTotal; //score que aparecera en la pantalla final
+		this.collectibleTotal; //Total de collectibles recogidos
+		this.createHUD();
 	}
 	Update(){
+		this.updateHealthbarMask();
+	}
+	updateHealthbarMask(){
+		this.smoothHealth = Mathf.Lerp(this.smoothHealth, this.health, this.smoothFactor);
+		this.healthBarMask.clear();
+		this.healthBarMask.beginFill(0xfff);
+		let t = (this.smoothHealth/this.maxHealth);
+		const width = this.healthBar.width - this.maskPaddingLeft - this.maskPaddingRight;
+		this.healthBarMask.drawRect(this.healthBar.cameraOffset.x + this.maskPaddingLeft, this.healthBar.cameraOffset.y, width * t, this.healthBar.height);
+		this.healthBarMask.endFill();
 	}
 
 
 
+	createHUD() {
+		// this.bg = game.add.tileSprite(0, 0, game.camera.width, 150, 'hudWall');
+		// this.bg.fixedToCamera = true;
+		// this.bg.tint = 0xAAAAAA;
+		this.createScoreText();
+		this.createLevelText();
+		this.createHealthbar();
+	}
 
-    createHUD() {
-        // this.bg = game.add.tileSprite(0, 0, game.camera.width, 150, 'hudWall');
-        // this.bg.fixedToCamera = true;
-        // this.bg.tint = 0xAAAAAA;
-        this.createScoreText();
-        this.createLevelText();
-        this.createLiveBar();
-    }
+	createText(posSreenX, posSreenY, posX, posY, text){
+		let btn;
+		btn = game.add.text(posX, posY, text, this.styleHUD);
+		btn.anchor.setTo(posSreenX, posSreenY);
+		btn.fixedToCamera = true;
+		btn.cameraOffset = new Phaser.Point(posX, posY);
+		return btn;
+	}
 
-    createText(posSreenX, posSreenY, posX, posY, text){
-        let btn;
-        btn = game.add.text(posX, posY, text, this.styleHUD);
-        btn.anchor.setTo(posSreenX, posSreenY);
-        btn.fixedToCamera = true;
-        btn.cameraOffset = new Phaser.Point(posX, posY);
-        return btn;
-    }
+	createScoreText(){
+		//Si estan creados destruimos los textos porque las variables no se sobreescriben
+		if (this.scoreText)
+			this.scoreText.destroy();
 
-    createScoreText(){
-        //Si estan creados destruimos los textos porque las variables no se sobreescriben
-        if (this.scoreText)
-            this.scoreText.destroy();
+		this.scoreText = this.createText(1, 0, this.rightScreen, this.padding.y, 'Intelligence: ' + this.score);
+	}
 
-        this.scoreText = this.createText(1, 0, this.rightScreen, this.allY, 'Intelligence: ' + this.score);
-    }
+	createLevelText(){
+		if (this.levelText)
+			this.levelText.destroy();
 
-    createLevelText(){
-        if (this.levelText)
-            this.levelText.destroy();
+		this.levelText = this.createText(0.5, 0, this.centerScreen, this.padding.y, 'Level: ' + this.level);
+	}
 
-        this.levelText = this.createText(0.5, 0, this.centerScreen, this.allY, 'Level: ' + this.level);
-    }
+	createHealthbar(){
 
-    createLiveBar(){
-        this.livesBar = game.add.sprite(this.healthX, this.allY, 'healthbar_mask_red');
-        this.livesBar.fixedToCamera = true;
-        this.livesBar.cameraOffset = new Phaser.Point(this.healthX, this.allY);
+		this.healthBarFill = game.add.sprite(this.padding.x, this.padding.y, 'healthbar_mask_red');
+		this.healthBarFill.scale.setTo(this.livesScale, this.livesScale);
+		this.healthBarFill.fixedToCamera = true;
 
-        if(this.barMask)
-            this.barMask.destroy();
+		this.healthBar = game.add.sprite(this.padding.x, this.padding.y, 'healthbar_outline');
+		this.healthBar.scale.setTo(this.livesScale, this.livesScale);
+		this.healthBar.fixedToCamera = true;
 
-        let barMask = game.add.graphics(0,0);
-        this.barMask = barMask;
-        barMask.beginFill(0xfff);
-        barMask.drawRect(this.healthX, this.allY, this.livesBar.width * this.livesScale * (this.livesCurrent/this.livesMax), this.livesBar.height * this.livesScale);
-        barMask.endFill();
-        barMask.fixedToCamera = true;
-        this.livesBar.mask = barMask;
+		this.healthBarMask = game.add.graphics(0,0);
+		this.healthBarMask.fixedToCamera = true;
 
-        this.livesBarOutline = game.add.sprite(this.healthX, this.allY, 'healthbar_outline');
-        this.livesBarOutline.fixedToCamera = true;
-        this.livesBarOutline.cameraOffset = new Phaser.Point(this.healthX, this.allY);
+		this.healthBarFill.mask = this.healthBarMask;
+		this.updateHealthbarMask();
+	}
+	
+	setScore(score){
+		this.score += score;
+		this.scoreTotal += Math.abs(score);
+		this.createScoreText();
+	}
 
-        this.livesBar.scale.setTo(this.livesScale, this.livesScale);
-        this.livesBarOutline.scale.setTo(this.livesScale, this.livesScale);
-    }
+	setLevel(level){
+		this.level += level;
+		this.createLevelText();
+	}
 
-    setScore(score){
-        this.score += score;
-        this.scoreTotal += Math.abs(score);
-        this.createScoreText();
-    }
+	setHealth(newHealth, interpolate = true){
+		this.health = newHealth;
+		if(!interpolate){
+			this.smoothHealth = this.health;
+		}
+		console.log(this.health, this.maxHealth, this.health/this.maxHealth);
+		this.updateHealthbarMask();
+	}
 
-    setLevel(level){
-        this.level += level;
-        this.createLevelText();
-    }
+	setMaxHealth(newMaxHealth){
+		this.maxHealth = newMaxHealth;
+		this.updateHealthbarMask();
+	}
 
-    setlives(lives){
-        this.livesCurrent += lives;
-    }
-
-    setlivesMax(lives){
-        this.livesMax += lives;
-    }
-
-    getScoreTotal(){
-        return this.scoreTotal;
-    }
+	getScoreTotal(){
+		return this.scoreTotal;
+	}
 }
