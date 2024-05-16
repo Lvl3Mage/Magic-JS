@@ -13,7 +13,9 @@ class Enemy extends Component {
 		this.shadowAnchor = new Vector2(0.5, 0.5);
 
 		//Jump Settings
-		this.jumpFrequency = 8;
+		Object.defineProperty(this, 'jumpFrequency', { 
+			get: () =>  gameConfig.enemies[this.enemyType].stats.jumpFrequency
+		});
 		this.jumpHeightFactor = 0.7;
 
 		this.jumpSqueeze = 0.2;
@@ -27,10 +29,22 @@ class Enemy extends Component {
 		this.shadowJumpScale = 0.7;
 
 		//Behaviour settings
-		this.maxVelocity = 400;
-		this.attackVelocity = 1000;
+		//
+		Object.defineProperty(this, 'roamVelocity', { 
+			get: () =>  gameConfig.enemies[this.enemyType].stats.roamVelocity
+		});
+		Object.defineProperty(this, 'damage', { 
+			get: () =>  gameConfig.enemies[this.enemyType].stats.damage
+		});
+
+		Object.defineProperty(this, 'attackVelocity', { 
+			get: () =>  gameConfig.enemies[this.enemyType].stats.attackVelocity
+		});
 		this.accelerationFactor = 0.1;
-		this.attackDistance = 600;
+
+		Object.defineProperty(this, 'attackRange', { 
+			get: () =>  gameConfig.enemies[this.enemyType].stats.attackRange
+		});
 		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
 		this.moveTimer = Math.random()*this.moveDelay;
 
@@ -82,7 +96,7 @@ class Enemy extends Component {
 	Move(){
 		let targetVelocity;
 		if (!this.isAggressive()) {
-			targetVelocity = this.roamDirection.Scale(this.maxVelocity);
+			targetVelocity = this.roamDirection.Scale(this.roamVelocity);
 		}
 		else {
 			targetVelocity = this.GetAttackDirection().Scale(this.attackVelocity);
@@ -159,7 +173,7 @@ class Enemy extends Component {
 		let delta = enemyPos.Sub(playerPos);
 		let distance = delta.Length();
 
-		if (distance < this.attackDistance){
+		if (distance < this.attackRange){
 			return true;
 		}
 		return false;
@@ -172,7 +186,7 @@ class Enemy extends Component {
 
 	onPlayerCollision(selfBody, playerBody){
 		let player = playerBody.getParentComponent();
-		player.takeDamage(10);
+		player.takeDamage(this.damage);
 	}
 	SpawnCollectable(){
 		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);

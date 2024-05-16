@@ -123,10 +123,14 @@ let playState = {
 		setUpStore();
 
 		const spawnPoints = {
-			'greenSlime': [
-				{x: 100, y: 100},
-			],
 		};
+		for(let enemyType of Object.keys(gameConfig.enemies)){
+			const points = tilemap.objects[enemyType];
+			spawnPoints[enemyType] = [];
+			for(let point of points){
+				spawnPoints[enemyType].push(new Vector2(point.x, point.y));
+			}
+		}
 
 		sceneData.enemyManager = new EnemyManager(eventSystem, spawnPoints);
 
@@ -137,7 +141,7 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
-		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
 		//game.time.advancedTiming = true;
 		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
 			gameWin = true;

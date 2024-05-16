@@ -9,8 +9,9 @@
                     "maxHealth": 10,
                     "damage": 5,
                     "jumpFrequency": 8,
-                    "roamSpeed": 300,
-                    "attackSpeed": 1000
+                    "roamVelocity": 300,
+                    "attackVelocity": 1000,
+                    "attackRange": 600
                 }
             }
         },
