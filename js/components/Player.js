@@ -232,7 +232,7 @@ class Player extends Component {
 		}
 		const bop = this.GetPlayerBop();
 		return CoordUtils.TransformPoint(new Vector2(offset.x, -this.sprite.height*(0.5 + offset.y + bop - 1)), this.GetRootPosition(), Mathf.Deg2Rad(this.sprite.angle));
-			
+
 	}
 
 	//Public Methods
