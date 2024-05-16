@@ -53,8 +53,13 @@ let playState = {
 		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 		game.load.image('bullet', 'assets/imgs/bullet.png')
 
-
 		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
+
+		//Store
+		game.load.image('upgradeVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
+		game.load.image('upgradeDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
+		game.load.image('upgradeVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
+		game.load.image('heal', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 	},
 	create: function() {
 		const gameConfigData = game.cache.getJSON('config');
@@ -79,6 +84,7 @@ let playState = {
 			safeZones: game.physics.p2.createCollisionGroup(),
 			bounds: game.physics.p2.createCollisionGroup(),
 			walls: game.physics.p2.createCollisionGroup(),
+			store: game.physics.p2.createCollisionGroup(),
 		};
 		sceneData.layers = {
 			background: game.add.group(),
@@ -90,10 +96,10 @@ let playState = {
 			UI: game.add.group(),
 		};
 		let tilemap = SetupTilemap(
-			'levelMap', 
+			'levelMap',
 			[
 				{innerKey: 'WallsTileset', imageKey: 'Floor'}
-			], 
+			],
 			[
 				"Floor",
 				{
@@ -108,13 +114,13 @@ let playState = {
 			sceneData.layers.background
 		);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
-	
+
 
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.player = new Player(eventSystem);
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
-		sceneData.store = new Store(eventSystem);
+		setUpStore();
 
 		const spawnPoints = {
 			'greenSlime': [
@@ -133,7 +139,6 @@ let playState = {
 		eventSystem.CallEvent("scene-update", []);
 		//game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
 		//game.time.advancedTiming = true;
-
 		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
 			gameWin = true;
 			game.state.start('endScreen');
@@ -177,5 +182,78 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 			defaultParent.addChild(mapLayers[config.name]);
 		}
 	});
-	return tilemap
+	return tilemap;
+}
+
+function setUpStore(){
+	let state = 0;
+	let statePrice = [50, 100, 150, 200, 300, 400, 600, `---`];
+	let posX = 150;
+	let posY = 150;
+	let debug = true;
+	new Store(eventSystem, new Vector2(posX, posY),
+		{
+			spriteName: "upgradeVelocity",
+			spriteScale: new Vector2(0.03,0.03),
+			debug: debug,
+			statePrice: statePrice,
+			state: state,
+			action: function(){
+				if (sceneData.HUD.score >= statePrice[state]) {
+					sceneData.HUD.setScore(-statePrice[state]);
+					console.log(`Mejora velocidad de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
+					sceneData.player.maxVelocity += 50;
+					state ++;
+				}
+				return state;
+			}
+		});
+	new Store(eventSystem, new Vector2(posX + 150, posY),
+		{
+			spriteName: "upgradeDamage",
+			spriteScale: new Vector2(0.05,0.05),
+			debug: debug,
+			statePrice: statePrice,
+			state: state,
+			action: function(){
+				if (sceneData.HUD.score >= statePrice[state]) {
+					sceneData.HUD.setScore(-statePrice[state]);
+					console.log(`Mejora daño de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
+					sceneData.player.maxVelocity += 50;
+					state ++;
+				}
+				return state;
+			}
+		});
+	new Store(eventSystem, new Vector2(posX + 300, posY),
+		{
+			spriteName: "heal",
+			spriteScale: new Vector2(0.1,0.1),
+			debug: debug,
+			statePrice: statePrice,
+			state: state,
+			action: function(){
+				if (sceneData.HUD.score >= statePrice[state]) {
+					sceneData.HUD.setScore(-statePrice[state]);
+					console.log(`Curacion de ${sceneData.player.health} a ${sceneData.player.health+20} y me ha costado ${-statePrice[state]}.`);
+					sceneData.player.Heal(20);
+					state ++;
+				}
+				return state;
+			}
+		});
+}
+
+
+
+
+
+
+function spawnEnemies() {
+	//Checking if the number of enemies has been surpassed
+	if(sceneData.enemiesSpawned < maxEnemies){
+		const newEnemy = new Enemy(eventSystem);
+	}
+	//Making time for the next enemy to spawn
+	game.time.events.add(spawnDelay, spawnEnemies, this);
 }

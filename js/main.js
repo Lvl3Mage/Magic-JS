@@ -28,6 +28,7 @@ function startGame() {
 	game.state.add('instructions', instructionState);
 	game.state.add('endScreen', endState);
 
+	
     game.state.start('play');
 }
 function configurePhysics(){

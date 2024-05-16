@@ -3,7 +3,7 @@ class SafeZone extends Component {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
-		
+
 		this.sprite = game.add.sprite(game.world.width / 2, game.world.height / 2);
         this.sprite.getParentComponent = () => this;
 
@@ -59,7 +59,7 @@ class SafeZone extends Component {
 		if(!body2.data.shapes){return;}
 		if(body2.data.shapes.length == 0){return;}
 		let groups = [body1.data.shapes[0].collisionGroup, body2.data.shapes[0].collisionGroup];
-		if(groups.some(group => group === sceneData.collisionGroups.player.mask) && 
+		if(groups.some(group => group === sceneData.collisionGroups.player.mask) &&
 			groups.some(group => group === sceneData.collisionGroups.safeZones.mask)){
 			this.playerOverlap = true;
 		}
