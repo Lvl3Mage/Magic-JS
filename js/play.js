@@ -20,11 +20,13 @@ let playState = {
 		//Healthbar
 		game.load.image('healthbar_outline', 'assets/imgs/healthbar_outline.png');
 		game.load.image('healthbar_mask_red', 'assets/imgs/healthbar_mask_red.png');
+		game.load.image('hudWall', 'assets/imgs/hudWall.png');
 		game.load.image('xp', 'assets/imgs/INTpoints.png');
 		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
 		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
 
 		//Player
+		game.load.image('shadow', 'assets/imgs/PLACEHOLDERS/shadow.png');
 		game.load.image('main-character', 'assets/imgs/mage.png');
 		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 		game.load.image('bullet', 'assets/imgs/bullet.png')
@@ -58,6 +60,15 @@ let playState = {
 			bounds: game.physics.p2.createCollisionGroup(),
 			walls: game.physics.p2.createCollisionGroup(),
 		};
+		sceneData.layers = {
+			background: game.add.group(),
+			shadows: game.add.group(),
+			player: game.add.group(),
+			enemies: game.add.group(),
+			projectiles: game.add.group(),
+			collectables: game.add.group(),
+			UI: game.add.group(),
+		};
 		let tilemap = SetupTilemap(
 			'levelMap',
 			[
@@ -71,8 +82,10 @@ let playState = {
 					collisionGroup: sceneData.collisionGroups.walls,
 					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
+					// parent: sceneData.layers.background
 				},
-			]
+			],
+			sceneData.layers.background
 		);
 		console.log(game.world.width, game.world.height);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
@@ -98,25 +111,25 @@ let playState = {
 	},
 };
 
-function SetupTilemap(tilemapKey, tilesets, layersConfig){
+function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 	let tilemap = game.add.tilemap(tilemapKey);
 	tilesets.forEach(tileset => {
 		tilemap.addTilesetImage(tileset.innerKey, tileset.imageKey);
 	});
-	let layers = {};
+	let mapLayers = {};
 	layersConfig.forEach(config => {
 		if(typeof config === 'string'){
 			config = {name: config};
 		}
-		layers[config.name] = tilemap.createLayer(config.name);
+		mapLayers[config.name] = tilemap.createLayer(config.name);
 		if(config.resizeWorld){
-			layers[config.name].resizeWorld();
+			mapLayers[config.name].resizeWorld();
 		}
 		if(config.debug){
-			layers[config.name].debug = true;
+			mapLayers[config.name].debug = true;
 		}
 		if(config.objectCollisions){
-			tilemap.setCollisionByExclusion([], true, layers[config.name]);
+			tilemap.setCollisionByExclusion([], true, mapLayers[config.name]);
 			tilemap.collision[config.name] = tilemap.objects[config.name];
 			const bodies = game.physics.p2.convertCollisionObjects(tilemap, config.name, true);
 			bodies.forEach(function (body) {
@@ -126,6 +139,12 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig){
 				}
 				body.collides(config.collideWith);
 			});
+		}
+		if(config.parent){
+			config.parent.addChild(mapLayers[config.name]);
+		}
+		else if(defaultParent){
+			defaultParent.addChild(mapLayers[config.name]);
 		}
 	});
 	return tilemap

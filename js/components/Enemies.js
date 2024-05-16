@@ -1,129 +1,184 @@
-const ENEMY_VELOCITY = 150;
-const ENEMY_DISTANCE_ATTACK = 300;
+
 
 
 class Enemy extends Component {
-    constructor(eventSystem) {
-        super(eventSystem);
-        //Subscribing to event systems here so that the enemy functions properly
-        eventSystem.Subscribe("scene-update", this.Update, this);
-
-        this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
-        this.moveTimer = Math.random()*this.moveDelay;
-
-        //Creating one enemy
-        const spawnX = Math.random() * (game.world.width);
-        const spawnY = Math.random() * (game.world.height);
-
-        this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
-        this.sprite.getParentComponent = () => this;
+	constructor(eventSystem) {
+		super(eventSystem);
+		//Subscribing to event systems here so that the enemy functions properly
+		eventSystem.Subscribe("scene-update", this.Update, this);
 
 
+		this.spriteScale = new Vector2(1, 1);
+		this.spriteAnchor = new Vector2(0.5, 0.5);
+		this.shadowAnchor = new Vector2(0.5, 0.5);
 
-        game.physics.p2.enable(this.sprite,false);
-        this.body = this.sprite.body;
-        this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
-        this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
-        this.body.collides(sceneData.collisionGroups.safeZones);
-        this.body.collides(sceneData.collisionGroups.enemies);
-        this.body.collides(sceneData.collisionGroups.projectiles);
-        this.body.collides(sceneData.collisionGroups.walls);
-        this.body.getParentComponent = () => this;
+		//Jump Settings
+		this.jumpFrequency = 8;
+		this.jumpHeightFactor = 0.5;
+
+		this.jumpSqueeze = 0.2;
+		this.jumpSqueezeSharpness = 0.5;
+
+		//shadow
+		this.shadowJumpAlpha = 0.4;
+		this.shadowAlpha = 0.1;
+
+		this.shadowScale = 0.5;
+		this.shadowJumpScale = 0.7;
+
+		//Behaviour settings
+		this.maxVelocity = 400;
+		this.attackVelocity = 800;
+		this.accelerationFactor = 0.1;
+		this.attackDistance = 300;
+		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
+		this.moveTimer = Math.random()*this.moveDelay;
+
+		//Creating one enemy
+		const spawnX = Math.random() * (game.world.width);
+		const spawnY = Math.random() * (game.world.height);
+
+		this.sprite = game.add.sprite(spawnX, spawnY, 'enemySprite');
+		this.sprite.anchor.setTo(0.5, 0);
+		this.sprite.getParentComponent = () => this;
+
+		this.shadow = game.add.sprite(spawnX, spawnY, 'shadow');
+		this.shadow.anchor.setTo(this.shadowAnchor.x, this.shadowAnchor.y);
+		this.shadow.scale.setTo(this.shadowScale, this.shadowScale);
+
+
+		game.physics.p2.enable(this.sprite,false);
+		this.body = this.sprite.body;
+		this.body.setCollisionGroup(sceneData.collisionGroups.enemies);
+		this.body.collides(sceneData.collisionGroups.player, this.onPlayerCollision, this);
+		this.body.collides([
+			sceneData.collisionGroups.safeZones,
+			sceneData.collisionGroups.walls,
+			sceneData.collisionGroups.projectiles,
+			sceneData.collisionGroups.enemies
+		]);
+		this.body.getParentComponent = () => this;
 
 
 
-        this.sprite.anchor.setTo(0.5, 0.5);
-        this.sprite.body.fixedRotation = true;
+		this.sprite.body.fixedRotation = true;
+		this.roamDirection = this.randomDirection();
 
-        this.direction = this.randomDirection();
 
-        sceneData.enemiesSpawned ++;
-    }
+		sceneData.layers.enemies.addChild(this.sprite);
+		sceneData.layers.shadows.addChild(this.shadow);
+		sceneData.enemiesSpawned ++;
+	}
 
-    Update() {
-        //The enemy behaviour will go here
-        if (!this.isAggressive()) {
-            this.moveAround();
-        }
-        else {
-            this.attack();
-        }
+	Update() {
+		//The enemy behaviour will go here
+		this.UpdateRoamDirection();
+		this.Move();
 
-        this.enemyJump();
-    }
+		this.UpdateJump();
 
-    moveAround() {
-        //I'll make the enemy follow a random path
-        const targetVelocity = this.direction.Scale(ENEMY_VELOCITY);
-        let curVelocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
-        curVelocity = Vector2.Lerp(curVelocity, targetVelocity, 0.1);
 
-        this.sprite.body.velocity.x = curVelocity.x;
-        this.sprite.body.velocity.y = curVelocity.y;
+		this.shadow.x = this.sprite.x;
+		this.shadow.y = this.sprite.y;
+	}
+	Move(){
+		let targetVelocity;
+		if (!this.isAggressive()) {
+			targetVelocity = this.roamDirection.Scale(this.maxVelocity);
+		}
+		else {
+			targetVelocity = this.GetAttackDirection().Scale(this.attackVelocity);
+		}
+		this.AccelerateTo(targetVelocity);
 
-        //I need a timer so that the time intervals are also randomised
-        this.moveTimer += game.time.elapsed; //This is in milliseconds
-        if(this.moveTimer >= this.moveDelay){
-            this.direction = this.randomDirection();
-            //Once it has moved to the new position, we reset the timer
-            this.moveTimer = 0;
-        }
-    }
+	}
+	AccelerateTo(targetVelocity){
+		const jumpEnergyFactor = Mathf.TransformRange(0,Math.PI, 1, 0, this.GetJumpPhase() % Math.PI); //starts at 1 when jump begins and ends at 0 when jump ends
+		targetVelocity = targetVelocity.Scale(jumpEnergyFactor);
+		let curVelocity = this.GetVelocity();
 
-    enemyJump(){
-        const x = game.time.totalElapsedSeconds() * 15 / 2;
-        let bop = Math.abs(Math.sin(x));
-        this.sprite.anchor.setTo(0.5, Mathf.TransformRange(0,1 , 0.5 , 1, bop));
-    }
+		let accelerationFactor = this.accelerationFactor * (1-this.GetJumpFactor()); // 0 out the acceleration when at jump peak
+		curVelocity = Vector2.Lerp(curVelocity, targetVelocity, accelerationFactor);
 
-    GetVelocity(){
+		this.sprite.body.velocity.x = curVelocity.x;
+		this.sprite.body.velocity.y = curVelocity.y;
+	}
+	UpdateRoamDirection(){
+		this.moveTimer += game.time.elapsed; //This is in milliseconds
+		if(this.moveTimer >= this.moveDelay){
+			this.roamDirection = this.randomDirection();
+			//Once it has moved to the new position, we reset the timer
+			this.moveTimer = 0;
+		}
+	}
+	GetAttackDirection(){
+		let playerPos = sceneData.player.GetPosition();
+		let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+		let delta = playerPos.Sub(enemyPos);
+		delta = delta.Normalized();
+		return delta;
+	}
+
+	UpdateJump(){
+		let bop = this.GetJumpFactor();
+
+		let shadowScale = Mathf.TransformRange(0, 1, this.shadowScale, this.shadowJumpScale, bop);
+		this.shadow.scale.setTo(shadowScale,shadowScale);
+		this.shadow.alpha = Mathf.TransformRange(0, 1, this.shadowAlpha, this.shadowJumpAlpha, bop);
+
+		let squeeze = Math.pow(this.GetJumpFactor(Math.PI),this.jumpSqueezeSharpness);
+		squeeze = Mathf.TransformRange(0, 1, -this.jumpSqueeze, this.jumpSqueeze, squeeze);
+		this.sprite.scale.setTo(this.spriteScale.x-squeeze,this.spriteScale.y+squeeze)
+		this.sprite.anchor.setTo(this.spriteAnchor.x, Mathf.TransformRange(0,1 , this.spriteAnchor.y , this.spriteAnchor.y + this.jumpHeightFactor, bop));
+
+	}
+	GetJumpPhase(){
+		return game.time.totalElapsedSeconds() * this.jumpFrequency/ 2;
+	}
+	GetJumpFactor(offset = 0){ // 0-1
+		const x = this.GetJumpPhase() + offset;
+		let bopA = Math.sin(x);
+		let bopB = Math.sin(x+Math.PI);
+		return Mathf.SmoothMax(bopA, bopB, 300);
+
+	}
+	GetVelocity(){
 		return new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
 	}
 
-    randomDirection() {
-        const randomAngle = Math.random() * Math.PI * 2; //Selects a random number between 0 and 1 and multiplies by 2PI to get an angle
-        const dir = new Vector2(Math.cos(randomAngle), Math.sin(randomAngle));
-        return dir;
-    }
+	randomDirection() {
+		const randomAngle = Math.random() * Math.PI * 2; //Selects a random number between 0 and 1 and multiplies by 2PI to get an angle
+		const dir = new Vector2(Math.cos(randomAngle), Math.sin(randomAngle));
+		return dir;
+	}
 
-    isAggressive(){
-        //Retrieve the position of the player and enemy to compare
-        let playerPos = sceneData.player.GetPosition();
-        let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+	isAggressive(){
+		//Retrieve the position of the player and enemy to compare
+		let playerPos = sceneData.player.GetPosition();
+		let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
 
-        //Calculate the distance between the player and the enemy
-        let delta = enemyPos.Sub(playerPos);
-        let distance = delta.Length();
+		//Calculate the distance between the player and the enemy
+		let delta = enemyPos.Sub(playerPos);
+		let distance = delta.Length();
 
-        if (distance < ENEMY_DISTANCE_ATTACK){
-            return true;
-        }
-        return false;
+		if (distance < this.attackDistance){
+			return true;
+		}
+		return false;
 
-    }
+	}
 
-    attack(){
-        let playerPos = sceneData.player.GetPosition();
-        let enemyPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
-        let delta = enemyPos.Sub(playerPos);
-        delta = delta.Normalized();
+	
 
-        let targetVelocity = delta.Scale(-ENEMY_VELOCITY * 1.7);
-        let curVelocity = new Vector2(this.sprite.body.velocity.x, this.sprite.body.velocity.y);
-        curVelocity = Vector2.Lerp(curVelocity, targetVelocity, 0.1);
+	onPlayerCollision(selfBody, playerBody){
+		let player = playerBody.getParentComponent();
+		player.takeDamage(10);
+	}
 
-        this.sprite.body.velocity.x = curVelocity.x;
-        this.sprite.body.velocity.y = curVelocity.y;
-    }
-
-    onPlayerCollision(selfBody, playerBody){
-        let player = playerBody.getParentComponent();
-        player.takeDamage(10);
-    }
-
-    BeforeDestroy(){
-        sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
-        this.sprite.destroy();
-        sceneData.enemiesSpawned --;
-    }
+	BeforeDestroy(){
+		sceneData.collectables = new Collectible(eventSystem , this.sprite.body.x, this.sprite.body.y, `xp`);
+		this.sprite.destroy();
+		this.shadow.destroy();
+		sceneData.enemiesSpawned --;
+	}
 }

@@ -34,6 +34,9 @@ class HUD extends Component {
 
 
     createHUD() {
+        // this.bg = game.add.tileSprite(0, 0, game.camera.width, 150, 'hudWall');
+        // this.bg.fixedToCamera = true;
+        // this.bg.tint = 0xAAAAAA;
         this.createScoreText();
         this.createLevelText();
         this.createLiveBar();
