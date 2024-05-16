@@ -161,7 +161,7 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 
 function setUpStore(){
 	let state = 0;
-	let statePrice = [50, 100, 150, 200, 300, 400, 600];
+	let statePrice = [50, 100, 150, 200, 300, 400, 600, `---`];
 	let posX = 150;
 	let posY = 150;
 	let debug = true;
@@ -170,6 +170,8 @@ function setUpStore(){
 			spriteName: "upgradeVelocity",
 			spriteScale: new Vector2(0.03,0.03),
 			debug: debug,
+			statePrice: statePrice,
+			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
 					sceneData.HUD.setScore(-statePrice[state]);
@@ -177,6 +179,7 @@ function setUpStore(){
 					sceneData.player.maxVelocity += 50;
 					state ++;
 				}
+				return state;
 			}
 		});
 	new Store(eventSystem, new Vector2(posX + 150, posY),
@@ -184,6 +187,8 @@ function setUpStore(){
 			spriteName: "upgradeDamage",
 			spriteScale: new Vector2(0.05,0.05),
 			debug: debug,
+			statePrice: statePrice,
+			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
 					sceneData.HUD.setScore(-statePrice[state]);
@@ -191,6 +196,7 @@ function setUpStore(){
 					sceneData.player.maxVelocity += 50;
 					state ++;
 				}
+				return state;
 			}
 		});
 	new Store(eventSystem, new Vector2(posX + 300, posY),
@@ -198,6 +204,8 @@ function setUpStore(){
 			spriteName: "heal",
 			spriteScale: new Vector2(0.1,0.1),
 			debug: debug,
+			statePrice: statePrice,
+			state: state,
 			action: function(){
 				if (sceneData.HUD.score >= statePrice[state]) {
 					sceneData.HUD.setScore(-statePrice[state]);
@@ -205,6 +213,7 @@ function setUpStore(){
 					sceneData.player.Heal(20);
 					state ++;
 				}
+				return state;
 			}
 		});
 }

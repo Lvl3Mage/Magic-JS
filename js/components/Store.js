@@ -7,12 +7,18 @@ class Store extends Component{
         this.isUp = true;
         this.testKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
         this.cheatKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
+        this.statePrice = this.storeConfig.statePrice;
+        this.state = this.storeConfig.state;
 
         this.sprite = game.add.sprite(position.x, position.y, storeConfig.spriteName);
-        console.log(this.sprite);
+        this.sprite.anchor.setTo(0.5,0.5);
+
 		if(storeConfig.spriteScale){
-			this.sprite.scale.setTo(storeConfig.spriteScale.x, storeConfig.spriteScale.y);
+            this.sprite.scale.setTo(storeConfig.spriteScale.x, storeConfig.spriteScale.y);
 		}
+        this.priceDisplay = game.add.text(this.sprite.centerX, this.sprite.centerY + this.sprite.height, this.storeConfig.state, { font: '35px Merryweather', fill: '#000000' });
+        this.priceDisplay.anchor.setTo(0.5,0.5);
+
 		game.physics.p2.enable(this.sprite, false);
 		this.body = this.sprite.body;
         this.body.debug = storeConfig.debug;
@@ -24,6 +30,7 @@ class Store extends Component{
 
 	Update(){
         this.ProcessPlayerOverlap();
+        this.priceDisplay.text = this.statePrice[this.state];
 	}
 
     ProcessPlayerOverlap(){
@@ -52,12 +59,12 @@ class Store extends Component{
         if (this.isUp) {
             if (this.testKey.isDown) {
                 this.isUp = false;
-                func();
+                this.state = func();
                 console.log(`Ha pulsado la tecla T.`);
             }
             if (this.cheatKey.isDown) {
                 this.isUp = false;
-                sceneData.HUD.setScore(50);
+                sceneData.HUD.setScore(100);
             }
         }
         this.isUp = this.cheatKey.isUp && this.testKey.isUp;
