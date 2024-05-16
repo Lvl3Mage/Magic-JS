@@ -295,7 +295,7 @@ class Player extends Component {
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 
-		
+
 		sceneData.HUD.setHealth(this.health);
 		this.immune = true;
 		game.time.events.add(this.immunityDuration, () => {
@@ -305,9 +305,17 @@ class Player extends Component {
 		console.log("OUCHING PLAYER, health: " + this.health);
 
 		if (this.health <= 0) {
-			
+
 			game.camera.fade(0x000000, 2000);
 			game.state.start('endScreen');
 		}
+	}
+	Heal(amount){
+		if (this.health <= 0) {
+			return;
+		}
+		this.health += amount;
+		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);;
+		sceneData.HUD.setHealth(this.health);
 	}
 }
