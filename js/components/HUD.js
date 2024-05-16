@@ -65,18 +65,19 @@ class HUD extends Component {
 	}
 
 	createScoreText(){
-		//Si estan creados destruimos los textos porque las variables no se sobreescriben
-		if (this.scoreText)
-			this.scoreText.destroy();
-
-		this.scoreText = this.createText(1, 0, this.rightScreen, this.padding.y, 'Intelligence: ' + this.score);
+		this.scoreText = this.createText(1, 0, this.rightScreen, this.padding.y);
+		this.updateScoreText();
+	}
+	updateScoreText(){
+		this.scoreText.text = 'Intelligence: ' + this.score;
 	}
 
 	createLevelText(){
-		if (this.levelText)
-			this.levelText.destroy();
-
-		this.levelText = this.createText(0.5, 0, this.centerScreen, this.padding.y, 'Level: ' + this.level);
+		this.levelText = this.createText(0.5, 0, this.centerScreen, this.padding.y);
+		this.updateLevelText()
+	}
+	updateLevelText(){
+		this.scoreText.text = 'Level: ' + this.level;
 	}
 
 	createHealthbar(){
@@ -96,15 +97,17 @@ class HUD extends Component {
 		this.updateHealthbarMask();
 	}
 	
-	setScore(score){
+	addScore(score){
 		this.score += score;
-		this.scoreTotal += Math.abs(score);
-		this.createScoreText();
+		if(score>0){
+			this.scoreTotal += score;
+		}
+		this.updateScoreText();
 	}
 
 	setLevel(level){
-		this.level += level;
-		this.createLevelText();
+		this.level = level;
+		this.updateLevelText();
 	}
 
 	setHealth(newHealth, interpolate = true){
