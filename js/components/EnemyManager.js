@@ -23,6 +23,7 @@ class EnemyManager extends Component {
 		}
 	}
 	HandleSpawnType(type){
+		console.log(this.spawnData[type].enemyCount);
 		if(this.spawnData[type].enemyCount >= this.spawnData[type].maxEnemyCount){
 			return;
 		}
@@ -34,7 +35,8 @@ class EnemyManager extends Component {
 	}
 	SpawnEnemy(type){
 		this.spawnData[type].enemyCount++;
-		const spawnPoints = this.spawnData[type].spawnPoints;
+		const playerPosition = sceneData.player.GetPosition();
+		const spawnPoints = this.spawnData[type].spawnPoints.filter((point) => point.Sub(playerPosition).Length() <= gameConfig.maxEnemySpawnDistance);
 		const selectedSpawnPoint = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 
 		const enemy = new Enemy(eventSystem, type, new Vector2(selectedSpawnPoint.x, selectedSpawnPoint.y));

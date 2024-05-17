@@ -30,6 +30,9 @@ class Enemy extends Component {
 
 		//Behaviour settings
 		//
+		this.health = gameConfig.enemies[this.enemyType].stats.maxHealth;
+
+
 		Object.defineProperty(this, 'roamVelocity', { 
 			get: () =>  gameConfig.enemies[this.enemyType].stats.roamVelocity
 		});
@@ -92,6 +95,16 @@ class Enemy extends Component {
 
 		this.shadow.x = this.sprite.x;
 		this.shadow.y = this.sprite.y;
+		this.ProcessDespawn();
+
+	}
+	ProcessDespawn(){
+		const playerDistance = sceneData.player.GetPosition().Sub(new Vector2(this.sprite.centerX, this.sprite.centerY)).Length();
+
+		if(playerDistance > gameConfig.enemyDespawnDistance){
+			console.log("BLOW UP")
+			this.Destroy();
+		}
 	}
 	Move(){
 		let targetVelocity;
@@ -179,10 +192,40 @@ class Enemy extends Component {
 		return false;
 
 	}
-	// Damage(amount){
-
-	// }
-
+	FlashTint(color, inDuration, outDuration){
+		var colorBlend = {step: 0};
+		const startColor = this.sprite.tint;
+		game.add.tween(colorBlend).to({step: 1}, inDuration, Phaser.Easing.Default, true)
+		.onUpdateCallback(() => {
+			this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+		})
+		.onComplete.add(() => {
+			game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true)
+			.onUpdateCallback(() => {
+				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+			}).onComplete.add(() => {
+				this.sprite.tint = startColor;
+			});
+		})
+	}
+	Damage(amount){
+		if(this.health <= 0){
+			return;
+		}
+		this.health -= amount;
+		this.health = Mathf.Clamp(this.health, 0, gameConfig.enemies[this.enemyType].stats.maxHealth);
+		// console.log(`Enemy health: ${this.health}`);
+		if(this.health <= 0){
+			this.Die();
+		}
+		else{
+			this.FlashTint(0xf94449, 50, 150);
+		}
+	}
+	Die(){
+		this.SpawnCollectable();
+		this.Destroy();
+	}
 
 	onPlayerCollision(selfBody, playerBody){
 		let player = playerBody.getParentComponent();
@@ -200,7 +243,6 @@ class Enemy extends Component {
 	}
 	BeforeDestroy(){
 		this.onDestroy();
-		this.SpawnCollectable();
 		this.sprite.destroy();
 		this.shadow.destroy();
 	}

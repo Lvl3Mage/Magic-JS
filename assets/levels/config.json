@@ -1,10 +1,12 @@
 {
     "default": {
         "winExp": 1000,
+        "enemyDespawnDistance": 2000,
+        "maxEnemySpawnDistance": 4000,
         "enemies": {
             "greenSlime": {
                 "maxAmount": 20,
-                "spawnDelay": 0.1,
+                "spawnDelay": 0.001,
                 "stats": {
                     "maxHealth": 10,
                     "damage": 5,
@@ -48,6 +50,11 @@
     },
     "diffucultyOverrides": {
         "easy": {
+        	"enemies": {
+	            "greenSlime": {
+	                "maxAmount": 40
+	            }
+	        },
             "playerStats": {
                 "maxVelocity": 800
             }

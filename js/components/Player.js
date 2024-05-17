@@ -1,5 +1,5 @@
 class Player extends Component {
-	constructor(eventSystem) {
+	constructor(eventSystem, position) {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		//Input handling
@@ -51,14 +51,17 @@ class Player extends Component {
 
 		this.debug = false;
 
-
+		this.maxCameraDistance = 700;
+		this.maxCameraLerp = 0.3;
+		this.cameraCursorInfluence = 0.3;
+		this.minCameraLerp = 0.001;
 
 		sceneData.HUD.setMaxHealth(this.maxHealth);
 		sceneData.HUD.setHealth(this.health, false);
 
 
 
-		this.sprite = game.add.sprite(300, 300, 'main-character');
+		this.sprite = game.add.sprite(position.x, position.y, 'main-character');
 		this.sprite.getParentComponent = () => this;
 		game.physics.p2.enable(this.sprite, this.debug);
 		this.body = this.sprite.body;
@@ -82,7 +85,7 @@ class Player extends Component {
 		this.sprite.addChild(this.handSprite);
 		sceneData.layers.player.addChild(this.sprite);
 
-		this.shadow = game.add.sprite(300, 300, 'shadow');
+		this.shadow = game.add.sprite(position.x, position.y, 'shadow');
 		this.shadow.anchor.setTo(this.shadowAnchor.x, this.shadowAnchor.y);
 		sceneData.layers.shadows.addChild(this.shadow);
 
@@ -133,11 +136,14 @@ class Player extends Component {
 			{
 				spriteName: "bullet",
 				spriteScale: new Vector2(0.6,0.6),
+				mass: 60,
+				wobbleFrequency: 20,
+				wobbleMagnitude: 0.2,
 				collisionConfigs: [
 					{
 						collisionGroup: sceneData.collisionGroups.enemies,
 						callback: function(self, other){
-							other.getParentComponent().Destroy();
+							other.getParentComponent().Damage(5);
 							this.Destroy();
 						}
 					},
@@ -187,12 +193,16 @@ class Player extends Component {
 		this.sprite.anchor.setTo(0.5, bop);
 	}
 	TrackCamera(){
-
 		const worldCursor = CoordUtils.ScreenSpaceToWorldSpace(new Vector2(game.input.mousePointer.x, game.input.mousePointer.y));
 		const camCenterPos = new Vector2(game.camera.centerX, game.camera.centerY);
 		const playerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
-		const targetPos = Vector2.Lerp(playerPos, worldCursor, 0.3);
-		const dif = Vector2.Lerp(camCenterPos, targetPos, 0.05).Sub(camCenterPos);
+		const targetPos = Vector2.Lerp(playerPos, worldCursor, this.cameraCursorInfluence);
+		const distance = targetPos.Sub(camCenterPos).Length();
+
+		const lerpFactor = Mathf.Clamp(Mathf.TransformRange(0, this.maxCameraDistance, this.minCameraLerp, this.maxCameraLerp, distance),0,this.maxCameraLerp);
+
+		game.debug.text(`lerpFactor: ${lerpFactor}`, 10, 10, '#00ff00');
+		const dif = Vector2.Lerp(camCenterPos, targetPos, lerpFactor).Sub(camCenterPos);
 		game.camera.x += dif.x;
 		game.camera.y += dif.y;
 	}
@@ -272,18 +282,22 @@ class Player extends Component {
 	GetPosition(){
 		return this.GetBodyCenter();
 	}
-	FlashTint(){
+	FlashTint(color, inDuration, outDuration){
 		var colorBlend = {step: 0};
-		game.add.tween(colorBlend).to({step: 1}, 50, Phaser.Easing.Default, true)
+		const startColor = this.sprite.tint;
+		game.add.tween(colorBlend).to({step: 1}, inDuration, Phaser.Easing.Default, true)
 		.onUpdateCallback(() => {
-			this.sprite.tint = Phaser.Color.interpolateColor(0xffffff, 0xf94449, 1, colorBlend.step, 1);
+			this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
 		})
 		.onComplete.add(() => {
-			game.add.tween(colorBlend).to({step: 0}, this.immunityDuration-50, Phaser.Easing.Default, true)
+			game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true)
 			.onUpdateCallback(() => {
-				this.sprite.tint = Phaser.Color.interpolateColor(0xffffff, 0xf94449, 1, colorBlend.step, 1);
+				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+			}).onComplete.add(() => {
+				this.sprite.tint = startColor;
 			});
 		})
+
 	}
 	takeDamage(amount){
 		if(this.immune){
@@ -292,7 +306,7 @@ class Player extends Component {
 		if(this.health <= 0){
 			return;
 		}
-		this.FlashTint();
+		this.FlashTint(0xf94449, 50, this.immunityDuration-50);
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 

@@ -105,6 +105,7 @@ let playState = {
 			],
 			[
 				"Floor",
+				"Infill",
 				{
 					name: "Walls",
 					objectCollisions: true,
@@ -112,19 +113,20 @@ let playState = {
 					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
 					// parent: sceneData.layers.background
+					debug: true
 				},
 			],
 			sceneData.layers.background
 		);
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
-
+		const playerSpawn = tilemap.objects.playerSpawn[0];
 
 		sceneData.HUD = new HUD(eventSystem);
-		sceneData.player = new Player(eventSystem);
+		sceneData.player = new Player(eventSystem, new Vector2(playerSpawn.x, playerSpawn.y));
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		setUpStore();
-
+		console.log(tilemap);
 		const spawnPoints = {
 		};
 		for(let enemyType of Object.keys(gameConfig.enemies)){
@@ -176,6 +178,7 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 			tilemap.setCollisionByExclusion([], true, mapLayers[config.name]);
 			tilemap.collision[config.name] = tilemap.objects[config.name];
 			const bodies = game.physics.p2.convertCollisionObjects(tilemap, config.name, true);
+				console.log(bodies);
 			bodies.forEach(function (body) {
 				body.setCollisionGroup(config.collisionGroup);
 				if(config.debug){
