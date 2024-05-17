@@ -32,6 +32,8 @@ class Projectile extends Component {
 		this.body.collideWorldBounds = false;
 
 		this.body.getParentComponent = () => this;
+
+		sceneData.sounds.sFire.play();
 	}
 	Update(){
 		// console.log(this.sprite);

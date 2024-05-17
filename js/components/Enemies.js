@@ -182,6 +182,7 @@ class Enemy extends Component {
 				onPlayerCollision: function(){
 					this.sprite.destroy();
         			sceneData.HUD.addScore(5);
+					sceneData.sounds.sCollectible.play();
 				}
 			});
 	}
