@@ -1,5 +1,6 @@
-class Collectible {
+class Collectible extends Component {
     constructor(eventSystem, posX, posY, collectibleConfig) {
+        super(eventSystem);
         eventSystem.Subscribe("scene-update", this.Update,this);
 
         this.sprite = game.add.sprite(posX, posY, collectibleConfig.spriteName);
@@ -25,6 +26,7 @@ class Collectible {
         const distanceToPLayer = sceneData.player.GetPosition().Sub(new Vector2(this.sprite.centerX, this.sprite.centerY)).Length();
         if(distanceToPLayer < 50){
             this.config.onPlayerCollision.call(this);
+            this.Destroy();
         }
     }
     MoveToPlayer(){
@@ -37,6 +39,9 @@ class Collectible {
         this.sprite.x += this.velocity.x * game.time.elapsed * 0.001;
         this.sprite.y += this.velocity.y * game.time.elapsed * 0.001;
 
+    }
+    BeforeDestroy(){
+        this.sprite.destroy();
     }
 }
 

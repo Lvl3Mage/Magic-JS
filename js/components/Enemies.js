@@ -194,7 +194,6 @@ class Enemy extends Component {
 			{
 				spriteName: `xp`,
 				onPlayerCollision: function(){
-					this.sprite.destroy();
         			sceneData.HUD.addScore(5);
 				}
 			});
