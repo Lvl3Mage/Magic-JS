@@ -43,6 +43,7 @@ class Projectile extends Component {
 		}
 	}
 	onEnemyCollision(self, other){
+		sceneData.sounds.sSquishy.play();
 		this.Destroy();
 	}
 	BeforeDestroy(){

@@ -187,6 +187,7 @@ class Enemy extends Component {
 			});
 	}
 	BeforeDestroy(){
+		sceneData.sounds.sSquishy.play();
 		this.onDestroy();
 		this.SpawnCollectable();
 		this.sprite.destroy();
