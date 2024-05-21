@@ -1,12 +1,9 @@
-//Creating a display screen for the initial welcome screen
 let endState = {
     preload: loadAssets,
     create: display
 };
 
 function loadAssets() {
-    // Load the background image and title
-    //game.load.image('', 'assets/imgs/stars.png');
     game.load.image('winbg', 'assets/imgs/Titles/winscreen.png');
     game.load.image('endbg', 'assets/imgs/Titles/losescreen.png');
 }
@@ -29,6 +26,9 @@ function display() {
     let style = {font: '25px Merriweather', fill: '#FFFFFF'};
     let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came...`, onHomeBtnPressed, style);
     let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
+
+    const scoreText = game.add.text(posX - 450, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
+    scoreText.anchor.setTo(0.5, 0.5);
 }
 
 function win(){
@@ -49,7 +49,7 @@ function imagebg(image){
 }
 
 function createBtn(posX, posY, text, func){
-    let btn = game.add.text(posX, posY, text, {font: '30px Merriweather', fill: '#FFFFFF'});
+    let btn = game.add.text(posX, posY, text, {font: '30px Merriweather', fill: '#FFFFFF', align: 'center'});
     btn.anchor.setTo(0.5, 0.5);
     btn.inputEnabled = true;
     btn.events.onInputDown.add(func, this); // Add click event listener
