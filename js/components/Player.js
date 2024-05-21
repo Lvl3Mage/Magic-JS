@@ -282,22 +282,22 @@ class Player extends Component {
 	GetPosition(){
 		return this.GetBodyCenter();
 	}
-	FlashTint(color, inDuration, outDuration){
+	FlashTint(color, inDuration, outDuration, colorFrom = null){
 		var colorBlend = {step: 0};
-		const startColor = this.sprite.tint;
+		if(!colorFrom){
+			colorFrom = this.sprite.tint;
+		}
 		game.add.tween(colorBlend).to({step: 1}, inDuration, Phaser.Easing.Default, true)
 		.onUpdateCallback(() => {
-			this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+			this.sprite.tint = Phaser.Color.interpolateColor(colorFrom, color, 1, colorBlend.step, 1);
 		})
 		.onComplete.add(() => {
 			const backTween = game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true);
 			backTween.onComplete.add(() => {
-				this.sprite.tint = startColor;
-				console.log("THIS SHOULD BE FUCKIGN AFTER")
+				this.sprite.tint = colorFrom;
 			})
 			backTween.onUpdateCallback(() => {
-				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
-				console.log("THIS SHOULD BE FUCKIGN BEFORE")
+				this.sprite.tint = Phaser.Color.interpolateColor(colorFrom, color, 1, colorBlend.step, 1);
 			});
 		})
 
@@ -309,11 +309,9 @@ class Player extends Component {
 		if(this.health <= 0){
 			return;
 		}
-		this.FlashTint(0xf94449, 50, this.immunityDuration-50);
+		this.FlashTint(0xf94449, 50, this.immunityDuration-50, 0xffffff);
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
-
-		sceneData.sounds.sHurt.play();
 
 		sceneData.HUD.setHealth(this.health);
 		this.immune = true;

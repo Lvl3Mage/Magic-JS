@@ -191,21 +191,25 @@ class Enemy extends Component {
 		return false;
 
 	}
-	FlashTint(color, inDuration, outDuration){
+	FlashTint(color, inDuration, outDuration, colorFrom = null){
 		var colorBlend = {step: 0};
-		const startColor = this.sprite.tint;
+		if(!colorFrom){
+			colorFrom = this.sprite.tint;
+		}
 		game.add.tween(colorBlend).to({step: 1}, inDuration, Phaser.Easing.Default, true)
 		.onUpdateCallback(() => {
-			this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+			this.sprite.tint = Phaser.Color.interpolateColor(colorFrom, color, 1, colorBlend.step, 1);
 		})
 		.onComplete.add(() => {
-			game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true)
-			.onUpdateCallback(() => {
-				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
-			}).onComplete.add(() => {
-				this.sprite.tint = startColor;
+			const backTween = game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true);
+			backTween.onComplete.add(() => {
+				this.sprite.tint = colorFrom;
+			})
+			backTween.onUpdateCallback(() => {
+				this.sprite.tint = Phaser.Color.interpolateColor(colorFrom, color, 1, colorBlend.step, 1);
 			});
 		})
+
 	}
 	Damage(amount){
 		if(this.health <= 0){
@@ -218,7 +222,7 @@ class Enemy extends Component {
 			this.Die();
 		}
 		else{
-			this.FlashTint(0xf94449, 50, 150);
+			this.FlashTint(0xf94449, 50, 150, 0xffffff);
 		}
 	}
 	Die(){
@@ -237,12 +241,10 @@ class Enemy extends Component {
 				spriteName: `xp`,
 				onPlayerCollision: function(){
         			sceneData.HUD.addScore(5);
-					sceneData.sounds.sCollectible.play();
 				}
 			});
 	}
 	BeforeDestroy(){
-		sceneData.sounds.sSquishy.play();
 		this.onDestroy();
 		this.sprite.destroy();
 		this.shadow.destroy();

@@ -121,7 +121,6 @@ let playState = {
 					resizeWorld:true,
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
 					// parent: sceneData.layers.background
-					debug: true
 				},
 			],
 			sceneData.layers.background
@@ -133,14 +132,13 @@ let playState = {
 		sceneData.player = new Player(eventSystem, new Vector2(playerSpawn.x, playerSpawn.y));
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
-		sceneData.sounds = {
-			sFire: game.add.audio('sFire'),
-			sCollectible: game.add.audio('sCollectible'),
-			sHurt:game.add.audio('sHurt'),
-			sBackground: game.add.audio('sbg'),
-			sSquishy: game.add.audio('sSquishy'),
-		}
-		sceneData.sounds.sBackground.play();
+		// sceneData.sounds = {
+		// 	sFire: game.add.audio('sFire'),
+		// 	sCollectible: game.add.audio('sCollectible'),
+		// 	sHurt:game.add.audio('sHurt'),
+		// 	sBackground: game.add.audio('sbg'),
+		// 	sSquishy: game.add.audio('sSquishy'),
+		// }
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
 
 		setUpStore();

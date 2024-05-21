@@ -61,6 +61,7 @@ class HUD extends Component {
 		btn.anchor.setTo(posSreenX, posSreenY);
 		btn.fixedToCamera = true;
 		btn.cameraOffset = new Phaser.Point(posX, posY);
+		sceneData.layers.UI.addChild(btn);
 		return btn;
 	}
 
@@ -85,13 +86,17 @@ class HUD extends Component {
 		this.healthBarFill = game.add.sprite(this.padding.x, this.padding.y, 'healthbar_mask_red');
 		this.healthBarFill.scale.setTo(this.livesScale, this.livesScale);
 		this.healthBarFill.fixedToCamera = true;
+		sceneData.layers.UI.addChild(this.healthBarFill);
 
 		this.healthBar = game.add.sprite(this.padding.x, this.padding.y, 'healthbar_outline');
 		this.healthBar.scale.setTo(this.livesScale, this.livesScale);
 		this.healthBar.fixedToCamera = true;
+		sceneData.layers.UI.addChild(this.healthBar);
 
 		this.healthBarMask = game.add.graphics(0,0);
 		this.healthBarMask.fixedToCamera = true;
+		
+		sceneData.layers.UI.addChild(this.healthBarMask);
 
 		this.healthBarFill.mask = this.healthBarMask;
 		this.updateHealthbarMask();
