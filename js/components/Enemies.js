@@ -102,7 +102,6 @@ class Enemy extends Component {
 		const playerDistance = sceneData.player.GetPosition().Sub(new Vector2(this.sprite.centerX, this.sprite.centerY)).Length();
 
 		if(playerDistance > gameConfig.enemyDespawnDistance){
-			console.log("BLOW UP")
 			this.Destroy();
 		}
 	}

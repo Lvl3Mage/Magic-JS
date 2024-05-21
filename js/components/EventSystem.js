@@ -18,7 +18,7 @@ class EventSystem{
 				if(context.destroyed){
 					this.events[event].splice(i,1);
 					i--;
-					console.log("Event callback with destroyed context removed");
+					// console.log("Event callback with destroyed context removed");
 					continue;
 				}
 				const callback = this.events[event][i].callback.bind(context);

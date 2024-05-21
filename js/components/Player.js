@@ -290,11 +290,14 @@ class Player extends Component {
 			this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
 		})
 		.onComplete.add(() => {
-			game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true)
-			.onUpdateCallback(() => {
-				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
-			}).onComplete.add(() => {
+			const backTween = game.add.tween(colorBlend).to({step: 0}, outDuration, Phaser.Easing.Default, true);
+			backTween.onComplete.add(() => {
 				this.sprite.tint = startColor;
+				console.log("THIS SHOULD BE FUCKIGN AFTER")
+			})
+			backTween.onUpdateCallback(() => {
+				this.sprite.tint = Phaser.Color.interpolateColor(startColor, color, 1, colorBlend.step, 1);
+				console.log("THIS SHOULD BE FUCKIGN BEFORE")
 			});
 		})
 

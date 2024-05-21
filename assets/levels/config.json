@@ -6,7 +6,7 @@
         "enemies": {
             "greenSlime": {
                 "maxAmount": 20,
-                "spawnDelay": 0.001,
+                "spawnDelay": 0.5,
                 "stats": {
                     "maxHealth": 10,
                     "damage": 5,

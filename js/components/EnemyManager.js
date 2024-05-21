@@ -23,7 +23,6 @@ class EnemyManager extends Component {
 		}
 	}
 	HandleSpawnType(type){
-		console.log(this.spawnData[type].enemyCount);
 		if(this.spawnData[type].enemyCount >= this.spawnData[type].maxEnemyCount){
 			return;
 		}
