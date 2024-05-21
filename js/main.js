@@ -14,7 +14,17 @@ let difficulty = 'easy';
 let totalScore = 0;
 
 // Entry point
-window.onload = startGame;
+let wfConfig = {
+    active: function () {
+        startGame();
+    },
+    google: {
+        families: ['Merriweather'],
+        urls: ["https://fonts.google.com/share?selection.family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900", "assets/fonts/Merriweather-Black.ttf"]
+    }
+};
+
+WebFont.load(wfConfig);
 
 function startGame() {
 	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
