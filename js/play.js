@@ -63,6 +63,14 @@ let playState = {
 		game.load.image('upgradeDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
 		game.load.image('upgradeVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
 		game.load.image('heal', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
+
+		//Sounds
+		game.load.audio('sFire', 'assets/snds/fire-magic-6947.mp3');
+		game.load.audio('sCollectible', 'assets/snds/notification-for-game-scenes-132473.mp3');
+		game.load.audio('sHurt', 'assets/snds/hurt1.wav');
+		game.load.audio('sSquishy', 'assets/snds/gross-slimy-goo-foley-7-164295.mp3');
+		game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
+		game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
 	create: function() {
 		const gameConfigData = game.cache.getJSON('config');
@@ -125,6 +133,16 @@ let playState = {
 		sceneData.player = new Player(eventSystem, new Vector2(playerSpawn.x, playerSpawn.y));
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
+		sceneData.sounds = {
+			sFire: game.add.audio('sFire'),
+			sCollectible: game.add.audio('sCollectible'),
+			sHurt:game.add.audio('sHurt'),
+			sBackground: game.add.audio('sbg'),
+			sSquishy: game.add.audio('sSquishy'),
+		}
+		sceneData.sounds.sBackground.play();
+		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
+
 		setUpStore();
 		console.log(tilemap);
 		const spawnPoints = {

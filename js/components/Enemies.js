@@ -237,10 +237,12 @@ class Enemy extends Component {
 				spriteName: `xp`,
 				onPlayerCollision: function(){
         			sceneData.HUD.addScore(5);
+					sceneData.sounds.sCollectible.play();
 				}
 			});
 	}
 	BeforeDestroy(){
+		sceneData.sounds.sSquishy.play();
 		this.onDestroy();
 		this.sprite.destroy();
 		this.shadow.destroy();
