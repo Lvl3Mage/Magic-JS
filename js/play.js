@@ -60,7 +60,7 @@ let playState = {
 		game.load.image('purpleSlime', 'assets/imgs/purpleSlime.png');
 
 		//Store
-		game.load.image('upgradeVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
+		game.load.image('healthUpgrade', 'assets/imgs/books/book1.png');
 		game.load.image('upgradeDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');
 		game.load.image('upgradeVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
 		game.load.image('heal', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
@@ -129,9 +129,11 @@ let playState = {
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
 		const playerSpawn = tilemap.objects.playerSpawn[0];
 
+
 		sceneData.HUD = new HUD(eventSystem);
 		sceneData.player = new Player(eventSystem, new Vector2(playerSpawn.x, playerSpawn.y));
-		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(50,50), new Vector2(1000,500));
+		const safeZoneSpawn = tilemap.objects.safeZone[0];
+		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(safeZoneSpawn.x,safeZoneSpawn.y), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		// sceneData.sounds = {
 		// 	sFire: game.add.audio('sFire'),
@@ -142,8 +144,6 @@ let playState = {
 		// }
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
 
-		setUpStore();
-		console.log(tilemap);
 		const spawnPoints = {
 		};
 		for(let enemyType of Object.keys(gameConfig.enemies)){
@@ -218,64 +218,6 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 	return tilemap;
 }
 
-function setUpStore(){
-	let state = 0;
-	let statePrice = [50, 100, 150, 200, 300, 400, 600, `---`];
-	let posX = 150;
-	let posY = 150;
-	let debug = debuging;
-	new Store(eventSystem, new Vector2(posX, posY),
-		{
-			spriteName: "upgradeVelocity",
-			spriteScale: new Vector2(0.03,0.03),
-			debug: debug,
-			statePrice: statePrice,
-			state: state,
-			action: function(){
-				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.addScore(-statePrice[state]);
-					console.log(`Mejora velocidad de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
-					sceneData.player.maxVelocity += 50;
-					state ++;
-				}
-				return state;
-			}
-		});
-	new Store(eventSystem, new Vector2(posX + 150, posY),
-		{
-			spriteName: "upgradeDamage",
-			spriteScale: new Vector2(0.05,0.05),
-			debug: debug,
-			statePrice: statePrice,
-			state: state,
-			action: function(){
-				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.addScore(-statePrice[state]);
-					console.log(`Mejora daño de ${sceneData.player.maxVelocity} a ${sceneData.player.maxVelocity+100} y me ha costado ${-statePrice[state]}.`);
-					sceneData.player.maxVelocity += 50;
-					state ++;
-				}
-				return state;
-			}
-		});
-	new Store(eventSystem, new Vector2(posX + 300, posY),
-		{
-			spriteName: "heal",
-			spriteScale: new Vector2(0.1,0.1),
-			debug: debug,
-			statePrice: statePrice,
-			state: state,
-			action: function(){
-				if (sceneData.HUD.score >= statePrice[state]) {
-					sceneData.HUD.addScore(-statePrice[state]);
-					console.log(`Curacion de ${sceneData.player.health} a ${sceneData.player.health+20} y me ha costado ${-statePrice[state]}.`);
-					sceneData.player.Heal(20);
-					state ++;
-				}
-				return state;
-			}
-		});
-}
 
 function cheatActions(){
 	if (debuging) {

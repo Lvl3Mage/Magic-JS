@@ -56,7 +56,6 @@ class Player extends Component {
 		this.cameraCursorInfluence = 0.3;
 		this.minCameraLerp = 0.001;
 
-		sceneData.HUD.setMaxHealth(this.maxHealth);
 		sceneData.HUD.setHealth(this.health, false);
 
 

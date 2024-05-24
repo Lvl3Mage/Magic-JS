@@ -4,10 +4,10 @@ class SafeZone extends Component {
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
 
-		this.sprite = game.add.sprite(game.world.width / 2, game.world.height / 2);
+		this.sprite = game.add.sprite(position.x, position.y);
         this.sprite.getParentComponent = () => this;
 
-        game.physics.p2.enable(this.sprite,true);
+        game.physics.p2.enable(this.sprite,false);
 
 		this.body = this.sprite.body;
 		this.body.fixedRotation = true;
@@ -24,6 +24,11 @@ class SafeZone extends Component {
 
 		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY, '', { font: '50px Merryweather', fill: '#000000' });
 		this.safeZoneText.anchor.setTo(0.5, 0.5);
+
+
+
+
+		this.setUpStore()
 	}
 
 	Update(){
@@ -39,7 +44,7 @@ class SafeZone extends Component {
 			this.safeZoneTimer -= game.time.elapsed * 0.001;
 			let t = 1 - this.safeZoneTimer/this.safeZoneTimerMax;
 			let intensity = Mathf.Lerp(0.0001, 0.01, t);
-			game.camera.shake(intensity,50,true);
+			// game.camera.shake(intensity,50,true);
 			if(this.safeZoneTimer <= 0){
 				console.log("AWOOGA")
 				game.state.start('endScreen');
@@ -67,5 +72,19 @@ class SafeZone extends Component {
 
 	updateTimer(){
 		this.safeZoneText.text = Math.round(this.safeZoneTimer)
+	}
+
+	setUpStore(){
+		const upgradeTypes = Object.keys(gameConfig.upgrades);
+		const separation = 0;
+		const centerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
+		const startPos = centerPos.Sub(new Vector2(separation*Math.floor(upgradeTypes.length/2), 0));
+		console.log(startPos);
+		let currentPos = startPos;
+		for(let upgrade of upgradeTypes){
+			console.log(currentPos);
+			new Store(eventSystem, currentPos, gameConfig.upgrades[upgrade]);
+			currentPos = currentPos.Add(new Vector2(separation, 0));
+		}
 	}
 }

@@ -9,7 +9,8 @@ class HUD extends Component {
 		this.level = 1;
 		this.levelText;
 
-		this.maxHealth = 1;
+
+		Object.defineProperty(this, 'maxHealth', { get: () =>  gameConfig.playerStats.maxHealth});
 		this.health = 0;
 		this.smoothHealth = this.health;
 		this.smoothFactor = 0.1;
@@ -121,11 +122,6 @@ class HUD extends Component {
 			this.smoothHealth = this.health;
 		}
 		console.log(this.health, this.maxHealth, this.health/this.maxHealth);
-		this.updateHealthbarMask();
-	}
-
-	setMaxHealth(newMaxHealth){
-		this.maxHealth = newMaxHealth;
 		this.updateHealthbarMask();
 	}
 

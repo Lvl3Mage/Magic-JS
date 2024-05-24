@@ -1,81 +1,88 @@
 {
-    "default": {
-        "winExp": 1000,
-        "enemyDespawnDistance": 2000,
-        "maxEnemySpawnDistance": 4000,
-        "enemies": {
-            "greenSlime": {
-                "spriteName": "greenSlime",
-                "scaleAmt": 1,
-                "maxAmount": 20,
-                "spawnDelay": 0.5,
-                "stats": {
-                    "maxHealth": 10,
-                    "damage": 5,
-                    "jumpFrequency": 8,
-                    "roamVelocity": 300,
-                    "attackVelocity": 1000,
-                    "attackRange": 600
-                }
-            },
-            "purpleSlime": {
-                "spriteName": "purpleSlime",
-                "scaleAmt": 1.5,
-                "maxAmount": 5,
-                "spawnDelay": 1,
-                "stats": {
-                    "maxHealth": 50,
-                    "damage": 20,
-                    "jumpFrequency": 4,
-                    "roamVelocity": 300,
-                    "attackVelocity": 1500,
-                    "attackRange": 600
-                }
-            }
-        },
-        "playerStats": {
-            "maxHealth": 1000,
-            "maxVelocity": 300,
-            "immunityDuration": 500,
-            "attacks": {
-                "light": {
-                    "damage": 10,
-                    "speed": 500,
-                    "delay": 500,
-                    "range": 3000,
-                    "knockbackFactor":0.3
-                }
-            }
-        },
-        "upgrades": {
-            "health": {
-            	"spriteName": "heart",
-                "stages": [
-                    {
-                        "changes": [
-                            {
-                                "property": "playerStats.maxHealth",
-                                "add": 20,
-                                "set": 20
-                            }
-                        ],
-                        "cost": 10
-                    }
-                ],
-                "repeatLast": true
-            }
-        }
-    },
-    "diffucultyOverrides": {
-        "easy": {
-        	"enemies": {
-	            "greenSlime": {
-	                "maxAmount": 40
-	            }
-	        },
-            "playerStats": {
-                "maxVelocity": 800
-            }
-        }
-    }
+	"default": {
+		"winExp": 1000,
+		"enemyDespawnDistance": 2000,
+		"maxEnemySpawnDistance": 4000,
+		"enemies": {
+			"greenSlime": {
+				"spriteName": "greenSlime",
+				"scaleAmt": 1,
+				"maxAmount": 20,
+				"spawnDelay": 0.5,
+				"stats": {
+					"maxHealth": 10,
+					"damage": 5,
+					"jumpFrequency": 8,
+					"roamVelocity": 300,
+					"attackVelocity": 1000,
+					"attackRange": 600
+				}
+			},
+			"purpleSlime": {
+				"spriteName": "purpleSlime",
+				"scaleAmt": 1.5,
+				"maxAmount": 5,
+				"spawnDelay": 1,
+				"stats": {
+					"maxHealth": 50,
+					"damage": 20,
+					"jumpFrequency": 4,
+					"roamVelocity": 300,
+					"attackVelocity": 1500,
+					"attackRange": 600
+				}
+			}
+		},
+		"playerStats": {
+			"maxHealth": 100,
+			"maxVelocity": 300,
+			"immunityDuration": 500,
+			"attacks": {
+				"light": {
+					"damage": 10,
+					"speed": 500,
+					"delay": 500,
+					"range": 3000,
+					"knockbackFactor":0.3
+				}
+			}
+		},
+		"upgrades": {
+			"health": {
+				"spriteName": "healthUpgrade",
+				"spriteScale": 0.3,
+				"upgradeText": "Increase Max Health",
+				"stages": [
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.maxHealth",
+								"changeType": "add",
+								"value": 20
+							},
+							{
+								"actionType": "heal",
+								"healPercentage": 1
+							}
+						],
+						"cost": 10
+					}
+				],
+				"repeatLast": true
+			}
+		}
+	},
+	"diffucultyOverrides": {
+		"easy": {
+			"enemies": {
+				"greenSlime": {
+					"maxAmount": 40
+				}
+			},
+			"playerStats": {
+				"maxVelocity": 800
+			}
+		}
+	}
 }

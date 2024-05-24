@@ -3,7 +3,7 @@ class EnemyManager extends Component {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		this.spawnData = {};
-		for(let enemyType of Object.keys(gameConfig.enemies)){
+		for(let enemyType of Object.keys(spawnPoints)){
 			this.spawnData[enemyType] = {
 				spawnTimer: 0,
 				enemyCount: 0,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="32" nextobjectid="19">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="33" nextobjectid="20">
  <editorsettings>
   <export target="../squareTilemap.json" format="json"/>
  </editorsettings>
@@ -408,16 +408,16 @@
   </object>
  </objectgroup>
  <objectgroup color="#00ff7f" id="16" name="greenSlime">
-  <object id="1" x="4048" y="1488">
+  <object id="1" x="4268" y="1316">
    <point/>
   </object>
   <object id="2" x="2768" y="2752">
    <point/>
   </object>
-  <object id="3" x="3392" y="1760">
+  <object id="3" x="3248" y="1908">
    <point/>
   </object>
-  <object id="4" x="2272" y="832">
+  <object id="4" x="2992" y="1064">
    <point/>
   </object>
   <object id="5" x="1624" y="1984">
@@ -439,6 +439,11 @@
    <point/>
   </object>
   <object id="11" x="1280" y="3536">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ffaa7f" id="32" name="safeZone">
+  <object id="19" x="2100" y="800">
    <point/>
   </object>
  </objectgroup>
