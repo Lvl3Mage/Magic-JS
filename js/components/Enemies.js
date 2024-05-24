@@ -1,6 +1,3 @@
-
-
-
 class Enemy extends Component {
 	constructor(eventSystem, enemyType, spawnPosition) {
 		super(eventSystem);
@@ -53,6 +50,7 @@ class Enemy extends Component {
 
 		this.sprite = game.add.sprite(spawnPosition.x, spawnPosition.y, 'enemySprite');
 		this.sprite.anchor.setTo(0.5, 0);
+		this.sprite.scale.setTo(this.spriteScale.x, this.spriteScale.y);
 		this.sprite.getParentComponent = () => this;
 
 		this.shadow = game.add.sprite(spawnPosition.x, spawnPosition.y, 'shadow');

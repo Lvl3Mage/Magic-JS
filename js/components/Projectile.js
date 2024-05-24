@@ -49,16 +49,15 @@ class Projectile extends Component {
 		let scaleWobble = Math.sin(game.time.totalElapsedSeconds()*this.wobbleFrequency)*this.wobbleMagnitude;
 		this.sprite.scale.setTo(this.baseScale.x + scaleWobble, this.baseScale.y + scaleWobble);
 
-		// console.log(this.sprite);
 		this.body.angle = Mathf.Rad2Deg(Math.atan2(this.body.velocity.y, this.body.velocity.x));
 		if(!this.sprite.inWorld){
 			this.Destroy();
 		}
 	}
-	onEnemyCollision(self, other){
-		this.Destroy();
-	}
 	BeforeDestroy(){
 		this.sprite.destroy();
+	}
+	GetVelocity(){
+		return new Vector2(this.body.velocity.x, this.body.velocity.y);
 	}
 }

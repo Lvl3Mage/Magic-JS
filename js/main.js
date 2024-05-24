@@ -40,12 +40,7 @@ function startGame() {
 	game.state.add('instructions', instructionState);
 	game.state.add('endScreen', endState);
 
-	
-<<<<<<< Updated upstream
     game.state.start('play');
-=======
-    game.state.start('endScreen');
->>>>>>> Stashed changes
 }
 function configurePhysics(){
 	game.physics.startSystem(Phaser.Physics.P2JS);
