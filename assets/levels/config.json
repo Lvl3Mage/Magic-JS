@@ -26,7 +26,8 @@
                     "damage": 10,
                     "speed": 500,
                     "delay": 500,
-                    "range": 3000
+                    "range": 3000,
+                    "knockbackFactor":0.3
                 }
             }
         },

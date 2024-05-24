@@ -90,6 +90,10 @@ class Player extends Component {
 		sceneData.layers.shadows.addChild(this.shadow);
 
 		this.canFire = true;
+
+
+		game.camera.x = this.sprite.x - game.camera.width*0.5;
+		game.camera.y = this.sprite.y - game.camera.height*0.5;
 	}
 	GetInputAxis(){
 		let axis = new Vector2(0,0);
@@ -143,7 +147,11 @@ class Player extends Component {
 					{
 						collisionGroup: sceneData.collisionGroups.enemies,
 						callback: function(self, other){
-							other.getParentComponent().Damage(5);
+							const enemy = other.getParentComponent();
+							enemy.Damage(5);
+							const knockBackFactor = gameConfig.playerStats.attacks.light.knockbackFactor
+							enemy.body.velocity.x = this.GetVelocity().x*knockBackFactor;
+							enemy.body.velocity.y = this.GetVelocity().y*knockBackFactor;
 							this.Destroy();
 						}
 					},
