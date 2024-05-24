@@ -36,6 +36,10 @@ class EnemyManager extends Component {
 		this.spawnData[type].enemyCount++;
 		const playerPosition = sceneData.player.GetPosition();
 		const spawnPoints = this.spawnData[type].spawnPoints.filter((point) => point.Sub(playerPosition).Length() <= gameConfig.maxEnemySpawnDistance);
+		if (spawnPoints.length == 0){
+			console.warn('No spawn points found for enemy type:', type);
+			return;
+		}
 		const selectedSpawnPoint = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 
 		const enemy = new Enemy(eventSystem, type, new Vector2(selectedSpawnPoint.x, selectedSpawnPoint.y));

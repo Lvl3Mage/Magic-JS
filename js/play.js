@@ -56,7 +56,8 @@ let playState = {
 		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
 		game.load.image('bullet', 'assets/imgs/bullet.png')
 
-		game.load.image('enemySprite', 'assets/imgs/greenSlime.png');
+		game.load.image('greenSlime', 'assets/imgs/greenSlime.png');
+		game.load.image('purpleSlime', 'assets/imgs/purpleSlime.png');
 
 		//Store
 		game.load.image('upgradeVelocity', 'assets/imgs/PLACEHOLDERS/Flash-Logo.png');
@@ -147,6 +148,10 @@ let playState = {
 		};
 		for(let enemyType of Object.keys(gameConfig.enemies)){
 			const points = tilemap.objects[enemyType];
+			if (!points){
+				console.warn('No spawn points found for enemy type:', enemyType);
+				continue;
+			}
 			spawnPoints[enemyType] = [];
 			for(let point of points){
 				spawnPoints[enemyType].push(new Vector2(point.x, point.y));
