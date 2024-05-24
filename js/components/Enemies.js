@@ -5,7 +5,7 @@ class Enemy extends Component {
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		this.enemyType = enemyType;
 
-		this.spriteScale = new Vector2(1, 1);
+		this.spriteScale = new Vector2(gameConfig.enemies[this.enemyType].scaleAmt, gameConfig.enemies[this.enemyType].scaleAmt);
 		this.spriteAnchor = new Vector2(0.5, 0.5);
 		this.shadowAnchor = new Vector2(0.5, 0.5);
 
@@ -48,7 +48,7 @@ class Enemy extends Component {
 		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
 		this.moveTimer = Math.random()*this.moveDelay;
 
-		this.sprite = game.add.sprite(spawnPosition.x, spawnPosition.y, 'enemySprite');
+		this.sprite = game.add.sprite(spawnPosition.x, spawnPosition.y, gameConfig.enemies[this.enemyType].spriteName);
 		this.sprite.anchor.setTo(0.5, 0);
 		this.sprite.scale.setTo(this.spriteScale.x, this.spriteScale.y);
 		this.sprite.getParentComponent = () => this;

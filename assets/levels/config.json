@@ -5,6 +5,8 @@
         "maxEnemySpawnDistance": 4000,
         "enemies": {
             "greenSlime": {
+                "spriteName": "greenSlime",
+                "scaleAmt": 1,
                 "maxAmount": 20,
                 "spawnDelay": 0.5,
                 "stats": {
@@ -13,6 +15,20 @@
                     "jumpFrequency": 8,
                     "roamVelocity": 300,
                     "attackVelocity": 1000,
+                    "attackRange": 600
+                }
+            },
+            "purpleSlime": {
+                "spriteName": "purpleSlime",
+                "scaleAmt": 1.5,
+                "maxAmount": 5,
+                "spawnDelay": 1,
+                "stats": {
+                    "maxHealth": 50,
+                    "damage": 20,
+                    "jumpFrequency": 4,
+                    "roamVelocity": 300,
+                    "attackVelocity": 1500,
                     "attackRange": 600
                 }
             }

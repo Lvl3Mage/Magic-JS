@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="31" nextobjectid="13">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="32" nextobjectid="19">
  <editorsettings>
   <export target="../squareTilemap.json" format="json"/>
  </editorsettings>
@@ -298,7 +298,7 @@
 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10
 </data>
  </layer>
- <layer id="7" name="Floor" width="100" height="100" visible="0">
+ <layer id="7" name="Floor" width="100" height="100">
   <data encoding="csv">
 16,22,21,22,22,15,16,15,16,15,22,22,22,21,22,15,22,21,22,15,22,16,21,21,16,16,22,21,15,21,21,16,22,15,16,16,22,15,21,21,16,21,22,22,15,22,21,22,21,15,16,16,15,21,15,16,22,21,15,16,21,22,16,21,15,16,22,21,21,22,21,22,21,21,15,15,21,15,22,16,21,16,16,16,15,16,22,21,21,16,21,22,22,16,21,16,21,21,16,22,
 16,21,22,15,16,15,15,16,15,16,21,15,15,22,15,15,15,16,22,16,22,22,16,21,16,21,15,22,15,16,15,16,22,22,16,15,16,22,16,15,22,21,21,22,15,15,16,15,21,21,21,15,22,15,15,21,16,21,16,15,15,21,22,21,16,15,21,21,15,16,22,15,16,22,15,15,21,16,22,21,22,22,16,16,22,22,22,22,21,15,16,15,21,21,21,22,22,15,16,22,
@@ -439,6 +439,23 @@
    <point/>
   </object>
   <object id="11" x="1280" y="3536">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#9e70e3" id="31" name="purpleSlime">
+  <object id="13" x="4752.17" y="2554.93">
+   <point/>
+  </object>
+  <object id="14" x="1890.65" y="6515.07">
+   <point/>
+  </object>
+  <object id="15" x="4215.64" y="5390.9">
+   <point/>
+  </object>
+  <object id="16" x="4573.33" y="7332.65">
+   <point/>
+  </object>
+  <object id="17" x="6208.48" y="6796.12">
    <point/>
   </object>
  </objectgroup>
