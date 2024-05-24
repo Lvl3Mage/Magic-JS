@@ -280,17 +280,3 @@ function cheatActions(){
 		}
 	}
 }
-
-
-
-
-
-
-function spawnEnemies() {
-	//Checking if the number of enemies has been surpassed
-	if(sceneData.enemiesSpawned < maxEnemies){
-		const newEnemy = new Enemy(eventSystem);
-	}
-	//Making time for the next enemy to spawn
-	game.time.events.add(spawnDelay, spawnEnemies, this);
-}
