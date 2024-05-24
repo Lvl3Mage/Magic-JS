@@ -33,6 +33,7 @@
         },
         "upgrades": {
             "health": {
+            	"spriteName": "heart",
                 "stages": [
                     {
                         "changes": [
