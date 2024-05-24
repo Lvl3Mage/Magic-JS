@@ -37,6 +37,8 @@ class Player extends Component {
 		//
 		Object.defineProperty(this, 'maxHealth', { get: () =>  gameConfig.playerStats.maxHealth});
 		this.health = this.maxHealth;
+		Object.defineProperty(this, 'maxMana', { get: () =>  gameConfig.playerStats.maxMana});
+		this.mana = this.maxMana;
 
 		//Hand Parameters
 		this.maxHandDistance = 36;
@@ -59,7 +61,7 @@ class Player extends Component {
 		sceneData.HUD.setMaxHealth(this.maxHealth);
 		sceneData.HUD.setHealth(this.health, false);
 
-
+		sceneData.HUD.setMana(this.mana, false);
 
 		this.sprite = game.add.sprite(position.x, position.y, 'main-character');
 		this.sprite.getParentComponent = () => this;
@@ -124,7 +126,10 @@ class Player extends Component {
 		this.HandMovement();
 		this.HandRotation();
 		this.UpdateShadow();
-		if(game.input.mousePointer.leftButton.isDown && this.canFire){
+
+		if(game.input.mousePointer.leftButton.isDown && this.canFire && this.mana > 0){
+			this.mana --;
+			sceneData.HUD.setMana(this.mana);
 			this.canFire = false;
 			let handRight = this.GetHandForward();
 			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));

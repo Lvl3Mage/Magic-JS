@@ -12,7 +12,12 @@ class HUD extends Component {
 		this.maxHealth = 1;
 		this.health = 0;
 		this.smoothHealth = this.health;
+
 		this.smoothFactor = 0.1;
+
+		this.maxMana = 100;
+		this.mana = 0;
+		this.smoothMana = this.mana;
 
 		this.maskPaddingLeft = 20;
 		this.maskPaddingRight = 30;
@@ -20,6 +25,10 @@ class HUD extends Component {
 		this.livesBar;
 		this.livesBarOutline;
 		this.livesScale = 1.5;
+
+		this.manaBar;
+		this.manaBarOutline;
+		this.manaScale = 1.5;
 
 		this.padding = new Vector2(10,10);
 		this.rightScreen = game.camera.width - 10;
@@ -33,7 +42,9 @@ class HUD extends Component {
 	}
 	Update(){
 		this.updateHealthbarMask();
+		this.updateManaBarMask();
 	}
+
 	updateHealthbarMask(){
 		this.smoothHealth = Mathf.Lerp(this.smoothHealth, this.health, this.smoothFactor);
 		this.healthBarMask.clear();
@@ -42,6 +53,15 @@ class HUD extends Component {
 		const width = this.healthBar.width - this.maskPaddingLeft - this.maskPaddingRight;
 		this.healthBarMask.drawRect(this.healthBar.cameraOffset.x + this.maskPaddingLeft, this.healthBar.cameraOffset.y, width * t, this.healthBar.height);
 		this.healthBarMask.endFill();
+	}
+	updateManaBarMask(){
+		this.smoothMana = Mathf.Lerp(this.smoothMana, this.mana, this.smoothFactor);
+		this.manaBarMask.clear();
+		this.manaBarMask.beginFill(0xfff);
+		let t = (this.smoothMana/this.maxMana);
+		const width = this.manaBar.width - this.maskPaddingLeft - this.maskPaddingRight;
+		this.manaBarMask.drawRect(this.manaBar.cameraOffset.x + this.maskPaddingLeft, this.manaBar.cameraOffset.y, width * t, this.manaBar.height);
+		this.manaBarMask.endFill();
 	}
 
 
@@ -53,6 +73,7 @@ class HUD extends Component {
 		this.createScoreText();
 		this.createLevelText();
 		this.createHealthbar();
+		this.createManaBar();
 	}
 
 	createText(posSreenX, posSreenY, posX, posY, text){
@@ -102,6 +123,27 @@ class HUD extends Component {
 		this.updateHealthbarMask();
 	}
 
+	createManaBar(){
+		this.manaBarFill = game.add.sprite(this.padding.x, this.padding.y + 110, 'manabar_mask');
+		this.manaBarFill.scale.setTo(this.manaScale, this.manaScale);
+		this.manaBarFill.fixedToCamera = true;
+		sceneData.layers.UI.addChild(this.manaBarFill);
+
+		this.manaBar = game.add.sprite(this.padding.x, this.padding.y + 110, 'manabar_outline');
+		this.manaBar.scale.setTo(this.manaScale, this.manaScale);
+		this.manaBar.fixedToCamera = true;
+		sceneData.layers.UI.addChild(this.manaBar);
+		
+		this.manaBarMask = game.add.graphics(0,0);
+		this.manaBarMask.fixedToCamera = true;
+
+		sceneData.layers.UI.addChild(this.manaBarMask);
+
+		this.manaBarFill.mask = this.manaBarMask;
+		this.updateManaBarMask();
+	
+	}
+
 	addScore(score){
 		this.score += score;
 		if(score>0){
@@ -122,6 +164,14 @@ class HUD extends Component {
 		}
 		console.log(this.health, this.maxHealth, this.health/this.maxHealth);
 		this.updateHealthbarMask();
+	}
+
+	setMana(newMana, interpolate = true){
+		this.mana = newMana;
+		if(!interpolate){
+			this.smoothMana = this.mana;
+		}
+		this.updateManaBarMask();
 	}
 
 	setMaxHealth(newMaxHealth){
