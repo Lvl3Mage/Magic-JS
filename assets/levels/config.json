@@ -35,6 +35,7 @@
 		},
 		"playerStats": {
 			"maxHealth": 100,
+            "maxMana": 100,
 			"maxVelocity": 300,
 			"immunityDuration": 500,
 			"attacks": {
