@@ -72,6 +72,12 @@ let playState = {
 		game.load.image('upgradeVelocityAttack', 'assets/imgs/PLACEHOLDERS/speedAttack.jpg');
 		game.load.image('heal', 'assets/imgs/PLACEHOLDERS/CaminateBlanco.png');
 
+		//Safe zone
+		game.load.image('safeZoneArea', 'assets/imgs/safeZone.png');
+		game.load.image('crystal1', 'assets/imgs/crystalSprite1.png');
+		game.load.image('crystal2', 'assets/imgs/crystalSprite2.png');
+		game.load.image('crystal3', 'assets/imgs/crystalSprite3.png');
+
 		//Sounds
 		game.load.audio('sFire', 'assets/snds/fire-magic-6947.mp3');
 		game.load.audio('sCollectible', 'assets/snds/notification-for-game-scenes-132473.mp3');
@@ -108,6 +114,7 @@ let playState = {
 		sceneData.layers = {
 			background: game.add.group(),
 			shadows: game.add.group(),
+			safezone: game.add.group(),
 			world: game.add.group(),
 			player: game.add.group(),
 			enemies: game.add.group(),
