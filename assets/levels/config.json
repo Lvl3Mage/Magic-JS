@@ -1,8 +1,8 @@
 {
 	"default": {
 		"winExp": 1000,
-		"enemyDespawnDistance": 2000,
-		"maxEnemySpawnDistance": 4000,
+		"enemyDespawnDistance": 3000,
+		"maxEnemySpawnDistance": 2000,
 		"enemies": {
 			"greenSlime": {
 				"spriteName": "greenSlime",
@@ -26,7 +26,7 @@
 				"stats": {
 					"maxHealth": 50,
 					"damage": 20,
-					"jumpFrequency": 4,
+					"jumpFrequency": 6,
 					"roamVelocity": 300,
 					"attackVelocity": 1500,
 					"attackRange": 600

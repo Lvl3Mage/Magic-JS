@@ -11,14 +11,13 @@ class HUD extends Component {
 
 
 		Object.defineProperty(this, 'maxHealth', { get: () =>  gameConfig.playerStats.maxHealth});
-		this.health = 0;
-		this.smoothHealth = this.health;
+		this.smoothHealth = sceneData.player.health;
 
 		this.smoothFactor = 0.1;
 
-		this.maxMana = 100;
-		this.mana = 0;
-		this.smoothMana = this.mana;
+		
+		Object.defineProperty(this, 'maxMana', { get: () =>  gameConfig.playerStats.maxMana});
+		this.smoothMana = sceneData.player.mana;
 
 		this.maskPaddingLeft = 20;
 		this.maskPaddingRight = 30;
@@ -43,11 +42,12 @@ class HUD extends Component {
 	}
 	Update(){
 		this.updateHealthbarMask();
-		this.updateManaBarMask();
+		this.updateManabarMask();
 	}
 
 	updateHealthbarMask(){
-		this.smoothHealth = Mathf.Lerp(this.smoothHealth, this.health, this.smoothFactor);
+		const health = sceneData.player.health;
+		this.smoothHealth = Mathf.Lerp(this.smoothHealth, health, this.smoothFactor);
 		this.healthBarMask.clear();
 		this.healthBarMask.beginFill(0xfff);
 		let t = (this.smoothHealth/this.maxHealth);
@@ -55,8 +55,9 @@ class HUD extends Component {
 		this.healthBarMask.drawRect(this.healthBar.cameraOffset.x + this.maskPaddingLeft, this.healthBar.cameraOffset.y, width * t, this.healthBar.height);
 		this.healthBarMask.endFill();
 	}
-	updateManaBarMask(){
-		this.smoothMana = Mathf.Lerp(this.smoothMana, this.mana, this.smoothFactor);
+	updateManabarMask(){
+		const mana = sceneData.player.mana;
+		this.smoothMana = Mathf.Lerp(this.smoothMana, mana, this.smoothFactor);
 		this.manaBarMask.clear();
 		this.manaBarMask.beginFill(0xfff);
 		let t = (this.smoothMana/this.maxMana);
@@ -100,7 +101,7 @@ class HUD extends Component {
 		this.updateLevelText()
 	}
 	updateLevelText(){
-		this.scoreText.text = 'Level: ' + this.level;
+		this.levelText.text = 'Level: ' + this.level;
 	}
 
 	createHealthbar(){
@@ -141,7 +142,7 @@ class HUD extends Component {
 		sceneData.layers.UI.addChild(this.manaBarMask);
 
 		this.manaBarFill.mask = this.manaBarMask;
-		this.updateManaBarMask();
+		this.updateManabarMask();
 	
 	}
 
@@ -158,26 +159,13 @@ class HUD extends Component {
 		this.updateLevelText();
 	}
 
-	setHealth(newHealth, interpolate = true){
-		this.health = newHealth;
-		if(!interpolate){
-			this.smoothHealth = this.health;
-		}
-		console.log(this.health, this.maxHealth, this.health/this.maxHealth);
-		this.updateHealthbarMask();
+	setHealthInstant(health){
+		this.smoothHealth = health;
 	}
-	setMana(newMana, interpolate = true){
-		this.mana = newMana;
-		if(!interpolate){
-			this.smoothMana = this.mana;
-		}
-		this.updateManaBarMask();
+	setManaInstant(mana){
+		this.smoothMana = mana;
 	}
 
-	setMaxHealth(newMaxHealth){
-		this.maxHealth = newMaxHealth;
-		this.updateHealthbarMask();
-	}
 	getScoreTotal(){
 		return this.scoreTotal;
 	}

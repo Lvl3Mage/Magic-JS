@@ -161,7 +161,7 @@ class Enemy extends Component {
 		const x = this.GetJumpPhase() + offset;
 		let bopA = Math.sin(x);
 		let bopB = Math.sin(x+Math.PI);
-		return Mathf.SmoothMax(bopA, bopB, 300);
+		return Mathf.SmoothMax(bopA, bopB, 150);
 
 	}
 	GetVelocity(){

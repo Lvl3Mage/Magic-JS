@@ -105,6 +105,7 @@ let playState = {
 		sceneData.layers = {
 			background: game.add.group(),
 			shadows: game.add.group(),
+			world: game.add.group(),
 			player: game.add.group(),
 			enemies: game.add.group(),
 			projectiles: game.add.group(),
@@ -134,8 +135,8 @@ let playState = {
 		const playerSpawn = tilemap.objects.playerSpawn[0];
 
 
-		sceneData.HUD = new HUD(eventSystem);
 		sceneData.player = new Player(eventSystem, new Vector2(playerSpawn.x, playerSpawn.y));
+		sceneData.HUD = new HUD(eventSystem);
 		const safeZoneSpawn = tilemap.objects.safeZone[0];
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(safeZoneSpawn.x,safeZoneSpawn.y), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)

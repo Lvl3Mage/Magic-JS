@@ -58,10 +58,6 @@ class Player extends Component {
 		this.cameraCursorInfluence = 0.3;
 		this.minCameraLerp = 0.001;
 
-		sceneData.HUD.setHealth(this.health, false);
-
-		sceneData.HUD.setMana(this.mana, false);
-
 		this.sprite = game.add.sprite(position.x, position.y, 'main-character');
 		this.sprite.getParentComponent = () => this;
 		game.physics.p2.enable(this.sprite, this.debug);
@@ -128,7 +124,7 @@ class Player extends Component {
 
 		if(game.input.mousePointer.leftButton.isDown && this.canFire && this.mana > 0){
 			this.mana --;
-			sceneData.HUD.setMana(this.mana);
+
 			this.canFire = false;
 			let handRight = this.GetHandForward();
 			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));
@@ -325,7 +321,7 @@ class Player extends Component {
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 
-		sceneData.HUD.setHealth(this.health);
+
 		this.immune = true;
 		game.time.events.add(this.immunityDuration, () => {
 			this.immune = false;
@@ -344,7 +340,6 @@ class Player extends Component {
 			return;
 		}
 		this.health += amount;
-		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);;
-		sceneData.HUD.setHealth(this.health);
+		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 	}
 }

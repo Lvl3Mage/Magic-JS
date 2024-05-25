@@ -16,7 +16,7 @@ let totalScore = 0;
 // Entry point
 let wfConfig = {
     active: function () {
-        startGame();
+		startGame();
     },
     google: {
         families: ['Merriweather'],
@@ -26,8 +26,8 @@ let wfConfig = {
 
 WebFont.load(wfConfig);
 
-function startGame() {
-	// game.world.setBounds(0, 0, GAME_STAGE_WIDTH, GAME_STAGE_HEIGHT);
+async function startGame() {
+	await new Promise(resolve => setTimeout(resolve, 50)); // misterious delay to make sure the physics system is ready (otherwise null sometimes)
 	configurePhysics();
 
 	game.time.advancedTiming = true;

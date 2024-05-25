@@ -1,5 +1,5 @@
 class Store extends Component{
-	constructor(eventSystem, position, storeConfig, textStyle = {font: '14px Merryweather', fill: '#000000', align: 'center'},  priceStyle = {font: '16px Merryweather', fill: '#000000', align: 'center'}){
+	constructor(eventSystem, position, storeConfig, textStyle = {font: '18px Merryweather', fill: '#fff', align: 'center'},  priceStyle = {font: '20px Merryweather', fill: '#fff', align: 'center'}){
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
@@ -15,6 +15,7 @@ class Store extends Component{
 		// this.state = this.storeConfig.state;
 		this.sprite = game.add.sprite(position.x, position.y, storeConfig.spriteName);
 		this.sprite.anchor.setTo(0.5,0.5);
+		sceneData.layers.world.add(this.sprite);
 
 		if(storeConfig.spriteScale){
 			this.sprite.scale.setTo(storeConfig.spriteScale, storeConfig.spriteScale);

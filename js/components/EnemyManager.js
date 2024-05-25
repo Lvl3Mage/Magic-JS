@@ -3,6 +3,7 @@ class EnemyManager extends Component {
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		this.spawnData = {};
+		console.log(spawnPoints);
 		for(let enemyType of Object.keys(spawnPoints)){
 			this.spawnData[enemyType] = {
 				spawnTimer: 0,
@@ -33,7 +34,6 @@ class EnemyManager extends Component {
 		}
 	}
 	SpawnEnemy(type){
-		this.spawnData[type].enemyCount++;
 		const playerPosition = sceneData.player.GetPosition();
 		const spawnPoints = this.spawnData[type].spawnPoints.filter((point) => point.Sub(playerPosition).Length() <= gameConfig.maxEnemySpawnDistance);
 		if (spawnPoints.length == 0){
@@ -41,7 +41,7 @@ class EnemyManager extends Component {
 			return;
 		}
 		const selectedSpawnPoint = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-
+		this.spawnData[type].enemyCount++;
 		const enemy = new Enemy(eventSystem, type, new Vector2(selectedSpawnPoint.x, selectedSpawnPoint.y));
 		enemy.onDestroy = function(){
 			this.spawnData[type].enemyCount --;
