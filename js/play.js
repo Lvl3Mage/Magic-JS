@@ -65,7 +65,7 @@ let playState = {
 
 		//Store
 		game.load.image('characterUpgrade', 'assets/imgs/books/book1.png');
-		game.load.image('attackUpgrade', 'assets/imgs/books/book2.png');
+		game.load.image('speedUpgrade', 'assets/imgs/books/book2.png');
 		game.load.image('bulletUpgrade', 'assets/imgs/books/book3.png');
 		game.load.image('reload', 'assets/imgs/books/book4.png');
 		game.load.image('upgradeDamage', 'assets/imgs/PLACEHOLDERS/w.jpg');

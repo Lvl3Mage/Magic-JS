@@ -73,6 +73,31 @@
 					}
 				],
 				"repeatLast": true
+			},
+			"speed": {
+				"spriteName": "speedUpgrade",
+				"spriteScale": 0.3,
+				"upgradeText": "Upgrade Character Speed",
+				"priceUnits": " INT",
+				"priceHidden": false,
+				"stages": [
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.maxVelocity",
+								"changeType": "add",
+								"value": 20
+							},
+							{
+								"actionType": "movement",
+								"factor": 1
+							}
+						],
+						"cost": 10
+					}
+				],
+				"repeatLast": true
 			}
 		}
 	},

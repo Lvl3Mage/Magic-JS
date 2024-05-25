@@ -24,7 +24,7 @@ class SafeZone extends Component {
        	this.safeZoneTimerMax = 10;
        	this.safeZoneTimer = this.safeZoneTimerMax;
 
-		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY, '', { font: '50px Merryweather', fill: '#000000' });
+		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY+150, '', { font: '50px Merryweather', fill: '#000000' });
 		this.safeZoneText.anchor.setTo(0.5, 0.5);
 
 
