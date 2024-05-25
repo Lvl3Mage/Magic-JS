@@ -79,10 +79,16 @@ let playState = {
 		game.load.image('crystal3', 'assets/imgs/crystalSprite3.png');
 
 		//Sounds
-		game.load.audio('sFire', 'assets/snds/fire-magic-6947.mp3');
-		game.load.audio('sCollectible', 'assets/snds/notification-for-game-scenes-132473.mp3');
-		game.load.audio('sHurt', 'assets/snds/hurt1.wav');
-		game.load.audio('sSquishy', 'assets/snds/gross-slimy-goo-foley-7-164295.mp3');
+		//volume up
+		game.load.audio('sFireA', 'assets/snds/Laser_Shoot43.wav');
+		game.load.audio('sCollectibleA', 'assets/snds/Pickup_Coin30.wav');
+		game.load.audio('sHurtA', 'assets/snds/Hit_Hurt21.wav');
+		//volume down
+		game.load.audio('sFire', 'assets/snds/Laser_Shoot43 (mp3cut.net vol-75).wav');
+		game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
+		game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
+		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
+		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
 		game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
 		game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
@@ -150,13 +156,13 @@ let playState = {
 		const safeZoneSpawn = tilemap.objects.safeZone[0];
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(safeZoneSpawn.x,safeZoneSpawn.y), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
-		// sceneData.sounds = {
-		// 	sFire: game.add.audio('sFire'),
-		// 	sCollectible: game.add.audio('sCollectible'),
-		// 	sHurt:game.add.audio('sHurt'),
-		// 	sBackground: game.add.audio('sbg'),
-		// 	sSquishy: game.add.audio('sSquishy'),
-		// }
+		sceneData.sounds = {
+			sFire: game.add.audio('sFire'),
+			sCollectible: game.add.audio('sCollectible'),
+			sHurt:game.add.audio('sHurt'),
+			sBackground: game.add.audio('sbg'),
+			sSquishy: game.add.audio('sSquishy'),
+		}
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
 
 		const spawnPoints = {

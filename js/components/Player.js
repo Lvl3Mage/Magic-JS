@@ -321,6 +321,7 @@ class Player extends Component {
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 
+		sceneData.sounds.sHurt.play();
 
 		this.immune = true;
 		game.time.events.add(this.immunityDuration, () => {

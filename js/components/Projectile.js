@@ -44,6 +44,8 @@ class Projectile extends Component {
 			this.body.data.mass = projectileConfig.mass;
 		}
 		this.body.getParentComponent = () => this;
+
+		sceneData.sounds.sFire.play();
 	}
 	Update(){
 		let scaleWobble = Math.sin(game.time.totalElapsedSeconds()*this.wobbleFrequency)*this.wobbleMagnitude;
