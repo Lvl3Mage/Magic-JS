@@ -4,10 +4,12 @@ class SafeZone extends Component {
 		eventSystem.Subscribe("scene-update", this.Update, this);
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
 
-		this.sprite = game.add.sprite(position.x, position.y);
+		this.sprite = game.add.sprite(position.x, position.y, 'safeZoneArea');
+		this.sprite.anchor.setTo(0.5, 0.5);
         this.sprite.getParentComponent = () => this;
+		sceneData.layers.safezone.addChild(this.sprite);
 
-        game.physics.p2.enable(this.sprite,true);
+        game.physics.p2.enable(this.sprite,false);
 
 		this.body = this.sprite.body;
 		this.body.fixedRotation = true;
@@ -26,10 +28,29 @@ class SafeZone extends Component {
 		this.safeZoneText.anchor.setTo(0.5, 0.5);
 
 
-
+		this.createCrystals();
 
 		this.setUpStore()
 	}
+
+	createCrystals() {
+		const centerX = this.sprite.x;
+        const centerY = this.sprite.y;
+		const crystalHeight = 150;
+
+		//Now I create super cool crystals
+		this.createCrystal(centerX + 30, centerY - (crystalHeight + 50), 'crystal1', 20);
+        this.createCrystal(centerX + 50, centerY - (crystalHeight + 20), 'crystal2', 15);
+        this.createCrystal(centerX, centerY - crystalHeight, 'crystal3', 10);
+    }
+
+    createCrystal(x, y, spriteName, offset) {
+        const crystal = game.add.sprite(x, y, spriteName);
+        crystal.anchor.setTo(0.5, 0.5);
+        sceneData.layers.UI.addChild(crystal);
+        const tween = game.add.tween(crystal).to({ y: y - offset }, 1000, Phaser.Easing.Quadratic.InOut, true, 0, -1, true);
+        return { crystal, tween };
+    }
 
 	Update(){
 		const playerBounds = sceneData.player.sprite.getBounds();

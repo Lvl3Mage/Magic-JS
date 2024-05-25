@@ -24,10 +24,11 @@ function display() {
     let posX = game.camera.width / 2;
     let posY = game.camera.height / 2;
     let style = {font: '25px Merriweather', fill: '#FFFFFF'};
-    let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came...`, onHomeBtnPressed, style);
+    let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came... (main menu)`, onHomeBtnPressed, style);
     let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
 
-    const scoreText = game.add.text(posX - 450, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
+    const scoreText = game.add.text(0, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
+    scoreText.position.x = scoreText.width / 2 + 50;
     scoreText.anchor.setTo(0.5, 0.5);
 }
 
@@ -49,7 +50,8 @@ function imagebg(image){
 }
 
 function createBtn(posX, posY, text, func){
-    let btn = game.add.text(posX, posY, text, {font: '30px Merriweather', fill: '#FFFFFF', align: 'center'});
+    let btn = game.add.text(0, posY, text, {font: '30px Merriweather', fill: '#FFFFFF', align: 'center'});
+    btn.position.x = btn.width / 2 + 50;
     btn.anchor.setTo(0.5, 0.5);
     btn.inputEnabled = true;
     btn.events.onInputDown.add(func, this); // Add click event listener
@@ -60,7 +62,8 @@ function createBtn(posX, posY, text, func){
 
 function createText(posX, posY, text, style){
     let scoreText;
-    scoreText = game.add.text(posX, posY, text, style);
+    scoreText = game.add.text(0, posY, text, style);
+    scoreText.position.x = scoreText.width / 2;
     scoreText.anchor.setTo(0.5, 0.5);
     scoreText.fixedToCamera = true;
     scoreText.cameraOffset = new Phaser.Point(posX, posY);
