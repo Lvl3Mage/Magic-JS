@@ -11,6 +11,7 @@ function loadInstructionAssets() {
     game.load.image('instructions1', 'assets/imgs/Backgrounds/instructions1.png')
     game.load.image('instructions2', 'assets/imgs/Backgrounds/instructions2.png')
     game.load.image('instructions3', 'assets/imgs/Backgrounds/instructions3.png')
+    game.load.image('instructions4', 'assets/imgs/Backgrounds/instructions4.png')
 }
 
 function showInstructions() {
@@ -78,6 +79,27 @@ function slide3() {
     instructions3 = game.add.image(game.camera.width/2, game.camera.height / 2, 'instructions3');
     instructions3.scale.setTo(2, 2);
     instructions3.anchor.setTo(0.5, 0.5);
+
+    const slideTimer = game.time.events.add(slideDuration, function(){
+        Help.destroy();
+        instructions3.destroy();
+        slide4();
+    }, this);
+    
+    game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.addOnce(function() {
+        game.time.events.remove(slideTimer);
+        Help.destroy();
+        instructions3.destroy();
+        slide4();
+    });
+}
+
+function slide4() {
+    const Victory = game.add.text(game.camera.width / 2, game.camera.height / 2 - 400, 'Your ultimate goal...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
+    Victory.anchor.setTo(0.5, 0);
+    instructions4 = game.add.image(game.camera.width/2, game.camera.height / 2, 'instructions4');
+    instructions4.scale.setTo(2, 2);
+    instructions4.anchor.setTo(0.5, 0.5);
 
     game.time.events.add(slideDuration, function(){
         game.camera.fade(0x000000, 1000);
