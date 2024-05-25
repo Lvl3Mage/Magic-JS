@@ -5,6 +5,12 @@ class Store extends Component{
 		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
 
 		this.storeConfig = storeConfig;
+		if(!this.storeConfig.getBalance){
+			this.storeConfig.getBalance = () => sceneData.HUD.score;
+		}
+		if(!this.storeConfig.setBalance){
+			this.storeConfig.setBalance = (value) => sceneData.HUD.setScore(value);
+		}
 		this.currentState = 0;
 
 		this.purchaseKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
@@ -80,12 +86,21 @@ class Store extends Component{
 		}
 		if(this.CanPurchase()){
 			const currentStage = this.storeConfig.stages[this.currentState];
+
 			sceneData.HUD.addScore(-currentStage.cost);
+
 			for(let change of currentStage.changes){
 				this.CompleteChange(change);
 			}
-			console.log(gameConfig);
+			if(this.storeConfig.purchaseSound){
+				game.sound.play(this.storeConfig.purchaseSound.name, this.storeConfig.purchaseSound.volume);
+			}
+			if(this.storeConfig.buyCallback){
+				this.storeConfig.buyCallback();
+			}
+
 			this.currentState++;
+
 			if(this.currentState >= this.storeConfig.stages.length - 1){
 				if(this.storeConfig.repeatLast){
 					this.currentState--;
@@ -114,7 +129,13 @@ class Store extends Component{
 				});
 				break;
 			case 'heal':
-				sceneData.player.Heal(gameConfig.playerStats.maxHealth*change.healPercentage);
+				sceneData.player.Heal(gameConfig.playerStats.maxHealth*change.factor);
+				break;
+			case 'reload':
+				sceneData.player.RestoreMana(gameConfig.playerStats.maxMana*change.factor);
+				break;
+			case 'custom':
+				change.action();
 				break;
 		}
 	}

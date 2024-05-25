@@ -342,4 +342,8 @@ class Player extends Component {
 		this.health += amount;
 		this.health = Mathf.Clamp(this.health, 0, this.maxHealth);
 	}
+	RestoreMana(amount){
+		this.mana += amount;
+		this.mana = Mathf.Clamp(this.mana, 0, this.maxMana);
+	}
 }

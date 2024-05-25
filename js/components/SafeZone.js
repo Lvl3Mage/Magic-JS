@@ -7,7 +7,7 @@ class SafeZone extends Component {
 		this.sprite = game.add.sprite(position.x, position.y);
         this.sprite.getParentComponent = () => this;
 
-        game.physics.p2.enable(this.sprite,false);
+        game.physics.p2.enable(this.sprite,true);
 
 		this.body = this.sprite.body;
 		this.body.fixedRotation = true;

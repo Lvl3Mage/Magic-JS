@@ -58,10 +58,12 @@ function onBackButtonPressed() {
 }
 
 function onBackHover(button) {
-    game.add.tween(button.scale).to({ x: 0.35, y: 0.35 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(button.scale).to({ x: 0.35, y: 0.35 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
 }
 
 function onBackOut(button) {
     game.tweens.removeFrom(button.scale);
-    button.scale.setTo(0.3, 0.3);
+    
+    game.add.tween(button.scale).to({ x: 0.3, y: 0.3 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
+    // button.scale.setTo(0.3, 0.3);
 }

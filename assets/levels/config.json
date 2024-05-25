@@ -64,7 +64,7 @@
 							},
 							{
 								"actionType": "heal",
-								"healPercentage": 1
+								"factor": 1
 							}
 						],
 						"cost": 10

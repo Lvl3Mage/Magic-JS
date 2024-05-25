@@ -26,12 +26,12 @@ function display() {
     title = game.add.image(game.camera.width / 2, 40, 'title');
     title.anchor.setTo(0.5, 0);
     title.scale.setTo(0.6, 0.6);
-    game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
 
     scroll = game.add.image(game.camera.width / 2, game.camera.height / 2 - 170, 'scrollDecor');
     scroll.anchor.setTo(0.5, 0);
     scroll.scale.setTo(0.8, 0.8);
-    game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
 
     //Buttons corresponding to the start, about and configuration respectively
     buttonStart = game.add.text(game.camera.width / 2, game.camera.height / 2 , 'Play', { font: '50px Merryweather', fill: '#000000' });
@@ -79,11 +79,13 @@ function onConfigButtonPressed() {
 
 function onButtonHover(button) {
     button.text = '~' + button.text + '~';
-    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
 }
 
 function onButtonOut(button) {
     button.text = button.text.replaceAll('~', ''); // Replace all occurrences of '~' with an empty string
+
     game.tweens.removeFrom(button.scale);
-    button.scale.setTo(1, 1);
+    game.add.tween(button.scale).to({ x: 1, y: 1 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
+    // button.scale.setTo(1, 1);
 }

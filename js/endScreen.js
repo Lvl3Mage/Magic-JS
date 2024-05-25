@@ -82,11 +82,11 @@ function onHomeBtnPressed() {
 
 function onBtnHover(button) {
     button.text = '~' + button.text + '~';
-    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
+    game.add.tween(button.scale).to({ x: 1.1, y: 1.1 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
 }
 
 function onBtnOut(button) {
     button.text = button.text.replaceAll('~', ''); // Replace all occurrences of '~' with an empty string
     game.tweens.removeFrom(button.scale);
-    button.scale.setTo(1, 1);
+    game.add.tween(button.scale).to({ x: 1, y: 1 }, 1000, Phaser.Easing.Quartic.Out, true, 0, 0, false);
 }
