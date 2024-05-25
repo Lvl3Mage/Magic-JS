@@ -83,14 +83,14 @@ let playState = {
 		game.load.audio('sFireA', 'assets/snds/Laser_Shoot43.wav');
 		game.load.audio('sCollectibleA', 'assets/snds/Pickup_Coin30.wav');
 		game.load.audio('sHurtA', 'assets/snds/Hit_Hurt21.wav');
+		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
 		//volume down
 		game.load.audio('sFire', 'assets/snds/Laser_Shoot43 (mp3cut.net vol-75).wav');
 		game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
 		game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
-		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
-		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
-		game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
-		game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
+		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97 (mp3cut.net vol-25)');
+		// game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
+		// game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
 	create: function() {
 		const gameConfigData = game.cache.getJSON('config');
@@ -160,7 +160,7 @@ let playState = {
 			sFire: game.add.audio('sFire'),
 			sCollectible: game.add.audio('sCollectible'),
 			sHurt:game.add.audio('sHurt'),
-			sBackground: game.add.audio('sbg'),
+			// sBackground: game.add.audio('sbg'),
 			sSquishy: game.add.audio('sSquishy'),
 		}
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
