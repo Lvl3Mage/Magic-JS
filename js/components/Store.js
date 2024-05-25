@@ -56,7 +56,13 @@ class Store extends Component{
 		if(this.disabled){
 			return;
 		}
-		this.upgradePriceDisplay.setText(`${this.storeConfig.stages[this.currentState].cost} INT`);
+		//TODO
+		if(!this.storeConfig.priceHidden){
+			this.upgradePriceDisplay.setText(`${this.storeConfig.stages[this.currentState].cost} ${this.storeConfig.priceUnits || "INT"}`);
+		}
+		else{
+			this.upgradePriceDisplay.setText('');
+		}
 		if(this.CanPurchase()){
 			this.upgradePriceDisplay.alpha = 1;
 			this.upgradeDescription.alpha = 1;

@@ -36,7 +36,7 @@ class HUD extends Component {
 		this.leftScreen = 10;
 		this.styleHUD = {font: '26px Merryweather', fill: '#FFFFFF'};
 
-		this.scoreTotal; //score que aparecera en la pantalla final
+		this.scoreTotal = 0; //score que aparecera en la pantalla final
 		this.collectibleTotal; //Total de collectibles recogidos
 		this.createHUD();
 	}
@@ -150,6 +150,7 @@ class HUD extends Component {
 		this.score += score;
 		if(score>0){
 			this.scoreTotal += score;
+			totalScore = this.scoreTotal;
 		}
 		this.updateScoreText();
 	}

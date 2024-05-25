@@ -26,7 +26,6 @@ function display() {
     let style = {font: '25px Merriweather', fill: '#FFFFFF'};
     let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came...`, onHomeBtnPressed, style);
     let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
-
     const scoreText = game.add.text(posX - 450, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
     scoreText.anchor.setTo(0.5, 0.5);
 }

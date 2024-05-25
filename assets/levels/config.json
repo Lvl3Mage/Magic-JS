@@ -49,10 +49,12 @@
 			}
 		},
 		"upgrades": {
-			"health": {
-				"spriteName": "healthUpgrade",
+			"character": {
+				"spriteName": "characterUpgrade",
 				"spriteScale": 0.3,
-				"upgradeText": "Increase Max Health",
+				"upgradeText": "Upgrade Character Stats",
+				"priceUnits": " INT",
+				"priceHidden": false,
 				"stages": [
 					{
 						"changes": [
