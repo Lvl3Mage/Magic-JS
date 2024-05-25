@@ -40,22 +40,27 @@ function doConfig() {
     btnNgtm.anchor.setTo(0.5, 0.5);
     btnNgtm.name = 'btnNgtm'; // Add a name property to identify the button
     btnNgtm.events.onInputOver.add(jiggle, this); // Add hover event listener
+
+    difficultyDisplay = game.add.text(game.camera.width / 2, game.camera.height / 2 + 250, 'Current difficulty: ' + difficultyText, { font: '25px Merryweather', fill: '#ffffff' });
+    difficultyDisplay.anchor.setTo(0.5, 0.5);
 }
+
+difficultyText = 'Easy';
 
 function onButtonPressed(button) {
     if (button.name === 'btnEasy') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Easy button");
+        
+        difficultyText = 'Easy';
         goHome();
         
     } else if (button.name === 'btnAvg') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Average button");
+       
+        difficultyText = 'Medium';
         goHome();
         
     } else if (button.name === 'btnNgtm') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Nightmare button");
+        
+        difficultyText = 'Nightmare';
         goHome();
     }
 }
