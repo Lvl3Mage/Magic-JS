@@ -126,10 +126,8 @@ class Store extends Component{
 				const changeType = change.changeType;
 				this.MutateAtPath(changePath, (value) => {
 					if(changeType == 'add'){
-						console.log(`Velocidad maxima ${gameConfig.playerStats.maxVelocity}`);
 						console.log(changePath);
 						console.log(value + changeValue);
-						console.log(`Velocidad maximxa ${gameConfig.playerStats.maxVelocity}`);
 						return value + changeValue;
 					}
 					else if(changeType == 'set'){
