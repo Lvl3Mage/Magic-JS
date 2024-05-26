@@ -115,12 +115,6 @@
 								"property": "playerStats.attacks.light.speed",
 								"changeType": "add",
 								"value": 10
-							},
-							{
-								"actionType": "mutate",
-								"property": "playerStats.attacks.light.delay",
-								"changeType": "add",
-								"value": -10
 							}
 						],
 						"cost": 10
