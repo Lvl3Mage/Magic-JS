@@ -44,7 +44,6 @@ function doConfig() {
 
 function onButtonPressed(button) {
     if (button.name === 'btnEasy') {
-<<<<<<< Updated upstream
         // Update the parameters for each control
         console.log("hello! You pressed the Easy button");
         goHome();
@@ -57,20 +56,6 @@ function onButtonPressed(button) {
     } else if (button.name === 'btnNgtm') {
         // Update the parameters for each control
         console.log("hello! You pressed the Nightmare button");
-=======
-        difficulty = 'easy';
-        difficultyText = 'Easy';
-        goHome();
-        
-    } else if (button.name === 'btnAvg') {
-        difficulty = 'medium';
-        difficultyText = 'Medium';
-        goHome();
-        
-    } else if (button.name === 'btnNgtm') {
-        difficulty = 'nightmare';
-        difficultyText = 'Nightmare';
->>>>>>> Stashed changes
         goHome();
     }
 }
