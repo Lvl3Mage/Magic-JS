@@ -88,10 +88,33 @@
 								"property": "playerStats.maxVelocity",
 								"changeType": "add",
 								"value": 20
+							}
+						],
+						"cost": 10
+					}
+				],
+				"repeatLast": true
+			},
+			"attack": {
+				"spriteName": "bulletUpgrade",
+				"spriteScale": 0.3,
+				"upgradeText": "Upgrade Character Magic",
+				"priceUnits": " INT",
+				"priceHidden": false,
+				"stages": [
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.damage",
+								"changeType": "add",
+								"value": 10
 							},
 							{
-								"actionType": "movement",
-								"factor": 1
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.speed",
+								"changeType": "add",
+								"value": 10
 							}
 						],
 						"cost": 10

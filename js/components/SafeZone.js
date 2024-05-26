@@ -66,10 +66,10 @@ class SafeZone extends Component {
 			let t = 1 - this.safeZoneTimer/this.safeZoneTimerMax;
 			let intensity = Mathf.Lerp(0.0001, 0.01, t);
 			// game.camera.shake(intensity,50,true);
-			if(this.safeZoneTimer <= 0){
-				console.log("AWOOGA")
-				game.state.start('endScreen');
-			}
+			// if(this.safeZoneTimer <= 0){
+			// 	console.log("AWOOGA")
+			// 	game.state.start('endScreen');
+			// }
 		}
 		else{
 			this.safeZoneTimer += game.time.elapsed * 0.001;
@@ -97,7 +97,7 @@ class SafeZone extends Component {
 
 	setUpStore(){
 		const upgradeTypes = Object.keys(gameConfig.upgrades);
-		const separation = 0;
+		const separation = 200;
 		const centerPos = new Vector2(this.sprite.centerX, this.sprite.centerY);
 		const startPos = centerPos.Sub(new Vector2(separation*Math.floor(upgradeTypes.length/2), 0));
 		console.log(startPos);

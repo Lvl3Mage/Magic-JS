@@ -186,9 +186,19 @@ let playState = {
 
 	},
 	update: function() {
+		let keyTest = game.input.keyboard.addKey(Phaser.Keyboard.X);
+		if (keyTest.isDown) {sceneData.HUD.addScore(100)}
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
 		game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		game.debug.text(
+			`maxHealth: ${gameConfig.playerStats.maxHealth} \n` +
+			`maxMana: ${gameConfig.playerStats.maxMana} \n` +
+			`maxVelocity: ${gameConfig.playerStats.maxVelocity} \n` +
+			`maxMana: ${gameConfig.playerStats.attacks.light.damage} \n` +
+			`maxMana: ${gameConfig.playerStats.attacks.light.speed} \n` +
+			`maxMana: ${gameConfig.playerStats.attacks.light.delay} \n`
+			, 40, 80, "#00ff00");
 		if(debuging) cheatActions();
 		//game.time.advancedTiming = true;
 		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
