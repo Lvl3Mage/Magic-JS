@@ -134,9 +134,6 @@
 		"easy": {
 			"enemies": {
 				"greenSlime": {
-<<<<<<< Updated upstream
-					"maxAmount": 40
-=======
 					"maxAmount": 20,
 					"stats":  {
 						"maxHealth": 5,
@@ -149,20 +146,13 @@
 						"maxHealth": 25,
 						"damage": 10
 					}
->>>>>>> Stashed changes
 				}
 
 			},
 			"playerStats": {
-<<<<<<< Updated upstream
 				"maxVelocity": 800
-=======
-				"maxVelocity": 800,
-				"maxHealth": 150,
-				"maxMana": 150
 			}
 		},
-		
 		"medium": {
 			"enemies": {
 				"greenSlime": {
@@ -209,7 +199,6 @@
 				"maxVelocity": 400,
 				"maxHealth": 80,
 				"maxMana": 80
->>>>>>> Stashed changes
 			}
 		}
 	}
