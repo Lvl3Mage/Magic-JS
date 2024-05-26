@@ -134,11 +134,71 @@
 		"easy": {
 			"enemies": {
 				"greenSlime": {
-					"maxAmount": 40
+					"maxAmount": 20,
+					"stats":  {
+						"maxHealth": 5,
+						"damage": 2
+					}
+				},
+				"purpleSlime": {
+					"maxAmount": 10,
+					"stats":  {
+						"maxHealth": 25,
+						"damage": 10
+					}
 				}
 			},
 			"playerStats": {
-				"maxVelocity": 800
+				"maxVelocity": 800,
+				"maxHealth": 150,
+				"maxMana": 150
+			}
+		},
+
+		"medium": {
+			"enemies": {
+				"greenSlime": {
+					"maxAmount": 30,
+					"stats":  {
+						"maxHealth": 5,
+						"damage": 2
+					}
+				},
+				"purpleSlime": {
+					"maxAmount": 5,
+					"stats":  {
+						"maxHealth": 25,
+						"damage": 20
+					}
+				}
+			},
+			"playerStats": {
+				"maxVelocity": 400,
+				"maxHealth": 100,
+				"maxMana": 100
+			}
+		},
+		"nightmare": {
+			"enemies": {
+				"greenSlime": {
+					"maxAmount": 10,
+					"stats":  {
+						"maxHealth": 20,
+						"damage": 10
+					}
+				},
+				"purpleSlime": {
+					"maxAmount": 3,
+					"stats":  {
+						"maxHealth": 100,
+						"damage": 40
+					}
+				}
+			},
+			"playerStats": {
+				"maxVelocity": 400,
+				"maxHealth": 80,
+				"maxMana": 80
 			}
 		}
 	}

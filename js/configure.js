@@ -24,13 +24,13 @@ function doConfig() {
 
     const text = game.add.text(game.camera.width / 2, 220, 'Select your difficulty...', {font: '40px Merryweather', fill: '#ffffff', align: 'center'});
     text.anchor.setTo(0.5, 0);
-    
+
     // Display the buttons
     btnEasy = game.add.button(game.camera.width / 2 - 300 , game.camera.height/2 + 100, 'easyButton', onButtonPressed, this);
     btnEasy.anchor.setTo(0.5, 0.5);
     btnEasy.name = 'btnEasy'; // Add a name property to identify the button
     btnEasy.events.onInputOver.add(jiggle, this); // Add hover event listener
-    
+
     btnAvg = game.add.button(game.camera.width / 2 , game.camera.height/2 + 100, 'avgButton', onButtonPressed, this);
     btnAvg.anchor.setTo(0.5, 0.5);
     btnAvg.name = 'btnAvg'; // Add a name property to identify the button
@@ -44,24 +44,24 @@ function doConfig() {
 
 function onButtonPressed(button) {
     if (button.name === 'btnEasy') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Easy button");
+        difficulty = 'easy';
+        difficultyText = 'Easy';
         goHome();
-        
+
     } else if (button.name === 'btnAvg') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Average button");
+        difficulty = 'medium';
+        difficultyText = 'Medium';
         goHome();
-        
+
     } else if (button.name === 'btnNgtm') {
-        // Update the parameters for each control
-        console.log("hello! You pressed the Nightmare button");
+        difficulty = 'nightmare';
+        difficultyText = 'Nightmare';
         goHome();
     }
 }
 
 function jiggle(button) {
-    game.add.tween(button.scale).to({ x: 1.2, y: 0.8 }, 200, Phaser.Easing.Cubic.InOut, true, 0, 0, true) 
+    game.add.tween(button.scale).to({ x: 1.2, y: 0.8 }, 200, Phaser.Easing.Cubic.InOut, true, 0, 0, true)
     .onComplete.add(function() {
         // Recoil effect
         game.add.tween(button.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Cubic.InOut, true);
