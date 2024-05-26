@@ -11,6 +11,7 @@ function loadassets() {
     game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
 }
 
+
 let buttonStart, buttonAbout, buttonConfig;
 
 function display() {
