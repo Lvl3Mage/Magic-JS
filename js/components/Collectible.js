@@ -22,7 +22,7 @@ class Collectible extends Component {
         this.sprite.anchor.setTo(0.5, Mathf.TransformRange(-1,1 , 0.5,1, bop));
 
         this.MoveToPlayer();
-        
+
         const distanceToPLayer = sceneData.player.GetPosition().Sub(new Vector2(this.sprite.centerX, this.sprite.centerY)).Length();
         if(distanceToPLayer < 50){
             this.config.onPlayerCollision.call(this);
@@ -41,6 +41,7 @@ class Collectible extends Component {
 
     }
     BeforeDestroy(){
+        sceneData.sounds.sCollectible.play();
         this.sprite.destroy();
     }
 }

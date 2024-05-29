@@ -10,7 +10,7 @@ class Enemy extends Component {
 		this.shadowAnchor = new Vector2(0.5, 0.5);
 
 		//Jump Settings
-		Object.defineProperty(this, 'jumpFrequency', { 
+		Object.defineProperty(this, 'jumpFrequency', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.jumpFrequency
 		});
 		this.jumpHeightFactor = 0.7;
@@ -30,19 +30,19 @@ class Enemy extends Component {
 		this.health = gameConfig.enemies[this.enemyType].stats.maxHealth;
 
 
-		Object.defineProperty(this, 'roamVelocity', { 
+		Object.defineProperty(this, 'roamVelocity', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.roamVelocity
 		});
-		Object.defineProperty(this, 'damage', { 
+		Object.defineProperty(this, 'damage', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.damage
 		});
 
-		Object.defineProperty(this, 'attackVelocity', { 
+		Object.defineProperty(this, 'attackVelocity', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.attackVelocity
 		});
 		this.accelerationFactor = 0.1;
 
-		Object.defineProperty(this, 'attackRange', { 
+		Object.defineProperty(this, 'attackRange', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.attackRange
 		});
 		this.moveDelay = 1000; //At least 1 second delay, remembering this is in milliseconds
@@ -215,6 +215,7 @@ class Enemy extends Component {
 		}
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, gameConfig.enemies[this.enemyType].stats.maxHealth);
+		sceneData.sounds.sSquishy.play();
 		// console.log(`Enemy health: ${this.health}`);
 		if(this.health <= 0){
 			this.Die();

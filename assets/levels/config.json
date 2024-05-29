@@ -73,6 +73,60 @@
 					}
 				],
 				"repeatLast": true
+			},
+			"speed": {
+				"spriteName": "speedUpgrade",
+				"spriteScale": 0.3,
+				"upgradeText": "Upgrade Character Speed",
+				"priceUnits": " INT",
+				"priceHidden": false,
+				"stages": [
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.maxVelocity",
+								"changeType": "add",
+								"value": 20
+							}
+						],
+						"cost": 10
+					}
+				],
+				"repeatLast": true
+			},
+			"attack": {
+				"spriteName": "bulletUpgrade",
+				"spriteScale": 0.3,
+				"upgradeText": "Upgrade Character Magic",
+				"priceUnits": " INT",
+				"priceHidden": false,
+				"stages": [
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.damage",
+								"changeType": "add",
+								"value": 10
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.speed",
+								"changeType": "add",
+								"value": 10
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.delay",
+								"changeType": "add",
+								"value": -10
+							}
+						],
+						"cost": 10
+					}
+				],
+				"repeatLast": true
 			}
 		}
 	},
@@ -80,11 +134,11 @@
 		"easy": {
 			"enemies": {
 				"greenSlime": {
-					"maxAmount": 20
-				},
-				"stats":  {
-					"maxHealth": 5,
-					"damage": 2
+					"maxAmount": 20,
+					"stats":  {
+						"maxHealth": 5,
+						"damage": 2
+					}
 				},
 				"purpleSlime": {
 					"maxAmount": 10,
@@ -100,14 +154,15 @@
 				"maxMana": 150
 			}
 		},
-		"average": {
+
+		"medium": {
 			"enemies": {
 				"greenSlime": {
-					"maxAmount": 30
-				},
+					"maxAmount": 30,
 					"stats":  {
 						"maxHealth": 5,
 						"damage": 2
+					}
 				},
 				"purpleSlime": {
 					"maxAmount": 5,
@@ -118,7 +173,7 @@
 				}
 			},
 			"playerStats": {
-				"maxVelocity": 300,
+				"maxVelocity": 400,
 				"maxHealth": 100,
 				"maxMana": 100
 			}
@@ -126,11 +181,11 @@
 		"nightmare": {
 			"enemies": {
 				"greenSlime": {
-					"maxAmount": 10
-				},
-				"stats":  {
-					"maxHealth": 20,
-					"damage": 10
+					"maxAmount": 10,
+					"stats":  {
+						"maxHealth": 20,
+						"damage": 10
+					}
 				},
 				"purpleSlime": {
 					"maxAmount": 3,
@@ -141,7 +196,7 @@
 				}
 			},
 			"playerStats": {
-				"maxVelocity": 200,
+				"maxVelocity": 400,
 				"maxHealth": 80,
 				"maxMana": 80
 			}
