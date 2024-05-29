@@ -81,15 +81,17 @@ let playState = {
 
 		//Sounds
 		//volume up
-		game.load.audio('sFireA', 'assets/snds/Laser_Shoot43.wav');
-		game.load.audio('sCollectibleA', 'assets/snds/Pickup_Coin30.wav');
-		game.load.audio('sHurtA', 'assets/snds/Hit_Hurt21.wav');
+		game.load.audio('sFire', 'assets/snds/Laser_Shoot43.wav');
+		game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30.wav');
+		game.load.audio('sHurt', 'assets/snds/Hit_Hurt21.wav');
 		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
+		game.load.audio('purchase', 'assets/snds/Purchase.wav');
 		//volume down
-		game.load.audio('sFire', 'assets/snds/Laser_Shoot43 (mp3cut.net vol-75).wav');
-		game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
-		game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
-		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97 (mp3cut.net vol-25)');
+		// game.load.audio('sFire', 'assets/snds/Laser_Shoot43 (mp3cut.net vol-75).wav');
+		// game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
+		// game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
+		// game.load.audio('sSquishy', 'assets/snds/SlimeDamage97 (mp3cut.net vol-25)');
+		
 		// game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
 		// game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
@@ -107,6 +109,8 @@ let playState = {
 
 
 		sceneData = {};
+		gameWin = false;
+		sceneData.gameComplete = false;
 		sceneData.collisionGroups = {
 			player: game.physics.p2.createCollisionGroup(),
 			enemies: game.physics.p2.createCollisionGroup(),
@@ -127,8 +131,20 @@ let playState = {
 			enemies: game.add.group(),
 			projectiles: game.add.group(),
 			collectables: game.add.group(),
+			decor: game.add.group(),
 			UI: game.add.group(),
 		};
+		const obstacles = [];
+		for(let i = 0; i < 3; i++){
+			obstacles.push({
+				name: `obstacle${i}`,
+				objectCollisions: true,
+				collisionGroup: sceneData.collisionGroups.walls,
+				collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
+				parent: game.add.group(),
+				physicsGroup: [],
+			});
+		}
 		let tilemap = SetupTilemap(
 			'levelMap',
 			[
@@ -145,10 +161,13 @@ let playState = {
 					collideWith: [sceneData.collisionGroups.player, sceneData.collisionGroups.enemies, sceneData.collisionGroups.projectiles],
 					// parent: sceneData.layers.background
 				},
+				...obstacles
 			],
 			sceneData.layers.background
 		);
+
 		game.world.setBounds(0, 0, game.world.width, game.world.height);
+
 		const playerSpawn = tilemap.objects.playerSpawn[0];
 
 
@@ -158,11 +177,12 @@ let playState = {
 		sceneData.safeZone = new SafeZone(eventSystem, new Vector2(safeZoneSpawn.x,safeZoneSpawn.y), new Vector2(1000,500));
 		sceneData.collectables; //Inicializo los collectables (ns si es necesario)
 		sceneData.sounds = {
-			sFire: game.add.audio('sFire'),
-			sCollectible: game.add.audio('sCollectible'),
-			sHurt:game.add.audio('sHurt'),
+			fire: game.add.audio('sFire', 0.2),
+			collectible: game.add.audio('sCollectible', 0.1),
+			hurt:game.add.audio('sHurt', 0.1),
 			// sBackground: game.add.audio('sbg'),
-			sSquishy: game.add.audio('sSquishy'),
+			squishy: game.add.audio('sSquishy', 0.2),
+			purchase: game.add.audio('purchase', 0.4),
 		}
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
 
@@ -183,6 +203,67 @@ let playState = {
 		sceneData.enemyManager = new EnemyManager(eventSystem, spawnPoints);
 
 
+
+		const rechargeZones = CreatePoints(tilemap.objects.rechargeZones);
+		for(let point of rechargeZones){
+			new Store(eventSystem, point, {
+				spriteName: 'reload',
+				spriteScale: 0.3,
+				priceHidden: true,
+				purchaseSound: "purchase", 
+				upgradeText: 'Reload & Heal',
+				stages: [
+					{
+						changes: [
+							{
+								"actionType": "heal",
+								"factor": 1
+							},
+							{
+								"actionType": "reload",
+								"factor": 1
+							}
+						],
+						cost: 0
+					}
+				],
+				repeatLast: true
+			});
+		}
+		let unlockCost = 5;
+		for(let obstacle of obstacles){
+			let point = CreatePoints(tilemap.objects[obstacle.name + "Unlock"])[0];
+			new Store(eventSystem, point, {
+				spriteName: 'characterUpgrade',
+				spriteScale: 0.3,
+				getBalance: () => sceneData.HUD.crystals,
+				setBalance: (value) => sceneData.HUD.setCrystals(value),
+				priceUnits: " Crystals",
+				purchaseSound: "purchase",
+				upgradeText: 'Unlock Area',
+				stages: [
+					{
+						changes: [
+							{
+								"actionType": "custom",
+								"action": function(){
+									obstacle.parent.destroy();
+									obstacle.physicsGroup.forEach(body => body.destroy());
+									unlockCost+=10;
+								}
+							}
+						],
+						get cost(){
+							return unlockCost;
+						}
+					}
+				],
+				repeatLast: false
+			});
+		}
+
+
+
 		eventSystem.CallEvent("post-scene-create", []);
 
 	},
@@ -200,13 +281,20 @@ let playState = {
 			, 40, 80, "#00ff00");
 		if(debuging) cheatActions();
 		//game.time.advancedTiming = true;
-		if (sceneData.HUD.score >= gameConfig.winScore && !gameWin){
+		if (!sceneData.player.sprite.inWorld && !sceneData.gameComplete){
+			sceneData.gameComplete = true;
 			gameWin = true;
 			game.state.start('endScreen');
 		}
 	},
 };
-
+function CreatePoints(pointsObjs){
+	const points = [];
+	for(let pointsObj of pointsObjs){
+		points.push(new Vector2(pointsObj.x, pointsObj.y));
+	}
+	return points;
+}
 function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 	let tilemap = game.add.tilemap(tilemapKey);
 	tilesets.forEach(tileset => {
@@ -235,6 +323,10 @@ function SetupTilemap(tilemapKey, tilesets, layersConfig, defaultParent){
 					body.debug = true;
 				}
 				body.collides(config.collideWith);
+
+				if(config.physicsGroup){
+					config.physicsGroup.push(body);
+				}
 			});
 		}
 		if(config.parent){

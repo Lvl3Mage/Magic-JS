@@ -215,7 +215,7 @@ class Enemy extends Component {
 		}
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, gameConfig.enemies[this.enemyType].stats.maxHealth);
-		sceneData.sounds.sSquishy.play();
+		sceneData.sounds.squishy.play();
 		// console.log(`Enemy health: ${this.health}`);
 		if(this.health <= 0){
 			this.Die();
@@ -234,20 +234,22 @@ class Enemy extends Component {
 		player.takeDamage(this.damage);
 	}
 	SpawnCollectable(){
-		let randNum = Math.floor(Math.random() * 100) + 1;
-		let probabilidad = 10; // Probabilidad de que aparezca una gema
-		if (randNum < probabilidad) {
+		let randNum = Math.random();
+		console.log(randNum, gameConfig.enemies[this.enemyType].crystalDropChance);
+		if (randNum < gameConfig.enemies[this.enemyType].crystalDropChance){
 			sceneData.collectables = new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
 				{
 					spriteName: `collectible`,
+					spriteScale: 0.5,
 					onPlayerCollision: function(){
-						sceneData.HUD.addScore(5);
+						sceneData.HUD.addCrystals(1);
 					}
 				});
 		} else {
 			sceneData.collectables = new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
 				{
 					spriteName: `xp`,
+					spriteScale: 0.3,
 					onPlayerCollision: function(){
 						sceneData.HUD.addScore(5);
 					}

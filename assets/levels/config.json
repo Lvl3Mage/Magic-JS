@@ -9,6 +9,7 @@
 				"scaleAmt": 1,
 				"maxAmount": 20,
 				"spawnDelay": 0.5,
+				"crystalDropChance": 0.1,
 				"stats": {
 					"maxHealth": 10,
 					"damage": 5,
@@ -23,6 +24,7 @@
 				"scaleAmt": 1.5,
 				"maxAmount": 5,
 				"spawnDelay": 1,
+				"crystalDropChance": 0.6,
 				"stats": {
 					"maxHealth": 50,
 					"damage": 20,
@@ -55,6 +57,7 @@
 				"upgradeText": "Upgrade Character Stats",
 				"priceUnits": " INT",
 				"priceHidden": false,
+				"purchaseSound": "purchase", 
 				"stages": [
 					{
 						"changes": [
@@ -66,6 +69,16 @@
 							},
 							{
 								"actionType": "heal",
+								"factor": 1
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.maxMana",
+								"changeType": "add",
+								"value": 20
+							},
+							{
+								"actionType": "reload",
 								"factor": 1
 							}
 						],
@@ -80,6 +93,7 @@
 				"upgradeText": "Upgrade Character Speed",
 				"priceUnits": " INT",
 				"priceHidden": false,
+				"purchaseSound": "purchase", 
 				"stages": [
 					{
 						"changes": [
@@ -101,6 +115,7 @@
 				"upgradeText": "Upgrade Character Magic",
 				"priceUnits": " INT",
 				"priceHidden": false,
+				"purchaseSound": "purchase", 
 				"stages": [
 					{
 						"changes": [

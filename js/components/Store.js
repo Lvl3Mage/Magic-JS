@@ -32,9 +32,11 @@ class Store extends Component{
 		const spritePos = new Vector2(this.sprite.centerX, this.sprite.centerY);
 		this.upgradeDescription = game.add.text(spritePos.x, spritePos.y + this.sprite.height/2 + 25, this.storeConfig.upgradeText, textStyle);
 		this.upgradeDescription.anchor.setTo(0.5,0.5);
+		sceneData.layers.world.add(this.upgradeDescription);
 
 		this.upgradePriceDisplay = game.add.text(spritePos.x, spritePos.y - this.sprite.height/2 - 25, "", priceStyle);
 		this.upgradePriceDisplay.anchor.setTo(0.5,0.5);
+		sceneData.layers.world.add(this.upgradePriceDisplay);
 		// this.body.debug = true;
 
 		this.isDown = true;
@@ -81,7 +83,7 @@ class Store extends Component{
 			return false;
 		}
 		const currentStage = this.storeConfig.stages[this.currentState];
-		return currentStage.cost <= sceneData.HUD.score;
+		return currentStage.cost <= this.storeConfig.getBalance();
 	}
 	AttemptPurchase(){
 		if(this.disabled){
@@ -93,13 +95,18 @@ class Store extends Component{
 		if(this.CanPurchase()){
 			const currentStage = this.storeConfig.stages[this.currentState];
 
-			sceneData.HUD.addScore(-currentStage.cost);
+			this.storeConfig.setBalance(this.storeConfig.getBalance() - currentStage.cost);
 
 			for(let change of currentStage.changes){
 				this.CompleteChange(change);
 			}
 			if(this.storeConfig.purchaseSound){
-				game.sound.play(this.storeConfig.purchaseSound.name, this.storeConfig.purchaseSound.volume);
+				if(typeof this.storeConfig.purchaseSound == 'string'){
+					sceneData.sounds[this.storeConfig.purchaseSound].play();
+				}
+				else{
+					this.storeConfig.purchaseSound.play();
+				}
 			}
 			if(this.storeConfig.buyCallback){
 				this.storeConfig.buyCallback();

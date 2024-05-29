@@ -4,6 +4,7 @@ class HUD extends Component {
 		eventSystem.Subscribe("scene-update", this.Update, this);
 
 		this.score = 0;
+		this.crystals = 0;
 		this.scoreText;
 
 		this.level = 1;
@@ -74,14 +75,15 @@ class HUD extends Component {
 		// this.bg.tint = 0xAAAAAA;
 		this.createScoreText();
 		this.createLevelText();
+		this.createCrystalsText();
 		this.createHealthbar();
 		this.createManaBar();
 	}
 
-	createText(posSreenX, posSreenY, posX, posY, text){
+	createText(anchorX, anchorY, posX, posY, text){
 		let btn;
 		btn = game.add.text(posX, posY, text, this.styleHUD);
-		btn.anchor.setTo(posSreenX, posSreenY);
+		btn.anchor.setTo(anchorX, anchorY);
 		btn.fixedToCamera = true;
 		btn.cameraOffset = new Phaser.Point(posX, posY);
 		sceneData.layers.UI.addChild(btn);
@@ -101,7 +103,14 @@ class HUD extends Component {
 		this.updateLevelText()
 	}
 	updateLevelText(){
-		this.levelText.text = 'Level: ' + this.level;
+		this.levelText.text = 'Difficulty: ' + difficultyText;
+	}
+	createCrystalsText(){
+		this.crystalText = this.createText(1, 0, this.rightScreen, this.padding.y+40);
+		this.updateCrystalsText();
+	}
+	updateCrystalsText(){
+		this.crystalText.text = 'Crystals: ' + this.crystals;
 	}
 
 	createHealthbar(){
@@ -155,6 +164,24 @@ class HUD extends Component {
 		this.updateScoreText();
 	}
 
+
+	setScore(newScore){
+		let diff = newScore - this.score;
+		this.score = newScore;
+		if(diff>0){
+			this.scoreTotal += diff;
+			totalScore = this.scoreTotal;
+		}
+		this.updateScoreText();
+	}
+	addCrystals(amount){
+		this.crystals+= amount;
+		this.updateCrystalsText();
+	}
+	setCrystals(amount){
+		this.crystals = amount;
+		this.updateCrystalsText();
+	}
 	setLevel(level){
 		this.level = level;
 		this.updateLevelText();

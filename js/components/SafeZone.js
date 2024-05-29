@@ -47,7 +47,7 @@ class SafeZone extends Component {
     createCrystal(x, y, spriteName, offset) {
         const crystal = game.add.sprite(x, y, spriteName);
         crystal.anchor.setTo(0.5, 0.5);
-        sceneData.layers.UI.addChild(crystal);
+        sceneData.layers.decor.addChild(crystal);
         const tween = game.add.tween(crystal).to({ y: y - offset }, 1000, Phaser.Easing.Quadratic.InOut, true, 0, -1, true);
         return { crystal, tween };
     }

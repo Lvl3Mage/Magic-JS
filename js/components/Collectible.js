@@ -4,7 +4,12 @@ class Collectible extends Component {
         eventSystem.Subscribe("scene-update", this.Update,this);
 
         this.sprite = game.add.sprite(posX, posY, collectibleConfig.spriteName);
-        this.sprite.scale.setTo(0.3, 0.3);
+        if(collectibleConfig.spriteScale){
+            this.sprite.scale.setTo(collectibleConfig.spriteScale, collectibleConfig.spriteScale);
+        }
+        else{
+            this.sprite.scale.setTo(1, 1);
+        }
         this.sprite.getParentComponent = () => this;
         this.config = collectibleConfig;
         this.collectDistance = 50;
@@ -41,7 +46,7 @@ class Collectible extends Component {
 
     }
     BeforeDestroy(){
-        sceneData.sounds.sCollectible.play();
+        sceneData.sounds.collectible.play();
         this.sprite.destroy();
     }
 }
