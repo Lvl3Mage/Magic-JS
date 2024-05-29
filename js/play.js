@@ -50,6 +50,7 @@ let playState = {
 
 		game.load.image('hudWall', 'assets/imgs/hudWall.png');
 		game.load.image('xp', 'assets/imgs/INTpoints.png');
+		game.load.image('collectible', 'assets/imgs/collectibleGem.png');
 		game.load.image('Floor', 'assets/imgs/Backgrounds/Tileset.png');
 		game.load.tilemap('levelMap', 'assets/levels/squareTilemap.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.json('config', 'assets/levels/config.json');

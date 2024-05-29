@@ -66,10 +66,10 @@ class SafeZone extends Component {
 			let t = 1 - this.safeZoneTimer/this.safeZoneTimerMax;
 			let intensity = Mathf.Lerp(0.0001, 0.01, t);
 			// game.camera.shake(intensity,50,true);
-			// if(this.safeZoneTimer <= 0){
-			// 	console.log("AWOOGA")
-			// 	game.state.start('endScreen');
-			// }
+			if(this.safeZoneTimer <= 0){
+				console.log("AWOOGA")
+				game.state.start('endScreen');
+			}
 		}
 		else{
 			this.safeZoneTimer += game.time.elapsed * 0.001;

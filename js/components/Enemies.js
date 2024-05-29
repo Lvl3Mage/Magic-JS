@@ -234,14 +234,27 @@ class Enemy extends Component {
 		player.takeDamage(this.damage);
 	}
 	SpawnCollectable(){
-		sceneData.collectables =
-		new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
-			{
-				spriteName: `xp`,
-				onPlayerCollision: function(){
-        			sceneData.HUD.addScore(5);
-				}
-			});
+		let randNum = Math.floor(Math.random() * 100) + 1;
+		let probabilidad = 10; // Probabilidad de que aparezca una gema
+		if (randNum < probabilidad) {
+			sceneData.collectables = new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
+				{
+					spriteName: `collectible`,
+					onPlayerCollision: function(){
+						sceneData.HUD.addScore(5);
+					}
+				});
+		} else {
+			sceneData.collectables = new Collectible(eventSystem, this.sprite.body.x, this.sprite.body.y,
+				{
+					spriteName: `xp`,
+					onPlayerCollision: function(){
+						sceneData.HUD.addScore(5);
+					}
+				});
+		}
+
+
 	}
 	BeforeDestroy(){
 		this.onDestroy();

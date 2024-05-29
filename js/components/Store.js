@@ -126,8 +126,6 @@ class Store extends Component{
 				const changeType = change.changeType;
 				this.MutateAtPath(changePath, (value) => {
 					if(changeType == 'add'){
-						console.log(changePath);
-						console.log(value + changeValue);
 						return value + changeValue;
 					}
 					else if(changeType == 'set'){
