@@ -99,7 +99,7 @@ let playState = {
 		// game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
 		// game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
 		// game.load.audio('sSquishy', 'assets/snds/SlimeDamage97 (mp3cut.net vol-25)');
-		
+
 		// game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
 		// game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
@@ -220,7 +220,7 @@ let playState = {
 				spriteName: 'reload',
 				spriteScale: 0.3,
 				priceHidden: true,
-				purchaseSound: "purchase", 
+				purchaseSound: "purchase",
 				upgradeText: 'Reload & Heal',
 				stages: [
 					{
