@@ -44,7 +44,7 @@
 			"immunityDuration": 500,
 			"attacks": {
 				"heavy": {
-					"damage": 10,
+					"damage": 3,
 					"speed": 500,
 					"cooldown": 400,
 					"chargeDuration":1000,
@@ -167,7 +167,7 @@
 								"actionType": "mutate",
 								"property": "playerStats.attacks.light.damage",
 								"changeType": "add",
-								"value": 10
+								"value": 5
 							},
 							{
 								"actionType": "mutate",
@@ -179,7 +179,7 @@
 								"actionType": "mutate",
 								"property": "playerStats.attacks.heavy.damage",
 								"changeType": "add",
-								"value": 10
+								"value": 3
 							},
 							{
 								"actionType": "mutate",
@@ -192,6 +192,12 @@
 								"property": "playerStats.attacks.heavy.chargeDuration",
 								"changeType": "add",
 								"value": -100
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.heavy.scale",
+								"changeType": "add",
+								"value": 0.2
 							}
 						],
 						"cost": 20,
@@ -203,13 +209,13 @@
 								"actionType": "mutate",
 								"property": "playerStats.attacks.light.damage",
 								"changeType": "add",
-								"value": 20
+								"value": 10
 							},
 							{
 								"actionType": "mutate",
 								"property": "playerStats.attacks.heavy.damage",
 								"changeType": "add",
-								"value": 20
+								"value": 7
 							}
 						],
 						"cost": 50,

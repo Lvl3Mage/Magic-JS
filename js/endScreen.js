@@ -1,36 +1,35 @@
 let endState = {
-    preload: loadAssets,
-    create: display
+    preload: function(){
+        game.load.image('winbg', 'assets/imgs/Titles/winscreen.png');
+        game.load.image('endbg', 'assets/imgs/Titles/losescreen.png');
+    },
+    create: function(){
+        game.camera.flash(0x000000, 1000); //Game fades in
+        game.input.enabled = true;
+
+        if (!gameWin) {
+             gameOver();
+         } else {
+             win();
+         }
+
+        //Buttons
+        let posX = game.camera.width / 2;
+        let posY = game.camera.height / 2;
+        let style = {font: '25px Merriweather', fill: '#FFFFFF'};
+        let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came... (main menu)`, onHomeBtnPressed, style);
+        let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
+
+        const scoreText = game.add.text(0, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
+        scoreText.position.x = scoreText.width / 2 + 50;
+        scoreText.anchor.setTo(0.5, 0.5);
+    }
 };
 
-function loadAssets() {
-    game.load.image('winbg', 'assets/imgs/Titles/winscreen.png');
-    game.load.image('endbg', 'assets/imgs/Titles/losescreen.png');
-}
+
 
 let btnReturnStart;
 
-function display() {
-    game.camera.flash(0x000000, 1000); //Game fades in
-    game.input.enabled = true;
-
-    if (!gameWin) {
-         gameOver();
-     } else {
-         win();
-     }
-
-    //Buttons
-    let posX = game.camera.width / 2;
-    let posY = game.camera.height / 2;
-    let style = {font: '25px Merriweather', fill: '#FFFFFF'};
-    let btnHome = createBtn(posX - 450 , posY - 100, `Return from whence you came... (main menu)`, onHomeBtnPressed, style);
-    let btnRestart = createBtn(posX - 450, posY , `Restart`, onStartBtnPressed, style);
-
-    const scoreText = game.add.text(0, posY + 200 , 'Your score is: ' + totalScore, {font: '35px Merriweather', fill: '#FFFFFF', align: 'center'});
-    scoreText.position.x = scoreText.width / 2 + 50;
-    scoreText.anchor.setTo(0.5, 0.5);
-}
 
 function win(){
     imagebg('winbg');

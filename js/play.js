@@ -14,9 +14,10 @@ let numOfcollectable;
 let eventSystem;
 let sceneData;
 
-let debuging = true;
+let debuging = false;
 
 let gameConfig;
+let backKey;
 function FormConfig(configData, difficulty){
 	let defaultConfig = configData['default'];
 	let difficultyConfig = configData.diffucultyOverrides[difficulty];
@@ -113,8 +114,7 @@ let playState = {
 			return true;
 		});
 
-
-
+		backKey = game.input.keyboard.addKey(27);
 		sceneData = {};
 		gameWin = false;
 		sceneData.gameComplete = false;
@@ -279,16 +279,20 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
-		game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
-		game.debug.text(
-			`maxHealth: ${gameConfig.playerStats.maxHealth} \n` +
-			`maxMana: ${gameConfig.playerStats.maxMana} \n` +
-			`maxVelocity: ${gameConfig.playerStats.maxVelocity}\t\t\t \n` +
-			`damage: ${gameConfig.playerStats.attacks.light.damage} \n` +
-			`speed: ${gameConfig.playerStats.attacks.light.speed} \n` +
-			`delay: ${gameConfig.playerStats.attacks.light.delay} \n`
-			, 40, 80, "#00ff00");
+		// game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		// game.debug.text(
+		// 	`maxHealth: ${gameConfig.playerStats.maxHealth} \n` +
+		// 	`maxMana: ${gameConfig.playerStats.maxMana} \n` +
+		// 	`maxVelocity: ${gameConfig.playerStats.maxVelocity}\t\t\t \n` +
+		// 	`damage: ${gameConfig.playerStats.attacks.light.damage} \n` +
+		// 	`speed: ${gameConfig.playerStats.attacks.light.speed} \n` +
+		// 	`delay: ${gameConfig.playerStats.attacks.light.delay} \n`
+		// 	, 40, 80, "#00ff00");
 		if(debuging) cheatActions();
+		if(backKey.isDown){
+			game.state.start('welcomescreen');
+
+		}
 		//game.time.advancedTiming = true;
 		if (!sceneData.player.sprite.inWorld && !sceneData.gameComplete){
 			sceneData.gameComplete = true;

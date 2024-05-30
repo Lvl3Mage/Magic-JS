@@ -39,11 +39,13 @@ class HUD extends Component {
 
 		this.scoreTotal = 0; //score que aparecera en la pantalla final
 		this.collectibleTotal; //Total de collectibles recogidos
+		this.showInteractionText = false;
 		this.createHUD();
 	}
 	Update(){
 		this.updateHealthbarMask();
 		this.updateManabarMask();
+		this.updateInteractionText();
 	}
 
 	updateHealthbarMask(){
@@ -78,6 +80,8 @@ class HUD extends Component {
 		this.createCrystalsText();
 		this.createHealthbar();
 		this.createManaBar();
+		this.createInteractionText();
+		
 	}
 
 	createText(anchorX, anchorY, posX, posY, text){
@@ -89,7 +93,15 @@ class HUD extends Component {
 		sceneData.layers.UI.addChild(btn);
 		return btn;
 	}
-
+	updateInteractionText(){
+		// console.log(this.showInteractionText);
+		this.interactionText.cameraOffset = new Phaser.Point(this.rightScreen, game.camera.height - (this.showInteractionText ? this.padding.y : -200));
+		console.log(this.interactionText.cameraOffset);
+		this.showInteractionText = false;
+	}
+	createInteractionText(){
+		this.interactionText = this.createText(1, 1, this.rightScreen, game.camera.height-this.padding.y, "Press F to interact");
+	}
 	createScoreText(){
 		this.scoreText = this.createText(1, 0, this.rightScreen, this.padding.y);
 		this.updateScoreText();

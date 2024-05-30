@@ -1,60 +1,60 @@
 //Creating a display screen for the initial welcome screen
 let welcomeState = {
-    preload: loadassets,
-    create: display
+    preload: function() {
+        // Load the background image and title
+        game.load.image('title', 'assets/imgs/Titles/TITLE.png');
+        game.load.image('scrollDecor', 'assets/imgs/Titles/SCROLL.png');
+        game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
+    },
+    create: function() {
+        game.camera.flash(0x000000, 1000); //Game fades in
+
+        game.input.enabled = true;
+        background = game.add.image(game.camera.width/2 ,0, 'bg');
+        background.scale.setTo(0.6, 0.6);
+        background.anchor.setTo(0.5, 0);
+        background.alpha = 0.2;
+
+        //Our game title
+        title = game.add.image(game.camera.width / 2, 40, 'title');
+        title.anchor.setTo(0.5, 0);
+        title.scale.setTo(0.6, 0.6);
+        game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
+
+        scroll = game.add.image(game.camera.width / 2, game.camera.height / 2 - 170, 'scrollDecor');
+        scroll.anchor.setTo(0.5, 0);
+        scroll.scale.setTo(0.8, 0.8);
+        game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
+
+        //Buttons corresponding to the start, about and configuration respectively
+        buttonStart = game.add.text(game.camera.width / 2, game.camera.height / 2 , 'Play', { font: '50px Merryweather', fill: '#000000' });
+        buttonStart.anchor.setTo(0.5, 0.5);
+        buttonStart.inputEnabled = true;
+        buttonStart.events.onInputDown.add(onStartButtonPressed, this); // Add click event listener
+        buttonStart.events.onInputOver.add(onButtonHover, this); // Add hover event listener
+        buttonStart.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
+
+        buttonAbout = game.add.text(game.camera.width / 2, game.camera.height / 2 + 100, 'About', { font: '50px Merryweather', fill: '#000000' });
+        buttonAbout.anchor.setTo(0.5, 0.5);
+        buttonAbout.inputEnabled = true;
+        buttonAbout.events.onInputDown.add(onAboutButtonPressed, this); // Add click event listener
+        buttonAbout.events.onInputOver.add(onButtonHover, this); // Add hover event listener
+        buttonAbout.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
+
+        buttonConfig = game.add.text(game.camera.width / 2, game.camera.height / 2 + 200, 'Config', { font: '50px Merryweather', fill: '#000000' });
+        buttonConfig.anchor.setTo(0.5, 0.5);
+        buttonConfig.inputEnabled = true;
+        buttonConfig.events.onInputDown.add(onConfigButtonPressed, this); // Add click event listener
+        buttonConfig.events.onInputOver.add(onButtonHover, this); // Add hover event listener
+        buttonConfig.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
+    }
 };
 
-function loadassets() {
-    // Load the background image and title
-    game.load.image('title', 'assets/imgs/Titles/TITLE.png');
-    game.load.image('scrollDecor', 'assets/imgs/Titles/SCROLL.png');
-    game.load.image('bg', 'assets/imgs/Backgrounds/background.jpeg');
-}
+
 
 let buttonStart, buttonAbout, buttonConfig;
 
-function display() {
-    game.camera.flash(0x000000, 1000); //Game fades in
 
-    game.input.enabled = true;
-    background = game.add.image(game.camera.width/2 ,0, 'bg');
-    background.scale.setTo(0.6, 0.6);
-    background.anchor.setTo(0.5, 0);
-    background.alpha = 0.2;
-
-    //Our game title
-    title = game.add.image(game.camera.width / 2, 40, 'title');
-    title.anchor.setTo(0.5, 0);
-    title.scale.setTo(0.6, 0.6);
-    game.add.tween(title).to({ y: title.y + 10 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
-
-    scroll = game.add.image(game.camera.width / 2, game.camera.height / 2 - 170, 'scrollDecor');
-    scroll.anchor.setTo(0.5, 0);
-    scroll.scale.setTo(0.8, 0.8);
-    game.add.tween(scroll).to({ y: scroll.y + 20 }, 2000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
-
-    //Buttons corresponding to the start, about and configuration respectively
-    buttonStart = game.add.text(game.camera.width / 2, game.camera.height / 2 , 'Play', { font: '50px Merryweather', fill: '#000000' });
-    buttonStart.anchor.setTo(0.5, 0.5);
-    buttonStart.inputEnabled = true;
-    buttonStart.events.onInputDown.add(onStartButtonPressed, this); // Add click event listener
-    buttonStart.events.onInputOver.add(onButtonHover, this); // Add hover event listener
-    buttonStart.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
-
-    buttonAbout = game.add.text(game.camera.width / 2, game.camera.height / 2 + 100, 'About', { font: '50px Merryweather', fill: '#000000' });
-    buttonAbout.anchor.setTo(0.5, 0.5);
-    buttonAbout.inputEnabled = true;
-    buttonAbout.events.onInputDown.add(onAboutButtonPressed, this); // Add click event listener
-    buttonAbout.events.onInputOver.add(onButtonHover, this); // Add hover event listener
-    buttonAbout.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
-
-    buttonConfig = game.add.text(game.camera.width / 2, game.camera.height / 2 + 200, 'Config', { font: '50px Merryweather', fill: '#000000' });
-    buttonConfig.anchor.setTo(0.5, 0.5);
-    buttonConfig.inputEnabled = true;
-    buttonConfig.events.onInputDown.add(onConfigButtonPressed, this); // Add click event listener
-    buttonConfig.events.onInputOver.add(onButtonHover, this); // Add hover event listener
-    buttonConfig.events.onInputOut.add(onButtonOut, this); // Add hover out event listener
-}
 
 function onStartButtonPressed() {
     game.camera.fade(0x000000, 1000); // Fade out to black

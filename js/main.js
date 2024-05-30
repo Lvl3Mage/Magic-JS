@@ -40,7 +40,7 @@ async function startGame() {
 	game.state.add('instructions', instructionState);
 	game.state.add('endScreen', endState);
 
-    game.state.start('play');
+    game.state.start('welcomescreen');
 }
 function configurePhysics(){
 	game.physics.startSystem(Phaser.Physics.P2JS);

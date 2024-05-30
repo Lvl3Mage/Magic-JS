@@ -26,8 +26,8 @@ class SafeZone extends Component {
        	this.timerAlert = 3;
        	this.tintDuration = 2;
 
-		// this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY+150, '', { font: '50px Merryweather', fill: '#000000' });
-		// this.safeZoneText.anchor.setTo(0.5, 0.5);
+		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY+150, '', { font: '50px Merryweather', fill: '#000000' });
+		this.safeZoneText.anchor.setTo(0.5, 0.5);
 
 
 		this.createCrystals();
@@ -105,7 +105,7 @@ class SafeZone extends Component {
 	}
 
 	updateTimer(){
-		// this.safeZoneText.text = Math.round(this.safeZoneTimer)
+		this.safeZoneText.text = Math.round(this.safeZoneTimer)
 	}
 
 	setUpStore(){

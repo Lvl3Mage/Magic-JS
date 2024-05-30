@@ -178,6 +178,7 @@ class Store extends Component{
 
 	}
 	ProcessPlayerOverlap(){
+		sceneData.HUD.showInteractionText = sceneData.HUD.showInteractionText || this.playerOverlap;
 		this.playerOverlap = false;
 	}
 
