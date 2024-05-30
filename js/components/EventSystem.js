@@ -1,6 +1,6 @@
 class EventSystem{
-	events = {};
 	constructor(){
+		this.events = {};
 	}
 	Subscribe(event, callback, context){
 		if(!(event in this.events)){
