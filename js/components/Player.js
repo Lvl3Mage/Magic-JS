@@ -248,7 +248,7 @@ class Player extends Component {
 
 		const lerpFactor = Mathf.Clamp(Mathf.TransformRange(0, this.maxCameraDistance, this.minCameraLerp, this.maxCameraLerp, distance),0,this.maxCameraLerp);
 
-		game.debug.text(`lerpFactor: ${lerpFactor}`, 10, 10, '#00ff00');
+		// game.debug.text(`lerpFactor: ${lerpFactor}`, 10, 10, '#00ff00');
 		const dif = Vector2.Lerp(camCenterPos, targetPos, lerpFactor).Sub(camCenterPos);
 		game.camera.x += dif.x;
 		game.camera.y += dif.y;

@@ -14,7 +14,7 @@ let numOfcollectable;
 let eventSystem;
 let sceneData;
 
-let debuging = true;
+let debuging = false;
 
 let gameConfig;
 function FormConfig(configData, difficulty){
@@ -98,7 +98,7 @@ let playState = {
 		// game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
 		// game.load.audio('sHurt', 'assets/snds/Hit_Hurt21 (mp3cut.net vol-50).wav');
 		// game.load.audio('sSquishy', 'assets/snds/SlimeDamage97 (mp3cut.net vol-25)');
-		
+
 		// game.load.audio('sCorn', 'assets/snds/epic-braam-1-171527.mp3');
 		// game.load.audio('sbg', 'assets/snds/epic-dramatic-inspirational-logo-196234 (mp3cut.net).mp3');
 	},
@@ -220,7 +220,7 @@ let playState = {
 				spriteName: 'reload',
 				spriteScale: 0.3,
 				priceHidden: true,
-				purchaseSound: "purchase", 
+				purchaseSound: "purchase",
 				upgradeText: 'Reload & Heal',
 				stages: [
 					{
@@ -279,15 +279,15 @@ let playState = {
 	update: function() {
 		// Update the realm's happenings
 		eventSystem.CallEvent("scene-update", []);
-		game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
-		game.debug.text(
-			`maxHealth: ${gameConfig.playerStats.maxHealth} \n` +
-			`maxMana: ${gameConfig.playerStats.maxMana} \n` +
-			`maxVelocity: ${gameConfig.playerStats.maxVelocity}\t\t\t \n` +
-			`damage: ${gameConfig.playerStats.attacks.light.damage} \n` +
-			`speed: ${gameConfig.playerStats.attacks.light.speed} \n` +
-			`delay: ${gameConfig.playerStats.attacks.light.delay} \n`
-			, 40, 80, "#00ff00");
+		// game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+		// game.debug.text(
+		// 	`maxHealth: ${gameConfig.playerStats.maxHealth} \n` +
+		// 	`maxMana: ${gameConfig.playerStats.maxMana} \n` +
+		// 	`maxVelocity: ${gameConfig.playerStats.maxVelocity}\t\t\t \n` +
+		// 	`damage: ${gameConfig.playerStats.attacks.light.damage} \n` +
+		// 	`speed: ${gameConfig.playerStats.attacks.light.speed} \n` +
+		// 	`delay: ${gameConfig.playerStats.attacks.light.delay} \n`
+		// 	, 40, 80, "#00ff00");
 		if(debuging) cheatActions();
 		//game.time.advancedTiming = true;
 		if (!sceneData.player.sprite.inWorld && !sceneData.gameComplete){
