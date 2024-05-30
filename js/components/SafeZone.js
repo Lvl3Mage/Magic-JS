@@ -23,9 +23,11 @@ class SafeZone extends Component {
        	this.playerOverlap = false;
        	this.safeZoneTimerMax = 10;
        	this.safeZoneTimer = this.safeZoneTimerMax;
+       	this.timerAlert = 3;
+       	this.tintDuration = 2;
 
-		this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY+150, '', { font: '50px Merryweather', fill: '#000000' });
-		this.safeZoneText.anchor.setTo(0.5, 0.5);
+		// this.safeZoneText = game.add.text(this.sprite.centerX, this.sprite.centerY+150, '', { font: '50px Merryweather', fill: '#000000' });
+		// this.safeZoneText.anchor.setTo(0.5, 0.5);
 
 
 		this.createCrystals();
@@ -61,20 +63,31 @@ class SafeZone extends Component {
 	}
 	ProcessPlayerOverlap(){
 		if(this.playerOverlap){
-			const lastTimer = this.safeZoneTimer;
 			this.safeZoneTimer -= game.time.elapsed * 0.001;
-			let t = 1 - this.safeZoneTimer/this.safeZoneTimerMax;
-			let intensity = Mathf.Lerp(0.0001, 0.01, t);
 			// game.camera.shake(intensity,50,true);
+			// 
+
+			if(this.safeZoneTimer < this.timerAlert && !sceneData.sounds.explosion.isPlaying){
+				sceneData.sounds.explosion.play();
+			}
 			if(this.safeZoneTimer <= 0){
 				console.log("AWOOGA")
 				game.state.start('endScreen');
 			}
 		}
 		else{
+			sceneData.sounds.explosion.stop();
 			this.safeZoneTimer += game.time.elapsed * 0.001;
 		}
+
 		this.safeZoneTimer = Mathf.Clamp(this.safeZoneTimer, 0, this.safeZoneTimerMax);
+		let t = Mathf.TransformRange(this.timerAlert, this.timerAlert-this.tintDuration, 0, 1, this.safeZoneTimer);
+		t = Mathf.Clamp(t,0,1);
+		let tint = Phaser.Color.interpolateRGB(255,255,255,255,60,60, 1, t);
+		console.log(tint);
+		this.sprite.tint = tint;
+
+
 		this.playerOverlap = false;
 	}
 
@@ -92,7 +105,7 @@ class SafeZone extends Component {
 	}
 
 	updateTimer(){
-		this.safeZoneText.text = Math.round(this.safeZoneTimer)
+		// this.safeZoneText.text = Math.round(this.safeZoneTimer)
 	}
 
 	setUpStore(){

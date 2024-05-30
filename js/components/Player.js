@@ -75,7 +75,9 @@ class Player extends Component {
 		this.sprite.anchor.setTo(0.5, 1);
 		// this.sprite.scale.setTo(0.7, 0.7);x
 
-		this.handSprite = game.add.sprite(0, 0, 'hand');
+		this.handSprite = game.add.sprite(0, 0, 'hand0');
+		this.handSpriteTextureId = 0;
+		this.maxHandTextureId = 4;
 		this.handSprite.anchor.setTo(0.5, 0.5);
 		this.handSprite.scale.setTo(-0.15, 0.15);
 
@@ -87,7 +89,7 @@ class Player extends Component {
 		sceneData.layers.shadows.addChild(this.shadow);
 
 		this.canFire = true;
-
+		this.mouseDownDuration = 0;
 
 		game.camera.x = this.sprite.x - game.camera.width*0.5;
 		game.camera.y = this.sprite.y - game.camera.height*0.5;
@@ -121,50 +123,87 @@ class Player extends Component {
 		this.HandMovement();
 		this.HandRotation();
 		this.UpdateShadow();
-
-		if(game.input.mousePointer.leftButton.isDown && this.canFire && this.mana > 0){
-			this.mana --;
-
-			this.canFire = false;
-			let handRight = this.GetHandForward();
-			this.handVelocity = this.handVelocity.Sub(handRight.Scale(1000));
-			this.handSprite.angle -= 90*(Math.random()*2 - 1);
-			let velocity = this.GetVelocity().Sub(handRight.Scale(500));
-			this.SetVelocity(velocity);
-
-			game.camera.shake(0.01,100);
-
-			game.time.events.add(300, () => this.canFire = true);
-
-			new Projectile(eventSystem, this.GetHandPosition(), handRight.Scale(1000),
-			{
-				spriteName: "bullet",
-				spriteScale: new Vector2(0.6,0.6),
-				mass: 60,
-				wobbleFrequency: 20,
-				wobbleMagnitude: 0.2,
-				collisionConfigs: [
-					{
-						collisionGroup: sceneData.collisionGroups.enemies,
-						callback: function(self, other){
-							const enemy = other.getParentComponent();
-							enemy.Damage(5);
-							const knockBackFactor = gameConfig.playerStats.attacks.light.knockbackFactor
-							enemy.body.velocity.x = this.GetVelocity().x*knockBackFactor;
-							enemy.body.velocity.y = this.GetVelocity().y*knockBackFactor;
-							this.Destroy();
-						}
-					},
-					{
-						collisionGroup: sceneData.collisionGroups.walls,
-						callback: function(self, other){
-							this.Destroy();
-						}
-					},
-				]
-			});
+		if(!this.canFire){
+			this.mouseDownDuration = 0;
+		}
+		else{
+			if(game.input.mousePointer.leftButton.isDown){
+				if(this.mouseDownDuration == 0 && this.mana > 0){
+					sceneData.sounds.charge.play();
+				}
+				this.mouseDownDuration += game.time.elapsed;
+			}
+			else if (this.mouseDownDuration > 0){
+				let attacked = false;
+				const attacks = gameConfig.playerStats.attacks;
+				for(let attackKey of Object.keys(attacks)){
+					const attack = attacks[attackKey];
+					if(this.mouseDownDuration > attack.chargeDuration && this.mana >= attack.manaCost){
+						this.Attack(attack);
+						attacked = true;
+						break;
+					}
+				}
+				if(!attacked){
+					sceneData.sounds.empty.play();
+					game.camera.shake(0.01,100);
+				}
+				this.mouseDownDuration = 0;
+				sceneData.sounds.charge.stop();
+			}
 		}
 
+	}
+	Attack(attackConfig){
+		this.mana -= attackConfig.manaCost;
+		this.canFire = false;
+		const handRight = this.GetHandForward();
+		this.handVelocity = this.handVelocity.Sub(handRight.Scale(attackConfig.handRecoil));
+		this.handSprite.angle -= 90*(Math.random()*2 - 1);
+		let velocity = this.GetVelocity().Sub(handRight.Scale(attackConfig.recoil));
+		this.SetVelocity(velocity);
+
+		game.camera.shake(attackConfig.shakeStength,attackConfig.shakeDuration);
+
+		game.time.events.add(attackConfig.cooldown, () => this.canFire = true);
+
+		new Projectile(eventSystem, this.GetHandPosition(), handRight.Scale(attackConfig.speed),
+		{
+			spriteName: "bullet",
+			spriteScale: new Vector2(attackConfig.scale,attackConfig.scale),
+			mass: 60,
+			wobbleFrequency: attackConfig.wobbleFrequency,
+			wobbleMagnitude: attackConfig.wobbleMagnitude,
+			collisionConfigs: [
+				{
+					collisionGroup: sceneData.collisionGroups.enemies,
+					callback: function(self, other){
+						const enemy = other.getParentComponent();
+						enemy.Damage(attackConfig.damage);
+						const knockBackFactor = attackConfig.knockbackFactor
+						enemy.body.velocity.x = this.GetVelocity().x*knockBackFactor;
+						enemy.body.velocity.y = this.GetVelocity().y*knockBackFactor;
+						if(attackConfig.destroyOnHit){
+							this.Destroy();
+						}
+					}
+				},
+				{
+					collisionGroup: sceneData.collisionGroups.walls,
+					callback: function(self, other){
+						this.Destroy();
+					}
+				},
+			]
+		});
+		this.SwapHandTexture();
+	}
+	SwapHandTexture(){
+		this.handSpriteTextureId++;
+		if(this.handSpriteTextureId > this.maxHandTextureId){
+			this.handSpriteTextureId = 0;
+		}
+		this.handSprite.loadTexture(`hand${this.handSpriteTextureId}`);
 	}
 	UpdateShadow(){
 		this.shadow.x = this.sprite.x;

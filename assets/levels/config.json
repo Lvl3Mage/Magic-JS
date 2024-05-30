@@ -16,7 +16,8 @@
 					"jumpFrequency": 8,
 					"roamVelocity": 300,
 					"attackVelocity": 1000,
-					"attackRange": 600
+					"attackRange": 600,
+					"immunityDuration":500
 				}
 			},
 			"purpleSlime": {
@@ -31,7 +32,8 @@
 					"jumpFrequency": 6,
 					"roamVelocity": 300,
 					"attackVelocity": 1500,
-					"attackRange": 600
+					"attackRange": 600,
+					"immunityDuration":500
 				}
 			}
 		},
@@ -41,12 +43,42 @@
 			"maxVelocity": 300,
 			"immunityDuration": 500,
 			"attacks": {
-				"light": {
+				"heavy": {
 					"damage": 10,
 					"speed": 500,
-					"delay": 500,
-					"range": 3000,
-					"knockbackFactor":0.3
+					"cooldown": 400,
+					"chargeDuration":1000,
+					"manaCost": 40,
+					"knockbackFactor":0.3,
+					"recoil":1000,
+					"handRecoil":1000,
+					"shakeStength": 0.01,
+					"shakeDuration": 300,
+					"scale": 1.6,
+					"wobbleMagnitude": 0.1,
+					"wobbleFrequency": 20,
+					"spriteName": "bullet",
+					"sound": "projectile",
+					"destroyOnHit":false
+				},
+				"light": {
+					"damage": 10,
+					"speed": 1000,
+					"cooldown": 400,
+					"chargeDuration":0,
+					"manaCost": 10,
+					"knockbackFactor":0.3,
+					"recoil":1000,
+					"handRecoil":1000,
+					"shakeStength": 0.01,
+					"shakeDuration": 100,
+					"scale": 0.5,
+					"wobbleMagnitude": 0.1,
+					"wobbleFrequency": 20,
+					"spriteName": "bullet",
+					"sound": "projectile",
+					"destroyOnHit":true
+
 				}
 			}
 		},
@@ -82,10 +114,10 @@
 								"factor": 1
 							}
 						],
-						"cost": 10
+						"cost": 10,
+						"repeat": -1
 					}
-				],
-				"repeatLast": true
+				]
 			},
 			"speed": {
 				"spriteName": "speedUpgrade",
@@ -101,13 +133,25 @@
 								"actionType": "mutate",
 								"property": "playerStats.maxVelocity",
 								"changeType": "add",
-								"value": 20
+								"value": 10
 							}
 						],
-						"cost": 10
+						"cost": 10,
+						"repeat": 3
+					},
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.maxVelocity",
+								"changeType": "add",
+								"value": 40
+							}
+						],
+						"cost": 30,
+						"repeat": 5
 					}
-				],
-				"repeatLast": true
+				]
 			},
 			"attack": {
 				"spriteName": "bulletUpgrade",
@@ -127,21 +171,51 @@
 							},
 							{
 								"actionType": "mutate",
-								"property": "playerStats.attacks.light.speed",
+								"property": "playerStats.attacks.light.cooldown",
+								"changeType": "add",
+								"value": -50
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.heavy.damage",
 								"changeType": "add",
 								"value": 10
 							},
 							{
 								"actionType": "mutate",
-								"property": "playerStats.attacks.light.delay",
+								"property": "playerStats.attacks.heavy.cooldown",
 								"changeType": "add",
-								"value": -10
+								"value": -20
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.heavy.chargeDuration",
+								"changeType": "add",
+								"value": -100
 							}
 						],
-						"cost": 10
+						"cost": 20,
+						"repeat": 3
+					},
+					{
+						"changes": [
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.light.damage",
+								"changeType": "add",
+								"value": 20
+							},
+							{
+								"actionType": "mutate",
+								"property": "playerStats.attacks.heavy.damage",
+								"changeType": "add",
+								"value": 20
+							}
+						],
+						"cost": 50,
+						"repeat": 3
 					}
-				],
-				"repeatLast": true
+				]
 			}
 		}
 	},
@@ -164,7 +238,7 @@
 				}
 			},
 			"playerStats": {
-				"maxVelocity": 800,
+				"maxVelocity": 500,
 				"maxHealth": 150,
 				"maxMana": 150
 			}

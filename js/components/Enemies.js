@@ -36,6 +36,9 @@ class Enemy extends Component {
 		Object.defineProperty(this, 'damage', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.damage
 		});
+		Object.defineProperty(this, 'immunityDuration', {
+			get: () =>  gameConfig.enemies[this.enemyType].stats.immunityDuration
+		});
 
 		Object.defineProperty(this, 'attackVelocity', {
 			get: () =>  gameConfig.enemies[this.enemyType].stats.attackVelocity
@@ -74,6 +77,7 @@ class Enemy extends Component {
 
 		this.sprite.body.fixedRotation = true;
 		this.roamDirection = this.randomDirection();
+		this.immune
 
 
 		sceneData.layers.enemies.addChild(this.sprite);
@@ -210,18 +214,26 @@ class Enemy extends Component {
 
 	}
 	Damage(amount){
+		if(this.immune){
+			return;
+		}
 		if(this.health <= 0){
 			return;
 		}
 		this.health -= amount;
 		this.health = Mathf.Clamp(this.health, 0, gameConfig.enemies[this.enemyType].stats.maxHealth);
 		sceneData.sounds.squishy.play();
+
 		// console.log(`Enemy health: ${this.health}`);
 		if(this.health <= 0){
 			this.Die();
 		}
 		else{
-			this.FlashTint(0xf94449, 50, 150, 0xffffff);
+			this.FlashTint(0xf94449, 50, this.immunityDuration-50, 0xffffff);
+			this.immune = true;
+			game.time.events.add(this.immunityDuration, () => {
+				this.immune = false;
+			});
 		}
 	}
 	Die(){

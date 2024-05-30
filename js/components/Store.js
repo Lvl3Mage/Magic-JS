@@ -13,7 +13,7 @@ class Store extends Component{
 		}
 		this.currentState = 0;
 
-		this.purchaseKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
+		this.purchaseKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		// this.cheatKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
 
 
@@ -108,19 +108,28 @@ class Store extends Component{
 					this.storeConfig.purchaseSound.play();
 				}
 			}
-			if(this.storeConfig.buyCallback){
-				this.storeConfig.buyCallback();
+			let tween = game.add.tween(this.sprite.scale).to({x: this.storeConfig.spriteScale+0.1, y: this.storeConfig.spriteScale+0.1}, 100, Phaser.Easing.Quadratic.InOut, true)
+			console.log("tween", tween);
+			tween.onComplete.add(function(){
+				let tween = game.add.tween(this.sprite.scale).to({x: this.storeConfig.spriteScale, y: this.storeConfig.spriteScale}, 100, Phaser.Easing.Quadratic.InOut, true)
+			},this)
+
+			if(currentStage.repeat){
+				if(currentStage.repeat == 0){
+					//repeat end
+					this.currentState++;
+				}
+				if(currentStage.repeat > 0){
+					//finite repeat
+					currentStage.repeat--;
+				}
 			}
-
-			this.currentState++;
-
-			if(this.currentState >= this.storeConfig.stages.length - 1){
-				if(this.storeConfig.repeatLast){
-					this.currentState--;
-				}
-				else{
-					this.Disable();
-				}
+			else{
+				//no repeat
+				this.currentState++;
+			}
+			if(this.currentState > this.storeConfig.stages.length - 1){
+				this.Disable();
 			}
 		}
 	}

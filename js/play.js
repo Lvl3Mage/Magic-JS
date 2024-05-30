@@ -58,7 +58,11 @@ let playState = {
 		//Player
 		game.load.image('shadow', 'assets/imgs/PLACEHOLDERS/shadow.png');
 		game.load.image('main-character', 'assets/imgs/mage.png');
-		game.load.image('hand', 'assets/imgs/Buttons/HandButton.png');
+		game.load.image('hand0', 'assets/imgs/hands/1.png');
+		game.load.image('hand1', 'assets/imgs/hands/2.png');
+		game.load.image('hand2', 'assets/imgs/hands/3.png');
+		game.load.image('hand3', 'assets/imgs/hands/4.png');
+		game.load.image('hand4', 'assets/imgs/hands/5.png');
 		game.load.image('bullet', 'assets/imgs/bullet.png')
 
 		game.load.image('greenSlime', 'assets/imgs/greenSlime.png');
@@ -86,6 +90,9 @@ let playState = {
 		game.load.audio('sHurt', 'assets/snds/Hit_Hurt21.wav');
 		game.load.audio('sSquishy', 'assets/snds/SlimeDamage97.wav');
 		game.load.audio('purchase', 'assets/snds/Purchase.wav');
+		game.load.audio('charge', 'assets/snds/charge.wav');
+		game.load.audio('empty', 'assets/snds/empty.wav');
+		game.load.audio('explosion', 'assets/snds/Explosion.wav');
 		//volume down
 		// game.load.audio('sFire', 'assets/snds/Laser_Shoot43 (mp3cut.net vol-75).wav');
 		// game.load.audio('sCollectible', 'assets/snds/Pickup_Coin30 (mp3cut.net vol-75).wav');
@@ -183,6 +190,9 @@ let playState = {
 			// sBackground: game.add.audio('sbg'),
 			squishy: game.add.audio('sSquishy', 0.2),
 			purchase: game.add.audio('purchase', 0.4),
+			charge: game.add.audio('charge', 0.2),
+			empty: game.add.audio('empty', 0.7),
+			explosion: game.add.audio('explosion', 0.7),
 		}
 		// game.time.events.loop(Phaser.Timer.SECOND * 20, sceneData.sounds.sBackground.play(), this); // If anyone knows forward
 
@@ -224,10 +234,10 @@ let playState = {
 								"factor": 1
 							}
 						],
-						cost: 0
+						cost: 0,
+						repeat: -1
 					}
 				],
-				repeatLast: true
 			});
 		}
 		let unlockCost = 5;
@@ -258,7 +268,6 @@ let playState = {
 						}
 					}
 				],
-				repeatLast: false
 			});
 		}
 

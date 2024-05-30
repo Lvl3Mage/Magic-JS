@@ -2,6 +2,7 @@ class Projectile extends Component {
 	constructor(eventSystem, position, velocity, projectileConfig){
 		super(eventSystem);
 		eventSystem.Subscribe("scene-update", this.Update, this);
+		eventSystem.Subscribe("on-physics-overlap", this.onOverlap, this);
 		this.sprite = game.add.sprite(position.x, position.y, projectileConfig.spriteName);
 		this.baseScale = Vector2.one;
 		this.wobbleFrequency = projectileConfig.wobbleFrequency || 1;
@@ -26,15 +27,13 @@ class Projectile extends Component {
 		else{
 			sceneData.layers.projectiles.addChild(this.sprite);
 		}
-
-		if(projectileConfig.collisionConfigs){
-			for(let collisionConfig of projectileConfig.collisionConfigs){
-				if(!collisionConfig.context){
-					collisionConfig.context = this;
-				}
-				this.body.collides(collisionConfig.collisionGroup, collisionConfig.callback.bind(collisionConfig.context), collisionConfig.context);
-			}
-		}
+		this.collisionConfigs = projectileConfig.collisionConfigs;
+		// if(projectileConfig.collisionConfigs){
+		// 	for(let collisionConfig of projectileConfig.collisionConfigs){
+				
+		// 		this.body.collides(collisionConfig.collisionGroup, collisionConfig.callback.bind(collisionConfig.context), collisionConfig.context);
+		// 	}
+		// }
 
 
 		this.body.velocity.x = velocity.x;
@@ -61,5 +60,23 @@ class Projectile extends Component {
 	}
 	GetVelocity(){
 		return new Vector2(this.body.velocity.x, this.body.velocity.y);
+	}
+	onOverlap(body1, body2){
+		if(!body1.data.shapes){return;}
+		if(body1.data.shapes.length == 0){return;}
+		if(!body2.data.shapes){return;}
+		if(body2.data.shapes.length == 0){return;}
+
+
+		let groups = [body1.data.shapes[0].collisionGroup, body2.data.shapes[0].collisionGroup];
+		let bodies = [body1, body2];
+		if(!bodies.some(body => body == this.body)){return;}
+		for(let config of this.collisionConfigs){
+			if(groups.some(group => group === config.collisionGroup.mask)){
+				let context = config.context || this;
+				let enemyIndex = groups.findIndex(group => group === config.collisionGroup.mask);
+				config.callback.call(context, bodies[1-enemyIndex], bodies[enemyIndex]);
+			}
+		}
 	}
 }
